@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'src/generated/l10n/app_localizations.dart';
+import 'presentation/screens/home/home_screen.dart';
 import 'constants/colors.dart';
-import 'presentation/screens/movieList/movie_list_screen.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+late AppLocalizations language;
 
 void main() {
   runApp(ProviderScope(child: const MyApp()));
@@ -34,7 +36,15 @@ class _MyAppState extends State<MyApp> {
           appBarTheme: AppBarTheme(backgroundColor: colorPrimary, surfaceTintColor: colorPrimary),
         ),
         debugShowCheckedModeBanner: false,
-        home: MovieListScreen(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: HomeScreen(),
+        builder: (context, child) {
+          if (AppLocalizations.of(context) != null) {
+            language = AppLocalizations.of(context)!;
+          }
+          return child ?? Container();
+        },
       ),
     );
   }
