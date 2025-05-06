@@ -1,0 +1,131 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+
+import '../../../core/utils/tools.dart';
+import '../../../domain/provider/cart_data_provider.dart';
+import '../../components/custom_button.dart';
+import '../../../core/constants/colors.dart';
+import '../../components/empty_record_view.dart';
+import '../../components/common_app_bar.dart';
+import '../../../data/dataSources/local/hive_helper.dart';
+import '../../../main.dart';
+import '../../components/item_key_value.dart';
+import '../../../data/models/model_product.dart';
+import 'item_cart_data.dart';
+
+class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar: CommonAppBar(title: Text(language.yourCart)), body: SafeArea(child: _buildCartScreen()));
+  }
+
+  Widget _buildCartScreen() {
+    return ValueListenableBuilder(
+      valueListenable: cartBox.listenable(),
+      builder: (context, box, _) {
+        List<ModelProduct> cartData = getCartDataFromCartBox();
+        return cartData.isEmpty
+            ? EmptyRecordView(message: language.emptyCartMsg)
+            : Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: EdgeInsetsDirectional.only(bottom: 50.h),
+                  child: Column(children: [_deliveryAddress(), _cartData(cartData), _invoiceDetails()]),
+                ),
+                _placeOrderButton(),
+              ],
+            );
+      },
+    );
+  }
+
+  Widget _deliveryAddress() {
+    return Padding(
+      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(padding: EdgeInsetsDirectional.only(end: 5.w), child: Text("${language.deliverTo}:", style: bodyTextStyle(fontSize: 14.sp))),
+                    Expanded(child: Text(language.home, style: bodyTextStyle(fontSize: 14.sp))),
+                  ],
+                ),
+                Text("101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India", style: bodyTextStyle(fontSize: 14.sp, color: colorTextLight)),
+              ],
+            ),
+          ),
+          Icon(Icons.edit_outlined, color: colorTextLight, size: 20.sp),
+        ],
+      ),
+    );
+  }
+
+  Widget _cartData(List<ModelProduct> cartData) {
+    return ListView.builder(
+      itemCount: cartData.length,
+      shrinkWrap: true,
+      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 10.h),
+      itemBuilder: (context, index) {
+        return ItemCartData(item: cartData[index]);
+      },
+    );
+  }
+
+  Widget _invoiceDetails() {
+    return Consumer(
+      builder: (context, ref, _) {
+        final data = ref.watch(checkoutInvoiceProvider);
+        return Padding(
+          padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(language.invoice, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+              ListView.builder(
+                itemCount: data.length,
+                shrinkWrap: true,
+                padding: EdgeInsetsDirectional.only(top: 5.h),
+                itemBuilder: (context, index) {
+                  return ItemKeyValue(modelKeyValue: data[index]);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _placeOrderButton() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Consumer(
+        builder: (context, ref, _) {
+          final data = ref.watch(checkoutDataProvider);
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 5, offset: Offset(0, 5))]),
+            child: Row(
+              children: [
+                Expanded(child: Text(data.total.withCurrency, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp))),
+                CustomButton(title: language.placeOrder, height: 30.h, fontSize: 14.sp),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

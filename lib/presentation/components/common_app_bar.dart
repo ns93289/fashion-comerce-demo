@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../constants/colors.dart';
-import '../utils/tools.dart';
+import '../../core/constants/colors.dart';
+import '../../core/utils/tools.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
@@ -87,9 +87,9 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       flexibleSpace: flexibleSpace,
       bottom: bottom,
-      elevation: elevation,
+      elevation: elevation ?? 5,
       scrolledUnderElevation: scrolledUnderElevation,
-      shadowColor: shadowColor,
+      shadowColor: shadowColor ?? colorShadow,
       surfaceTintColor: surfaceTintColor,
       shape: shape,
       backgroundColor: backgroundColor,
@@ -103,7 +103,8 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarTextStyle: toolbarTextStyle ?? bodyTextStyle(color: colorText, fontWeight: FontWeight.w500),
       titleTextStyle: titleTextStyle ?? bodyTextStyle(color: colorText, fontWeight: FontWeight.w500),
       systemOverlayStyle:
-          systemOverlayStyle ?? SystemUiOverlayStyle(statusBarColor: colorPrimary, statusBarBrightness: Brightness.light, statusBarIconBrightness: Brightness.dark),
+          systemOverlayStyle ??
+          SystemUiOverlayStyle(statusBarColor: colorPrimary, statusBarBrightness: Brightness.light, statusBarIconBrightness: Brightness.dark),
       clipBehavior: clipBehavior,
       actionsPadding: actionsPadding,
     );

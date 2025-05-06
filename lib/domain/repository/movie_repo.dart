@@ -1,5 +1,5 @@
-import '../../network/api_constant.dart';
-import '../../network/api_repository.dart';
+import '../../data/dataSources/remote/api_constant.dart';
+import '../../data/dataSources/remote/api_repository.dart';
 
 class MovieRepository extends ApiRepository {
   Future<dynamic> getMovieList(int page) async {

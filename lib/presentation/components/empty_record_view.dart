@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../constants/colors.dart';
-import '../utils/tools.dart';
+import '../../core/constants/colors.dart';
+import '../../core/utils/tools.dart';
 
 class EmptyRecordView extends StatelessWidget {
   final String? message;
@@ -17,7 +17,10 @@ class EmptyRecordView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.info_outlined, color: colorPrimary, size: 100.sp),
-          Padding(padding: EdgeInsetsDirectional.only(top: 5.sp), child: Text(message ?? "No Record Found", style: bodyTextStyle(fontSize: 18.sp))),
+          Padding(
+            padding: EdgeInsetsDirectional.only(top: 5.sp, start: 40.w, end: 40.w),
+            child: Text(message ?? "No Record Found", textAlign: TextAlign.center, style: bodyTextStyle(fontSize: 18.sp)),
+          ),
         ],
       ),
     );

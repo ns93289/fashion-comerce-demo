@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../main.dart';
 import '../constants/colors.dart';
-import '../main.dart';
 
 TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight}) {
   return GoogleFonts.roboto(color: color ?? colorText, fontSize: fontSize ?? 16.sp, fontWeight: fontWeight ?? FontWeight.normal);
@@ -24,4 +24,8 @@ openSimpleSnackBar(String message) {
 
 logD(String tag, String text) {
   debugPrint("$tag $text");
+}
+
+extension CurrencyExtension on dynamic {
+  String get withCurrency => "\$$this";
 }

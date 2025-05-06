@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../constants/colors.dart';
+import '../../../core/constants/colors.dart';
+import '../../../core/utils/tools.dart';
 import '../../../main.dart';
-import '../../../customWidgets/common_app_bar.dart';
+import '../../components/common_app_bar.dart';
+import '../cart/cart_screen.dart';
 import 'pages/home/home_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-        backgroundColor: colorWhite,
         appBar: CommonAppBar(
           title: Text(language.appName),
           leading: Icon(Icons.menu),
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           TabBar(
             tabs: [
               Tab(icon: Icon(Icons.home_outlined)),
-              Tab(icon: Icon(Icons.shopping_cart_outlined)),
+              Tab(icon: Icon(Icons.history_outlined)),
               Tab(icon: Icon(Icons.search, size: 0)),
               Tab(icon: Icon(Icons.favorite_outline)),
               Tab(icon: Icon(Icons.person_outline)),
@@ -72,14 +73,19 @@ class _HomeScreenState extends State<HomeScreen> {
             labelColor: colorPrimary,
             unselectedLabelColor: colorBlack,
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: colorPrimary,
-              shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: colorBlack.withAlpha(10), blurRadius: 5, spreadRadius: 5)],
+          InkWell(
+            onTap: () {
+              openScreen(context, CartScreen());
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: colorPrimary,
+                shape: BoxShape.circle,
+                boxShadow: [BoxShadow(color: colorBlack.withAlpha(10), blurRadius: 5, spreadRadius: 5)],
+              ),
+              padding: EdgeInsetsDirectional.all(5.sp),
+              child: Icon(Icons.shopping_cart_outlined),
             ),
-            padding: EdgeInsetsDirectional.all(5.sp),
-            child: Icon(Icons.search),
           ),
         ],
       ),

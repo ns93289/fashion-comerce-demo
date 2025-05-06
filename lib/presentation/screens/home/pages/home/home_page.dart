@@ -1,12 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../constants/colors.dart';
-import '../../../../../utils/tools.dart';
-import '../../../../models/model_product.dart';
-import '../../../../provider/home_provider.dart';
+import '../../../../../core/constants/colors.dart';
+import '../../../../../core/utils/tools.dart';
+import '../../../../../data/models/model_product.dart';
+import '../../../../../domain/provider/home_provider.dart';
+import '../../../productDetails/product_details_screen.dart';
 import 'item_product.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +21,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(child: Column(children: [_offerSlider(), _productFilters(), _newProducts()]));
+    return SingleChildScrollView(
+      padding: EdgeInsetsDirectional.only(bottom: 20.h),
+      child: Column(children: [_offerSlider(), _newProducts(), _popularProducts(), _productFilters()]),
+    );
   }
 
   Widget _offerSlider() {
@@ -66,54 +71,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _productFilters() {
-    return Consumer(
-      builder: (context, ref, child) {
-        final List<ModelProductFilter> filters = ref.watch(productFiltersProvider);
-        final selectedId = ref.watch(selectedProductFilterProvider);
-
-        return Container(
-          margin: EdgeInsetsDirectional.only(top: 20.h),
-          height: 30.h,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: filters.length,
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 15.w),
-            itemBuilder: (context, index) {
-              ModelProductFilter item = filters[index];
-
-              return GestureDetector(
-                onTap: () {
-                  ref.read(selectedProductFilterProvider.notifier).state = item.id;
-                },
-                child: Container(
-                  decoration: BoxDecoration(color: selectedId == item.id ? colorPrimary : colorWhite, borderRadius: BorderRadius.circular(20.r)),
-                  padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
-                  margin: EdgeInsetsDirectional.symmetric(horizontal: 5.w),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 30.sp,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        decoration: BoxDecoration(shape: BoxShape.circle),
-                        child: Image.asset("assets/images/shoes2.webp"),
-                      ),
-                      Padding(padding: EdgeInsetsDirectional.only(start: 10.w), child: Text(item.categoryName, style: bodyTextStyle(fontSize: 12.sp))),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
   Widget _newProducts() {
     return Consumer(
       builder: (context, ref, child) {
-        final List<ModelProduct> productList = ref.watch(newProductProvider);
+        final List<ModelProductItem> productList = ref.watch(newProductProvider);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -121,8 +82,8 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
               child: Row(
                 children: [
-                  Expanded(child: Text("New Men's", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
-                  Text("See all", style: bodyTextStyle(fontSize: 14.sp)),
+                  Expanded(child: Text(language.newArrival, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                  Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
                 ],
               ),
             ),
@@ -134,9 +95,99 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
                 itemBuilder: (context, index) {
-                  return ItemProduct(item: productList[index]);
+                  return GestureDetector(
+                    onTap: () {
+                      openScreen(context, ProductDetailsScreen(productId: productList[index].id));
+                    },
+                    child: ItemProduct(item: productList[index]),
+                  );
                 },
               ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _popularProducts() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final List<ModelProductItem> productList = ref.watch(popularProductProvider);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+              child: Row(
+                children: [
+                  Expanded(child: Text(language.popular, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                  Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsetsDirectional.only(top: 10.h),
+              height: 205.h,
+              child: ListView.builder(
+                itemCount: productList.length,
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      openScreen(context, ProductDetailsScreen(productId: productList[index].id));
+                    },
+                    child: ItemProduct(item: productList[index]),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _productFilters() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final List<ModelProductFilter> filters = ref.watch(productFiltersProvider);
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsetsDirectional.only(top: 20.h, bottom: 10.h, start: 20.w),
+              child: Text(language.exploreCategory, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+            ),
+            GridView.builder(
+              itemCount: filters.length,
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 4, crossAxisSpacing: 10.w, mainAxisSpacing: 10.h),
+              itemBuilder: (context, index) {
+                ModelProductFilter item = filters[index];
+
+                return GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(color: colorPrimary, borderRadius: BorderRadius.circular(20.r)),
+                    padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 32.sp,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(shape: BoxShape.circle),
+                          child: Image.asset("assets/images/shoes2.webp"),
+                        ),
+                        Padding(padding: EdgeInsetsDirectional.only(start: 10.w), child: Text(item.categoryName, style: bodyTextStyle(fontSize: 12.sp))),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         );

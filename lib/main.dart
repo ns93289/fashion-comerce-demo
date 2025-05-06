@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import 'core/constants/colors.dart';
+import 'data/dataSources/local/hive_helper.dart';
 import 'src/generated/l10n/app_localizations.dart';
 import 'presentation/screens/home/home_screen.dart';
-import 'constants/colors.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 late AppLocalizations language;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter("Fashion");
+  await initHiveBoxes();
   runApp(ProviderScope(child: const MyApp()));
 }
 
@@ -31,9 +36,9 @@ class _MyAppState extends State<MyApp> {
         title: 'Flutter Demo',
         scaffoldMessengerKey: scaffoldKey,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: colorPrimary),
-          scaffoldBackgroundColor: colorMainBackground,
-          appBarTheme: AppBarTheme(backgroundColor: colorPrimary, surfaceTintColor: colorPrimary),
+          colorScheme: ColorScheme.fromSeed(seedColor: colorWhite),
+          scaffoldBackgroundColor: colorWhite,
+          appBarTheme: AppBarTheme(backgroundColor: colorWhite, surfaceTintColor: colorWhite, elevation: 5, shadowColor: colorShadow),
         ),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
