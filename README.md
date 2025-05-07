@@ -7,11 +7,11 @@ A demo mobile application for selling fashion and lifestyle products like shoes,
 
 - 🌠 Splash Screen
 - 🏠 Home Screen with tab-based navigation:
-  - **Home**: Product offer slider, new arrivals, popular products, and product categories
-  - **Orders**: User's order history
-  - **Cart**: Recently added products with invoice summary
-  - **Favorites**: Wishlisted items
-  - **Profile**: User info including name, photo, and phone number
+  - *Home*: Product offer slider, new arrivals, popular products, and product categories
+  - *Orders*: User's order history
+  - *Cart*: Recently added products with invoice summary
+  - *Favorites*: Wishlisted items
+  - *Profile*: User info including name, photo, and phone number
 - 📦 Product Details: Complete product info and "Add to Cart" functionality
 - 🛒 Cart: Detailed invoice and product list
 
@@ -19,17 +19,15 @@ A demo mobile application for selling fashion and lifestyle products like shoes,
 
 ## 🛠️ Tech Stack
 
-- **Flutter SDK**: 3.29.3  
-- **Dart**: 3.7.2  
-- **IDE**: Android Studio  
-- **Architecture**: Clean Architecture  
-- **State Management**: `flutter_riverpod`
+- *Flutter SDK*: 3.29.3  
+- *Dart*: 3.7.2  
+- *IDE*: Android Studio  
+- *Architecture*: Clean Architecture  
+- *State Management*: `flutter_riverpod`
 
 ---
 
 ## 📂 Directory Structure
-
-```
 
 lib/
 ├── core/               # Core utilities (constants, helpers)
@@ -50,7 +48,7 @@ lib/
 │   └── screens/        # All app screens
 └── src/                # Generated localization files
 
-````
+```
 
 ---
 
