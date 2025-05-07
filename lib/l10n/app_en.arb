@@ -16,6 +16,7 @@
   "exploreCategory": "Explore Your Style",
   "yourCart": "Your Cart",
   "emptyCartMsg": "Your Cart is empty. Lets explore something great.",
+  "emptyFavoriteMsg": "Your Wish List is empty. Lets explore something great.",
   "size": "Size",
   "quantity": "Quantity",
   "price": "Price",
@@ -28,5 +29,7 @@
   "home": "Home",
   "work": "Work",
   "other": "Other",
-  "placeOrder": "Place Order"
+  "placeOrder": "Place Order",
+  "address": "Address",
+  "items": "Items"
 }

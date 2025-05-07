@@ -5,8 +5,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'core/constants/colors.dart';
 import 'data/dataSources/local/hive_helper.dart';
+import 'presentation/screens/splash/splash_screen.dart';
 import 'src/generated/l10n/app_localizations.dart';
-import 'presentation/screens/home/home_screen.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 late AppLocalizations language;
@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: HomeScreen(),
+        home: SplashScreen(),
         builder: (context, child) {
           if (AppLocalizations.of(context) != null) {
             language = AppLocalizations.of(context)!;

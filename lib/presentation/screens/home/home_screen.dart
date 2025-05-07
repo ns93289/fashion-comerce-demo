@@ -6,7 +6,9 @@ import '../../../core/utils/tools.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../cart/cart_screen.dart';
+import 'pages/favorite/favorite_page.dart';
 import 'pages/home/home_page.dart';
+import 'pages/orders/order_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: CommonAppBar(
           title: Text(language.appName),
+          centerTitle: true,
           leading: Icon(Icons.menu),
           actions: [Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Icon(Icons.search_outlined))],
         ),
@@ -37,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
-            children: [HomePage(), Text("Cart Page"), Text("Search Page"), Text("Favorite Page"), Text("Profile Page")],
+            children: [HomePage(), OrderPage(), Text("Search Page"), FavoritePage(), Text("Profile Page")],
           ),
         ),
         _homeTabBar(),
@@ -63,9 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
               Tab(icon: Icon(Icons.favorite_outline)),
               Tab(icon: Icon(Icons.person_outline)),
             ],
-            onTap: (value) {
-              DefaultTabController.of(context).animateTo(value);
-            },
             dividerHeight: 0,
             indicatorPadding: EdgeInsets.zero,
             indicatorColor: Colors.transparent,

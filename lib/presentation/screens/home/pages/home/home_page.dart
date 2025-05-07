@@ -18,9 +18,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       padding: EdgeInsetsDirectional.only(bottom: 20.h),
       child: Column(children: [_offerSlider(), _newProducts(), _popularProducts(), _productFilters()]),
@@ -194,4 +195,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

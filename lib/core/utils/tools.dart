@@ -6,7 +6,7 @@ import '../../main.dart';
 import '../constants/colors.dart';
 
 TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight}) {
-  return GoogleFonts.roboto(color: color ?? colorText, fontSize: fontSize ?? 16.sp, fontWeight: fontWeight ?? FontWeight.normal);
+  return GoogleFonts.roboto(color: color ?? colorText, fontSize: fontSize ?? 16.sp, fontWeight: fontWeight ?? FontWeight.normal, height: 0);
 }
 
 openScreen(BuildContext context, Widget screen) {

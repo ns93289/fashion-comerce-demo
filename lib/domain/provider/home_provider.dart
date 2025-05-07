@@ -14,16 +14,16 @@ final productFiltersProvider = Provider<List<ModelProductFilter>>((ref) {
 
 final newProductProvider = Provider<List<ModelProductItem>>((ref) {
   return [
-    ModelProductItem(id: 1, name: "Creter Impact", category: "Men's Shoes", price: 77.65),
-    ModelProductItem(id: 2, name: "Air Max Pre-Day", category: "Men's Shoes", price: 77.65),
-    ModelProductItem(id: 3, name: "Air Office", category: "Men's Shoes", price: 77.65),
+    ModelProductItem(id: 1, name: "Crater Impact", category: "Men's Shoes", price: 77.65),
+    ModelProductItem(id: 2, name: "Air Max Pre-Day", category: "Men's Shoes", price: 50),
+    ModelProductItem(id: 3, name: "Air Office", category: "Men's Shoes", price: 66.35),
   ];
 });
 
 final popularProductProvider = Provider<List<ModelProductItem>>((ref) {
   return [
-    ModelProductItem(id: 1, name: "Creter Impact", category: "Men's Shoes", price: 77.65),
-    ModelProductItem(id: 2, name: "Air Max Pre-Day", category: "Men's Shoes", price: 77.65),
-    ModelProductItem(id: 3, name: "Air Office", category: "Men's Shoes", price: 77.65),
+    ModelProductItem(id: 1, name: "Crater Impact", category: "Men's Shoes", price: 77.65),
+    ModelProductItem(id: 2, name: "Air Max Pre-Day", category: "Men's Shoes", price: 50),
+    ModelProductItem(id: 3, name: "Air Office", category: "Men's Shoes", price: 66.35),
   ];
 });

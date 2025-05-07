@@ -13,6 +13,7 @@ const colorTextLight = Color(0xff666666);
 const colorMainBackground = Color(0xffEEEEEE);
 const colorTabDivider = Color(0xffCCCCCC);
 const colorShadow = Color(0x1A000000);
+const colorOrderStatus = Color(0xff00a200);
 ///Gradient colors
 const colorProductStart = Color(0xffF8F7F1);
 const colorShimmerBg = Color(0xffDDDDDD);

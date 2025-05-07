@@ -44,6 +44,10 @@ class ModelProductItem {
   String get name => _name ?? "";
 
   int get id => _id ?? 0;
+
+  set favorite(bool value) {
+    _favorite = value;
+  }
 }
 
 class ModelProduct {
