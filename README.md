@@ -111,6 +111,8 @@ dependencies:
 * Clean architecture principles are followed to maintain scalability and readability.
 * Riverpod ensures scalable state management throughout the app.
 
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License.
