@@ -8,7 +8,7 @@ import '../../components/common_app_bar.dart';
 import '../cart/cart_screen.dart';
 import 'pages/favorite/favorite_page.dart';
 import 'pages/home/home_page.dart';
-import 'pages/orders/order_page.dart';
+import 'pages/orders/orders_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
-            children: [HomePage(), OrderPage(), Text("Search Page"), FavoritePage(), Text("Profile Page")],
+            children: [HomePage(), OrdersPage(), Text("Search Page"), FavoritePage(), Text("Profile Page")],
           ),
         ),
         _homeTabBar(),

@@ -6,10 +6,10 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../data/models/order_history_model.dart';
 
-class ItemOrderedProduct extends StatelessWidget {
+class ItemOrderHistory extends StatelessWidget {
   final OrderHistoryItem orderHistoryItem;
 
-  const ItemOrderedProduct({super.key, required this.orderHistoryItem});
+  const ItemOrderHistory({super.key, required this.orderHistoryItem});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class ItemOrderedProduct extends StatelessWidget {
           children: [
             Text(productName, maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontWeight: FontWeight.w500)),
             Spacer(),
-            Text(orderStatusMsg, style: bodyTextStyle(fontSize: 12.sp, color: colorOrderStatus)),
+            Text(orderStatusMsg, style: bodyTextStyle(fontSize: 12.sp, color: colorGreen)),
             Spacer(),
             Text("${language.items}: $orderQuantity", style: bodyTextStyle(fontSize: 12.sp)),
             Spacer(),

@@ -31,5 +31,19 @@
   "other": "Other",
   "placeOrder": "Place Order",
   "address": "Address",
-  "items": "Items"
+  "items": "Items",
+  "orderPlaced": "Order Placed",
+  "orderPlacedMsg": "We are pleased to confirm your order no",
+  "ordered": "Ordered",
+  "packed": "Packed",
+  "shipped":"Shipped",
+  "delivery": "Delivery",
+  "expectedBy": "Expected by",
+  "outDelivery": "Out for delivery",
+  "delivered": "Delivered",
+  "orderDetails": "Order Details",
+  "cancelled": "Cancelled",
+  "orderCancelBy": "Order has been cancelled by",
+  "seller": "Seller",
+  "orderId": "Order ID"
 }

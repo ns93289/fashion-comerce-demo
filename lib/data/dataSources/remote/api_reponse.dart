@@ -9,9 +9,9 @@ class ApiSuccess<T> extends ApiResult<T> {
 }
 
 class ApiError<T> extends ApiResult<T> {
-  final String message;
+  final ErrorModel errorData;
 
-  const ApiError(this.message);
+  const ApiError(this.errorData);
 }
 
 class ErrorModel {
