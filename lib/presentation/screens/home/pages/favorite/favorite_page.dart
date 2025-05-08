@@ -25,7 +25,7 @@ class _FavoritePageState extends State<FavoritePage> with AutomaticKeepAliveClie
 
         return data.when(
           data: (data) {
-            List<ModelProductItem> productList = data;
+            List<ModelProduct> productList = data;
             return productList.isNotEmpty
                 ? ListView.builder(
                   itemCount: productList.length,

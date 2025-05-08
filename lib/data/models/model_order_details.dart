@@ -1,3 +1,5 @@
+import 'model_product.dart';
+
 class ModelOrderDetails {
   ModelOrderDetails({
     int? orderId,
@@ -5,7 +7,8 @@ class ModelOrderDetails {
     int? orderStatus,
     String? deliveryAddress,
     num? totalAmount,
-    List<OrderedProducts>? orderedProducts,
+    List<ModelProduct>? orderedProducts,
+    List<int>? productIds,
     String? orderTime,
     String? packedTime,
     String? shippedTime,
@@ -19,6 +22,7 @@ class ModelOrderDetails {
     _deliveryAddress = deliveryAddress;
     _totalAmount = totalAmount;
     _orderedProducts = orderedProducts;
+    _productIds = productIds;
     _orderTime = orderTime;
     _packedTime = packedTime;
     _shippedTime = shippedTime;
@@ -42,7 +46,7 @@ class ModelOrderDetails {
     if (json['ordered_products'] != null) {
       _orderedProducts = [];
       json['ordered_products'].forEach((v) {
-        _orderedProducts?.add(OrderedProducts.fromJson(v));
+        _orderedProducts?.add(ModelProduct.fromJson(v));
       });
     }
   }
@@ -58,7 +62,8 @@ class ModelOrderDetails {
   String? _cancelledBy;
   String? _cancelReason;
   num? _totalAmount;
-  List<OrderedProducts>? _orderedProducts;
+  List<ModelProduct>? _orderedProducts;
+  List<int>? _productIds;
 
   int get orderId => _orderId ?? 0;
 
@@ -82,7 +87,9 @@ class ModelOrderDetails {
 
   num get totalAmount => _totalAmount ?? 0;
 
-  List<OrderedProducts> get orderedProducts => _orderedProducts ?? [];
+  List<ModelProduct> get orderedProducts => _orderedProducts ?? [];
+
+  List<int> get productIds => _productIds ?? [];
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

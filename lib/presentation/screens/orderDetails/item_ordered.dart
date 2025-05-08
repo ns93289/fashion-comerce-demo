@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/utils/tools.dart';
-import '../../../data/models/model_order_details.dart';
+import '../../../data/models/model_product.dart';
 
 class ItemOrdered extends StatelessWidget {
-  final OrderedProducts orderedProducts;
+  final ModelProduct orderedProducts;
 
   const ItemOrdered({super.key, required this.orderedProducts});
 
   @override
   Widget build(BuildContext context) {
-    final OrderedProducts(:productName, :productPrice, :productColor, :productSize, :productQuantity, :sellerName) = orderedProducts;
+    final ModelProduct(:productName, :productPrice, :sellerName) = orderedProducts;
 
     return Container(
       color: colorWhite,
@@ -28,13 +28,13 @@ class ItemOrdered extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "$productName, $productSize'' x $productQuantity",
+                      "$productName, 8'' x 1",
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: bodyTextStyle(fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 5.h),
-                    Text(productColor, style: bodyTextStyle(fontSize: 14.sp)),
+                    Text("White", style: bodyTextStyle(fontSize: 14.sp)),
                   ],
                 ),
               ),

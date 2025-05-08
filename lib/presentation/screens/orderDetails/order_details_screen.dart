@@ -6,6 +6,7 @@ import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/remote/api_reponse.dart';
 import '../../../data/models/model_order_details.dart';
+import '../../../data/models/model_product.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
@@ -73,7 +74,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 
-  Widget _orderedProducts(List<OrderedProducts> productList) {
+  Widget _orderedProducts(List<ModelProduct> productList) {
     return ListView.separated(
       itemCount: productList.length,
       shrinkWrap: true,

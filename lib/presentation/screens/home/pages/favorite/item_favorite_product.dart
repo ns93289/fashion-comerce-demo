@@ -7,18 +7,19 @@ import '../../../../../data/models/model_product.dart';
 import '../../../../../main.dart';
 
 class ItemFavoriteProduct extends StatelessWidget {
-  final ModelProductItem item;
+  final ModelProduct item;
   final Function()? onUnfavorite;
 
   const ItemFavoriteProduct({super.key, required this.item, this.onUnfavorite});
 
   @override
   Widget build(BuildContext context) {
-    final ModelProductItem(:id, :favorite, :category, :name, :price) = item;
+    final ModelProduct(:productId, :favorite, :productImage, :categoryName, :productName, :productPrice) = item;
 
     return Container(
       margin: EdgeInsetsDirectional.only(bottom: 20.h),
       height: 90.sp,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         gradient: LinearGradient(colors: [colorProductStart, colorProductEnd], begin: AlignmentDirectional.bottomEnd, end: AlignmentDirectional.topStart),
@@ -29,18 +30,19 @@ class ItemFavoriteProduct extends StatelessWidget {
           Container(
             width: 90.sp,
             margin: EdgeInsetsDirectional.only(end: 10.w),
-            child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/shoes4.png")),
+            child: AspectRatio(aspectRatio: 1, child: Image.asset(productImage, fit: BoxFit.cover)),
           ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontWeight: FontWeight.w500)),
-                Text(category, style: bodyTextStyle(fontSize: 14.sp)),
+                SizedBox(height: 5.h),
+                Text(productName, maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+                Text(categoryName, style: bodyTextStyle(fontSize: 14.sp)),
                 Spacer(),
                 Row(
                   children: [
-                    Expanded(child: Text("${language.price}: ${price.withCurrency}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp))),
+                    Expanded(child: Text("${language.price}: ${productPrice.withCurrency}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp))),
                     GestureDetector(
                       onTap: () => onUnfavorite?.call(),
                       child: Container(

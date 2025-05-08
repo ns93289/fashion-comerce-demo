@@ -14,7 +14,7 @@ class ItemCartData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ModelProduct(:productName, :productId, :productPrice, :selectedSize, :selectedQuantity) = item;
+    final ModelProduct(:productName, :productImage, :productId, :productPrice, :selectedSize, :selectedQuantity) = item;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,7 +22,7 @@ class ItemCartData extends StatelessWidget {
           color: colorProductEnd,
           width: 90.w,
           margin: EdgeInsetsDirectional.only(end: 10.w),
-          child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/shoes4.png")),
+          child: AspectRatio(aspectRatio: 1, child: Image.asset(productImage, fit: BoxFit.cover)),
         ),
         Expanded(
           child: Column(

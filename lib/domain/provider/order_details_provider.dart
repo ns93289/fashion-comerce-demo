@@ -14,26 +14,7 @@ final orderDetailsFP = FutureProvider.autoDispose<ApiResult<ModelOrderDetails>>(
     deliveryTime: "Saturday 10 May 2025",
     totalAmount: 100,
     orderedProducts: [
-      OrderedProducts(
-        sellerId: 1,
-        productId: 1,
-        productName: "Air Max Pre-Day",
-        productColor: "White",
-        productPrice: 65.50,
-        productQuantity: 1,
-        productSize: 8,
-        sellerName: "ShopO",
-      ),
-      OrderedProducts(
-        sellerId: 2,
-        productId: 2,
-        productName: "Air Office",
-        productColor: "Black",
-        productPrice: 34.50,
-        productQuantity: 1,
-        productSize: 8,
-        sellerName: "Live Max Store",
-      ),
+
     ],
   );
 

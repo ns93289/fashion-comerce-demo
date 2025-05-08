@@ -39,7 +39,15 @@ class _CartScreenState extends State<CartScreen> {
               children: [
                 SingleChildScrollView(
                   padding: EdgeInsetsDirectional.only(bottom: 50.h),
-                  child: Column(children: [_deliveryAddress(), _cartData(cartData), _invoiceDetails()]),
+                  child: Column(
+                    children: [
+                      _deliveryAddress(),
+                      _commonDiver(),
+                      _cartData(cartData),
+                      Padding(padding: EdgeInsets.only(top: 10.h), child: _commonDiver()),
+                      _invoiceDetails(),
+                    ],
+                  ),
                 ),
                 _placeOrderButton(),
               ],
@@ -73,12 +81,15 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _cartData(List<ModelProduct> cartData) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: cartData.length,
       shrinkWrap: true,
-      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 10.h),
+      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       itemBuilder: (context, index) {
         return ItemCartData(item: cartData[index]);
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.sp, color: colorMainBackground));
       },
     );
   }
@@ -88,7 +99,7 @@ class _CartScreenState extends State<CartScreen> {
       builder: (context, ref, _) {
         final data = ref.watch(checkoutInvoiceProvider);
         return Padding(
-          padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+          padding: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -127,5 +138,9 @@ class _CartScreenState extends State<CartScreen> {
         },
       ),
     );
+  }
+
+  Widget _commonDiver() {
+    return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.sp, color: colorMainBackground));
   }
 }

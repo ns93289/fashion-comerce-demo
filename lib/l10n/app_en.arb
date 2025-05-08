@@ -33,10 +33,11 @@
   "address": "Address",
   "items": "Items",
   "orderPlaced": "Order Placed",
+  "orderPlacedSuccess": "Order Placed Successfully",
   "orderPlacedMsg": "We are pleased to confirm your order no",
   "ordered": "Ordered",
   "packed": "Packed",
-  "shipped":"Shipped",
+  "shipped": "Shipped",
   "delivery": "Delivery",
   "expectedBy": "Expected by",
   "outDelivery": "Out for delivery",
@@ -45,5 +46,7 @@
   "cancelled": "Cancelled",
   "orderCancelBy": "Order has been cancelled by",
   "seller": "Seller",
-  "orderId": "Order ID"
+  "orderId": "Order ID",
+  "allProducts": "All Products",
+  "viewOrder": "View Order"
 }

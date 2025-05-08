@@ -1,24 +1,25 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/model_product.dart';
+import 'home_provider.dart';
 
-final List<ModelProductItem> favoriteProducts = [
-  ModelProductItem(id: 1, name: "Creter Impact", category: "Men's Shoes", price: 77.65, favorite: true),
-  ModelProductItem(id: 2, name: "Air Max Pre-Day", category: "Men's Shoes", price: 50, favorite: true),
-  ModelProductItem(id: 3, name: "Air Office", category: "Men's Shoes", price: 66.35, favorite: true),
-];
+final List<ModelProduct> favoriteProducts = [];
 
-final favoriteProductListProvider = FutureProvider<List<ModelProductItem>>((ref) {
+final favoriteProductListProvider = FutureProvider<List<ModelProduct>>((ref) {
   return favoriteProducts;
 });
 
-favoriteUnFavoriteProduct(WidgetRef ref, ModelProductItem data) {
-  var ModelProductItem(:favorite) = data;
+favoriteUnFavoriteProduct(WidgetRef ref, ModelProduct data) {
+  var ModelProduct(:favorite) = data;
   favorite = !favorite;
+  globalProductList.where((element) => element.productId == data.productId).forEach((element) => element.favorite = favorite);
+  // ignore: unused_result
+  ref.refresh(allProductProvider);
+
   if (favorite) {
     favoriteProducts.add(data);
   } else {
-    favoriteProducts.removeWhere((element) => element.id == data.id);
+    favoriteProducts.removeWhere((element) => element.productId == data.productId);
   }
   // ignore: unused_result
   ref.refresh(favoriteProductListProvider);

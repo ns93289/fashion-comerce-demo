@@ -30,7 +30,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget _buildProductDetails() {
     return Consumer(
       builder: (context, ref, child) {
-        final data = ref.watch(productDetailsProvider);
+        final data = ref.watch(productDetailsProvider(widget.productId));
 
         return Stack(
           children: [
@@ -93,7 +93,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ],
               ),
             ),
-            Expanded(flex: 2, child: Image.asset("assets/images/shoes4.png")),
+            Expanded(flex: 2, child: Image.asset(data.productImage)),
           ],
         ),
       ],

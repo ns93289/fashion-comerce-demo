@@ -13,12 +13,15 @@ class ItemKeyValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ModelKeyValue(:keyTitle, :valueData, :valueColor, :setBold) = modelKeyValue;
-    return Row(
-      children: [
-        Expanded(child: Text(keyTitle, style: bodyTextStyle(fontSize: 14.sp, fontWeight: setBold ? FontWeight.w600 : FontWeight.normal))),
-        SizedBox(width: 10.w),
-        Text(valueData, style: bodyTextStyle(fontSize: 14.sp, color: valueColor ?? colorText, fontWeight: setBold ? FontWeight.w600 : FontWeight.normal)),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: Row(
+        children: [
+          Expanded(child: Text(keyTitle, style: bodyTextStyle(fontSize: 14.sp, fontWeight: setBold ? FontWeight.w600 : FontWeight.normal))),
+          SizedBox(width: 10.w),
+          Text(valueData, style: bodyTextStyle(fontSize: 14.sp, color: valueColor ?? colorText, fontWeight: setBold ? FontWeight.w600 : FontWeight.normal)),
+        ],
+      ),
     );
   }
 }

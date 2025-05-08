@@ -170,11 +170,17 @@ class ModelProduct {
     _selectedQuantity = value;
   }
 
+  set favorite(bool value) {
+    _favorite = value;
+  }
+
   ModelProduct.fromJson(dynamic json) {
     _productId = json['product_id'];
     _productName = json['product_name'];
     _productPrice = json['product_price'];
     _productDescription = json['product_description'];
+    _productImage = json['product_image'];
+    _sellerName = json['seller_name'];
     _selectedSize = json['selected_size'];
     _selectedQuantity = json['selected_quantity'];
   }
@@ -185,6 +191,8 @@ class ModelProduct {
     map['product_name'] = _productName;
     map['product_price'] = _productPrice;
     map['product_description'] = _productDescription;
+    map['product_image'] = _productImage;
+    map['seller_name'] = _sellerName;
     map['selected_size'] = _selectedSize;
     map['selected_quantity'] = _selectedQuantity;
     return map;
