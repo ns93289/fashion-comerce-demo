@@ -1,5 +1,10 @@
+import 'package:fashion_comerce_demo/core/utils/tools.dart';
+import 'package:fashion_comerce_demo/main.dart';
+import 'package:fashion_comerce_demo/presentation/screens/wallet/wallet_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../data/models/model_drawer.dart';
 import '../../data/models/model_product.dart';
 
 final List<ModelProduct> globalProductList = [
@@ -119,6 +124,16 @@ final List<ModelProduct> globalProductList = [
   ),
 ];
 
+final List<ModelDrawer> drawerList = [
+  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.person_outline),
+  ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
+  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.settings_outlined),
+  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.help_outline),
+  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.logout_outlined),
+];
+
+final homeScaffoldKey = GlobalKey<ScaffoldState>();
+
 final categoryListProvider = Provider<List<ModelProductFilter>>((ref) {
   List<ModelProductFilter> filters = [
     ModelProductFilter(id: 1, categoryIcon: "assets/images/air_max_90.png", categoryName: "Sneakers"),
@@ -140,4 +155,12 @@ final allProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((ref) 
 
 final popularProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((ref) {
   return [globalProductList[5], globalProductList[3], globalProductList[2], globalProductList[1]];
+});
+
+final openDrawerItemProvider = Provider.family<int, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {
+  homeScaffoldKey.currentState?.closeDrawer();
+  if (args.drawerItem.screen is! Container) {
+    openScreen(args.context, args.drawerItem.screen);
+  }
+  return 0;
 });

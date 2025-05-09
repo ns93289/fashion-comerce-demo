@@ -11,6 +11,7 @@ import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
 import '../../../domain/provider/order_details_provider.dart';
+import '../home/home_screen.dart';
 import 'item_ordered.dart';
 import 'order_details_shimmer.dart';
 import 'order_status_view.dart';
@@ -27,13 +28,24 @@ class OrderDetailsScreen extends StatefulWidget {
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.orderDetails)), body: _buildOrderDetails());
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        } else {
+          openScreenWithClearStack(context, HomeScreen());
+        }
+      },
+      child: Scaffold(appBar: CommonAppBar(leading: BackButton(), title: Text(language.orderDetails)), body: _buildOrderDetails()),
+    );
   }
 
   Widget _buildOrderDetails() {
     return Consumer(
       builder: (context, ref, child) {
-        final result = ref.watch(orderDetailsFP);
+        final result = ref.watch(orderDetailsFP(widget.orderId));
 
         return result.when(
           data: (apiResult) {
@@ -78,6 +90,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     return ListView.separated(
       itemCount: productList.length,
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       itemBuilder: (context, index) {
         return ItemOrdered(orderedProducts: productList[index]);

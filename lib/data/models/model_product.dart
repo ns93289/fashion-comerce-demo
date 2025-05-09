@@ -63,6 +63,7 @@ class ModelProduct {
   String? _productCountry;
   String? _productMaterial;
   String? _sellerName;
+  String? _selectedColor;
   num? _productPrice;
   num? _noOfReview;
   num? _averageRatings;
@@ -85,6 +86,7 @@ class ModelProduct {
     String? productDesign,
     String? productCountry,
     String? productMaterial,
+    String? selectedColor,
     num? price,
     bool? favorite,
     bool? isBestSeller,
@@ -116,6 +118,7 @@ class ModelProduct {
     _productMaterial = productMaterial;
     _productColors = productColors;
     _productQuantities = productQuantities;
+    _selectedColor = selectedColor;
   }
 
   bool get favorite => _favorite ?? false;
@@ -139,6 +142,8 @@ class ModelProduct {
   String get productMaterial => _productMaterial ?? "";
 
   String get productCountry => _productCountry ?? "";
+
+  String get selectedColor => _selectedColor ?? "";
 
   int get productId => _productId ?? 0;
 
@@ -172,6 +177,10 @@ class ModelProduct {
 
   set favorite(bool value) {
     _favorite = value;
+  }
+
+  set selectedColor(String value) {
+    _selectedColor = value;
   }
 
   ModelProduct.fromJson(dynamic json) {

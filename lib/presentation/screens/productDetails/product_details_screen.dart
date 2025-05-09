@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
+import '../../../domain/provider/cart_data_provider.dart';
 import '../../../domain/provider/product_details_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
@@ -273,13 +274,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               CustomButton(
                 title: language.addToCart,
-                onPress: () {
+                onPress: () async {
                   if (selectedSize == 0) {
                     openSimpleSnackBar(language.selectSize);
                   } else {
                     data.selectedSize = selectedSize;
                     data.selectedQuantity = selectedQuantity;
-                    putDataIntoCartBox(data);
+                    await putDataIntoCartBox(data);
+                    ref.refresh(checkoutInvoiceProvider);
+                    ref.refresh(checkoutDataProvider);
                   }
                 },
               ),

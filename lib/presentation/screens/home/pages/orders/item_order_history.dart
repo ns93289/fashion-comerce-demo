@@ -26,7 +26,12 @@ class ItemOrderHistory extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(productName, maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+            Text(
+              productName.replaceAll(RegExp(r'[\[\]]'), ""),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: bodyTextStyle(fontWeight: FontWeight.w500),
+            ),
             Spacer(),
             Text(orderStatusMsg, style: bodyTextStyle(fontSize: 12.sp, color: colorGreen)),
             Spacer(),

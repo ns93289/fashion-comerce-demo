@@ -1,8 +1,8 @@
-import 'package:fashion_comerce_demo/core/constants/colors.dart';
-import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/colors.dart';
+import '../../../main.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/models/model_product.dart';
 
@@ -13,7 +13,7 @@ class ItemOrdered extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ModelProduct(:productName, :productPrice, :sellerName) = orderedProducts;
+    final ModelProduct(:productName, :productPrice, :sellerName, :selectedQuantity, :selectedSize, :selectedColor, :productImage) = orderedProducts;
 
     return Container(
       color: colorWhite,
@@ -28,20 +28,20 @@ class ItemOrdered extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "$productName, 8'' x 1",
+                      "$productName, $selectedSize'' x $selectedQuantity",
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: bodyTextStyle(fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 5.h),
-                    Text("White", style: bodyTextStyle(fontSize: 14.sp)),
+                    Text(selectedColor, style: bodyTextStyle(fontSize: 14.sp)),
                   ],
                 ),
               ),
               Container(
                 width: 90.sp,
                 margin: EdgeInsetsDirectional.only(start: 10.w),
-                child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/shoes4.png")),
+                child: AspectRatio(aspectRatio: 1, child: Image.asset(productImage, fit: BoxFit.cover)),
               ),
             ],
           ),

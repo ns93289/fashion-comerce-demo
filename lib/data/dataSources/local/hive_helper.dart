@@ -1,12 +1,16 @@
+import 'package:fashion_comerce_demo/main.dart';
 import 'package:hive/hive.dart';
 
 import '../../models/model_product.dart';
+import '../../models/order_history_model.dart';
 import 'hive_constants.dart';
 
 final Box cartBox = Hive.box(hiveCartBox);
+final Box orderBox = Hive.box(hiveOrderBox);
 
 Future<void> initHiveBoxes() async {
   await Hive.openBox(hiveCartBox);
+  await Hive.openBox(hiveOrderBox);
 }
 
 Future<void> putDataIntoCartBox(ModelProduct data) async {
@@ -35,4 +39,46 @@ List<ModelProduct> getCartDataFromCartBox() {
   List<ModelProduct> cartData = jsonList.map((json) => ModelProduct.fromJson(Map<String, dynamic>.from(json))).toList();
 
   return cartData;
+}
+
+Future<int> clearCartAndPutOrderData() async {
+  List<ModelProduct> cartList = getCartDataFromCartBox();
+  List<int> productIds = [];
+  int orderQuantities = 0;
+  List<String> productNames = [];
+  num orderAmount = 0;
+  for (var element in cartList) {
+    productIds.add(element.productId);
+    productNames.add(element.productName);
+    orderAmount += element.productPrice;
+    orderQuantities += element.selectedQuantity;
+  }
+  List<OrderHistoryItem> orderList = getOrderHistoryDataFromOrderBox();
+  int orderId = 1;
+  if (orderList.isNotEmpty) {
+    orderId = orderList.last.orderId + 1;
+  }
+  orderList.add(
+    OrderHistoryItem(
+      orderId: orderId,
+      deliveryAddress: "101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India",
+      productName: productNames.toString(),
+      orderAmount: orderAmount,
+      orderQuantity: orderQuantities,
+      productIdList: productIds,
+      orderStatusMsg: language.orderPlaced,
+      orderedTime: DateTime.now().toString(),
+    ),
+  );
+  List<Map<String, dynamic>> jsonList = orderList.map((p) => p.toJson()).toList();
+  await orderBox.put(hiveOrderData, jsonList);
+  await cartBox.clear();
+  return orderId;
+}
+
+List<OrderHistoryItem> getOrderHistoryDataFromOrderBox() {
+  List<dynamic> jsonList = orderBox.get(hiveCartData, defaultValue: []);
+  List<OrderHistoryItem> orderData = jsonList.map((json) => OrderHistoryItem.fromJson(Map<String, dynamic>.from(json))).toList();
+
+  return orderData;
 }

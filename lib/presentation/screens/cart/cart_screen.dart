@@ -13,16 +13,17 @@ import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
 import '../../components/item_key_value.dart';
 import '../../../data/models/model_product.dart';
+import '../payment/payment_screen.dart';
 import 'item_cart_data.dart';
 
-class CartScreen extends StatefulWidget {
+class CartScreen extends ConsumerStatefulWidget {
   const CartScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  ConsumerState<CartScreen> createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: CommonAppBar(title: Text(language.yourCart)), body: SafeArea(child: _buildCartScreen()));
@@ -95,47 +96,46 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _invoiceDetails() {
-    return Consumer(
-      builder: (context, ref, _) {
-        final data = ref.watch(checkoutInvoiceProvider);
-        return Padding(
-          padding: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(language.invoice, style: bodyTextStyle(fontWeight: FontWeight.w500)),
-              ListView.builder(
-                itemCount: data.length,
-                shrinkWrap: true,
-                padding: EdgeInsetsDirectional.only(top: 5.h),
-                itemBuilder: (context, index) {
-                  return ItemKeyValue(modelKeyValue: data[index]);
-                },
-              ),
-            ],
+    final data = ref.watch(checkoutInvoiceProvider);
+    return Padding(
+      padding: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(language.invoice, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+          ListView.builder(
+            itemCount: data.length,
+            shrinkWrap: true,
+            padding: EdgeInsetsDirectional.only(top: 5.h),
+            itemBuilder: (context, index) {
+              return ItemKeyValue(modelKeyValue: data[index]);
+            },
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
   Widget _placeOrderButton() {
+    final data = ref.watch(checkoutDataProvider);
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Consumer(
-        builder: (context, ref, _) {
-          final data = ref.watch(checkoutDataProvider);
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-            decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 5, offset: Offset(0, 5))]),
-            child: Row(
-              children: [
-                Expanded(child: Text(data.total.withCurrency, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp))),
-                CustomButton(title: language.placeOrder, height: 30.h, fontSize: 14.sp),
-              ],
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+        decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 5, offset: Offset(0, 5))]),
+        child: Row(
+          children: [
+            Expanded(child: Text(data.withCurrency, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp))),
+            CustomButton(
+              title: language.placeOrder,
+              height: 30.h,
+              fontSize: 14.sp,
+              onPress: () {
+                openScreen(context, PaymentScreen(orderAmount: data));
+              },
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }

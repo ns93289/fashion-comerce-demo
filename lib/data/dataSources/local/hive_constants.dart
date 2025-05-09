@@ -1,3 +1,5 @@
 const String hiveCartBox = "cartBox";
+const String hiveOrderBox = "orderBox";
 
-const String hiveCartData = "cartBox";
+const String hiveCartData = "cartData";
+const String hiveOrderData = "cartData";

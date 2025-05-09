@@ -7,7 +7,7 @@ import '../../../../../core/utils/tools.dart';
 import '../../../../components/empty_record_view.dart';
 import '../../../../../domain/provider/order_history_provider.dart';
 import '../../../orderDetails/order_details_screen.dart';
-import 'item_ordered_product.dart';
+import 'item_order_history.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});

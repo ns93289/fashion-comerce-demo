@@ -9,6 +9,7 @@ import 'presentation/screens/splash/splash_screen.dart';
 import 'src/generated/l10n/app_localizations.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+final navigatorKey = GlobalKey<NavigatorState>();
 late AppLocalizations language;
 
 Future<void> main() async {
@@ -35,6 +36,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Flutter Demo',
         scaffoldMessengerKey: scaffoldKey,
+        navigatorKey: navigatorKey,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: colorWhite),
           scaffoldBackgroundColor: colorWhite,

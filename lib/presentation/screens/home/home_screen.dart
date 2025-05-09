@@ -1,8 +1,11 @@
+import 'package:fashion_comerce_demo/data/models/model_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
+import '../../../domain/provider/home_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../cart/cart_screen.dart';
@@ -10,14 +13,14 @@ import 'pages/favorite/favorite_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/orders/orders_page.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -40,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
-            children: [HomePage(), OrdersPage(), Text("Search Page"), FavoritePage(), Text("Profile Page")],
+            children: [HomePage(), Text("Category Page"), Text("Search Page"), OrdersPage(), FavoritePage()],
           ),
         ),
         _homeTabBar(),
@@ -61,10 +64,10 @@ class _HomeScreenState extends State<HomeScreen> {
           TabBar(
             tabs: [
               Tab(icon: Icon(Icons.home_outlined)),
-              Tab(icon: Icon(Icons.history_outlined)),
-              Tab(icon: Icon(Icons.search, size: 0)),
-              Tab(icon: Icon(Icons.favorite_outline)),
               Tab(icon: Icon(Icons.person_outline)),
+              Tab(icon: Icon(Icons.search, size: 0)),
+              Tab(icon: Icon(Icons.history_outlined)),
+              Tab(icon: Icon(Icons.favorite_outline)),
             ],
             dividerHeight: 0,
             indicatorPadding: EdgeInsets.zero,
@@ -90,5 +93,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  Widget _drawerList() {
+    return ListView.builder(itemCount: drawerList.length, shrinkWrap: true, itemBuilder: (context, index) {
+      final ModelDrawer item=drawerList[index];
+      return Container(color: colorWhite,child: Row(children: [
+        Expanded(child: Text(item.title,style: bodyTextStyle(),)),
+        Icon(item.icon),
+        Icon(item.icon),
+      ],),);
+    });
   }
 }
