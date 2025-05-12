@@ -72,6 +72,7 @@
   "enterMobileNumber": "Enter Mobile Number",
   "emailAddress": "Email Address",
   "enterEmail": "Enter Email Address",
+  "invalidEmail": "Invalid Email Address",
   "update": "Update",
   "profileUpdateSuccess": "Profile updated successfully",
   "gallery": "Gallery",
@@ -80,7 +81,12 @@
   "or": "Or",
   "deleteAccount": "Delete Account",
   "sureToDelete": "Are you sure to delete account?",
+  "sureToLogout": "Are you sure to logout?",
   "no": "No",
   "cancel": "Cancel",
-  "delete": "Delete"
+  "okay": "Okay",
+  "delete": "Delete",
+  "searchProducts": "Search Products",
+  "searchHint": "Search for products, brands and more",
+  "userName": "User Name"
 }

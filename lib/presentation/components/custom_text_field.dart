@@ -10,10 +10,11 @@ class CustomTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final TextStyle? style;
-  final List<TextInputFormatter>? textInputFormatters;
+  final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator? validator;
   final Function(String? value)? onChanged;
   final InputDecoration? decoration;
+  final int? maxLength;
 
   const CustomTextField({
     super.key,
@@ -24,7 +25,8 @@ class CustomTextField extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.decoration,
-    this.textInputFormatters,
+    this.inputFormatters,
+    this.maxLength,
   });
 
   @override
@@ -39,8 +41,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
     final errorBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(5.r), borderSide: BorderSide(color: colorRed, width: 1.sp));
 
     final InputDecoration decoration = InputDecoration(
-      hintText: widget.decoration?.hintText ?? "",
-      labelText: widget.decoration?.labelText ?? "",
+      hintText: widget.decoration?.hintText,
+      labelText: widget.decoration?.labelText,
       hintStyle: widget.decoration?.hintStyle ?? bodyTextStyle(fontSize: 14.sp, color: colorTextLight),
       labelStyle: widget.decoration?.hintStyle ?? bodyTextStyle(fontSize: 14.sp, color: colorTextLight),
       border: normalBorder,
@@ -51,6 +53,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       focusedErrorBorder: errorBorder,
       contentPadding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
       isDense: true,
+      prefixIcon: widget.decoration?.icon,
       errorStyle: widget.decoration?.errorStyle ?? bodyTextStyle(fontSize: 10.sp, color: colorRed),
     );
 
@@ -59,7 +62,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       style: widget.style ?? bodyTextStyle(),
-      inputFormatters: widget.textInputFormatters,
+      maxLength: widget.maxLength,
+      inputFormatters: widget.inputFormatters,
+      cursorColor: colorPrimary,
+      cursorErrorColor: colorRed,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: widget.validator,
       onChanged: widget.onChanged,

@@ -1,11 +1,15 @@
-import 'package:fashion_comerce_demo/core/utils/tools.dart';
-import 'package:fashion_comerce_demo/main.dart';
-import 'package:fashion_comerce_demo/presentation/screens/wallet/wallet_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/utils/tools.dart';
+import '../../data/dataSources/local/hive_helper.dart';
+import '../../main.dart';
+import '../../presentation/dialogs/common_dialog.dart';
+import '../../presentation/screens/splash/splash_screen.dart';
+import '../../presentation/screens/wallet/wallet_screen.dart';
 import '../../data/models/model_drawer.dart';
 import '../../data/models/model_product.dart';
+import '../../presentation/screens/myProfile/my_profile_screen.dart';
 
 final List<ModelProduct> globalProductList = [
   ModelProduct(
@@ -125,11 +129,11 @@ final List<ModelProduct> globalProductList = [
 ];
 
 final List<ModelDrawer> drawerList = [
-  ModelDrawer(screen: Container(), title: language.myProfile, icon: Icons.person_outline),
+  ModelDrawer(screen: MyProfileScreen(), title: language.myProfile, icon: Icons.person_outline),
   ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
   ModelDrawer(screen: Container(), title: language.preferences, icon: Icons.settings_outlined),
   ModelDrawer(screen: Container(), title: language.helpAndSupport, icon: Icons.help_outline),
-  ModelDrawer(screen: Container(), title: language.logout, icon: Icons.logout_outlined),
+  ModelDrawer(screen: Container(), drawerType: DrawerType.logout, title: language.logout, icon: Icons.logout_outlined),
 ];
 
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
@@ -161,6 +165,27 @@ final openDrawerItemProvider = Provider.family<int, ({ModelDrawer drawerItem, Bu
   homeScaffoldKey.currentState?.closeDrawer();
   if (args.drawerItem.screen is! Container) {
     openScreen(args.context, args.drawerItem.screen);
+  } else if (args.drawerItem.drawerType == DrawerType.logout) {
+    showDialog(
+      context: args.context,
+      builder: (context) {
+        return CommonDialog(
+          title: language.sureToLogout,
+          negativeText: language.cancel,
+          positiveText: language.logout,
+          onNegativeClick: () {
+            Navigator.pop(context);
+          },
+          onPositiveClick: () {
+            Navigator.pop(context);
+            clearAllBoxex().then((value) {
+              if (!context.mounted) return;
+              return openScreenWithClearStack(context, SplashScreen());
+            });
+          },
+        );
+      },
+    );
   }
   return 0;
 });

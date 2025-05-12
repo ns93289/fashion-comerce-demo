@@ -60,7 +60,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
           controller: controller,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(labelText: language.amount),
-          textInputFormatters: [DecimalTextInputFormatter(maxDigits: 8, decimalRange: 2)],
+          inputFormatters: [DecimalTextInputFormatter(maxDigits: 8, decimalRange: 2)],
           validator: (value) {
             return TextFieldValidator.emptyValidator(value, message: language.enterAmount);
           },

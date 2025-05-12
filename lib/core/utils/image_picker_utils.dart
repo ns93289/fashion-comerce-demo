@@ -7,22 +7,30 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerUtils {
   final ImagePicker picker = ImagePicker();
 
-  Future<File?> pickImageFromGallery() async {
+  Future<File?> pickImageFromGallery({CropAspectRatioPreset? cropAspectRatioPreset}) async {
     // Pick an image.
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
+      File? croppedImage = await cropImageToAspectRatio(sourcePath: image.path, cropAspectRatioPreset: cropAspectRatioPreset);
+      if (croppedImage != null) {
+        return croppedImage;
+      }
       return File(image.path);
     } else {
       return null;
     }
   }
 
-  Future<File?> captureImageFromCamera() async {
+  Future<File?> captureImageFromCamera({CropAspectRatioPreset? cropAspectRatioPreset}) async {
     // Pick an image.
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
+      File? croppedImage = await cropImageToAspectRatio(sourcePath: image.path, cropAspectRatioPreset: cropAspectRatioPreset);
+      if (croppedImage != null) {
+        return croppedImage;
+      }
       return File(image.path);
     } else {
       return null;

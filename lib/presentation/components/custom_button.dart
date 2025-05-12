@@ -12,8 +12,11 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final double? fontSize;
   final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
+  final Color? textColor;
   final bool isLoading;
+  final bool borderedButton;
   final Widget? icon;
 
   const CustomButton({
@@ -25,8 +28,11 @@ class CustomButton extends StatelessWidget {
     this.margin,
     this.backgroundColor,
     this.isLoading = false,
+    this.borderedButton = false,
     this.fontSize,
     this.icon,
+    this.padding,
+    this.textColor,
   });
 
   @override
@@ -34,12 +40,16 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: isLoading ? null : onPress,
       child: Container(
-        decoration: BoxDecoration(color: backgroundColor ?? colorPrimary, borderRadius: BorderRadius.circular(30.r)),
-        constraints: BoxConstraints(minWidth: width ?? 120.w),
+        decoration: BoxDecoration(
+          color: backgroundColor ?? (borderedButton ? Colors.transparent : colorPrimary),
+          borderRadius: BorderRadius.circular(30.r),
+          border: borderedButton ? Border.all(color: colorPrimary, width: 1.sp) : null,
+        ),
+        constraints: BoxConstraints(minWidth: width ?? 100.w),
         width: width,
         height: height ?? 36.h,
         margin: margin,
-        padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+        padding: padding ?? EdgeInsetsDirectional.symmetric(horizontal: 20.w),
         child:
             isLoading
                 ? CommonCircleProgressBar(color: colorWhite)
@@ -47,9 +57,10 @@ class CustomButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         if (icon != null) Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: icon),
-                        Text(title, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: fontSize)),
+                        Text(title, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: fontSize, color: textColor)),
                       ],
                     ),
                   ],

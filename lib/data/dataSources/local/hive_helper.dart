@@ -96,3 +96,9 @@ String getStringDataFromUserBox({required String key}) {
 int getIntDataFromUserBox({required String key}) {
   return userBox.get(key, defaultValue: 0) ?? 0;
 }
+
+Future<void> clearAllBoxex() async {
+  await userBox.clear();
+  await orderBox.clear();
+  await cartBox.clear();
+}
