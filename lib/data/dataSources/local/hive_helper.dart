@@ -7,10 +7,12 @@ import 'hive_constants.dart';
 
 final Box cartBox = Hive.box(hiveCartBox);
 final Box orderBox = Hive.box(hiveOrderBox);
+final Box userBox = Hive.box(hiveUserBox);
 
 Future<void> initHiveBoxes() async {
   await Hive.openBox(hiveCartBox);
   await Hive.openBox(hiveOrderBox);
+  await Hive.openBox(hiveUserBox);
 }
 
 Future<void> putDataIntoCartBox(ModelProduct data) async {
@@ -81,4 +83,16 @@ List<OrderHistoryItem> getOrderHistoryDataFromOrderBox() {
   List<OrderHistoryItem> orderData = jsonList.map((json) => OrderHistoryItem.fromJson(Map<String, dynamic>.from(json))).toList();
 
   return orderData;
+}
+
+Future<void> putDataInUserBox({required String key, dynamic value}) async {
+  await userBox.put(key, value);
+}
+
+String getStringDataFromUserBox({required String key}) {
+  return userBox.get(key) ?? "";
+}
+
+int getIntDataFromUserBox({required String key}) {
+  return userBox.get(key, defaultValue: 0) ?? 0;
 }

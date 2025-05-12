@@ -26,12 +26,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
+        key: homeScaffoldKey,
         appBar: CommonAppBar(
           title: Text(language.appName),
           centerTitle: true,
-          leading: Icon(Icons.menu),
+          leading: GestureDetector(
+            onTap: () {
+              homeScaffoldKey.currentState?.openDrawer();
+            },
+            child: Icon(Icons.menu),
+          ),
           actions: [Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Icon(Icons.search_outlined))],
         ),
+        drawer: _drawerList(),
         body: SafeArea(child: _buildHomeScreen()),
       ),
     );
@@ -96,13 +103,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _drawerList() {
-    return ListView.builder(itemCount: drawerList.length, shrinkWrap: true, itemBuilder: (context, index) {
-      final ModelDrawer item=drawerList[index];
-      return Container(color: colorWhite,child: Row(children: [
-        Expanded(child: Text(item.title,style: bodyTextStyle(),)),
-        Icon(item.icon),
-        Icon(item.icon),
-      ],),);
-    });
+    return Container(
+      color: colorWhite,
+      width: 230.w,
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(color: colorMainBackground, shape: BoxShape.circle),
+            height: 60.sp,
+            width: 60.sp,
+            margin: EdgeInsetsDirectional.only(top: 24.h),
+          ),
+          Padding(
+            padding: EdgeInsetsDirectional.only(top: 5.h, start: 10.w, end: 10.w),
+            child: Text("User name", style: bodyTextStyle(fontWeight: FontWeight.w500)),
+          ),
+          Expanded(
+            child: ListView.separated(
+              itemCount: drawerList.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final ModelDrawer item = drawerList[index];
+                return GestureDetector(
+                  onTap: () {
+                    ref.read(openDrawerItemProvider((context: context, drawerItem: item)));
+                  },
+                  child: Container(
+                    color: colorWhite,
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    child: Row(
+                      children: [
+                        Padding(padding: EdgeInsetsDirectional.only(start: 20.w, end: 10.w), child: Icon(item.icon)),
+                        Expanded(child: Text(item.title, style: bodyTextStyle())),
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(start: 10.w, end: 10.w),
+                          child: Icon(Icons.arrow_forward_ios, size: 15.sp, color: colorTextLight),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.h, color: colorDivider));
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

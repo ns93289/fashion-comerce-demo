@@ -14,6 +14,7 @@ class CustomButton extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final Color? backgroundColor;
   final bool isLoading;
+  final Widget? icon;
 
   const CustomButton({
     super.key,
@@ -25,11 +26,12 @@ class CustomButton extends StatelessWidget {
     this.backgroundColor,
     this.isLoading = false,
     this.fontSize,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: isLoading ? null : onPress,
       child: Container(
         decoration: BoxDecoration(color: backgroundColor ?? colorPrimary, borderRadius: BorderRadius.circular(30.r)),
@@ -43,7 +45,14 @@ class CustomButton extends StatelessWidget {
                 ? CommonCircleProgressBar(color: colorWhite)
                 : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text(title, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: fontSize))],
+                  children: [
+                    Row(
+                      children: [
+                        if (icon != null) Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: icon),
+                        Text(title, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: fontSize)),
+                      ],
+                    ),
+                  ],
                 ),
       ),
     );

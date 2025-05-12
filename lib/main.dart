@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: colorWhite),
           scaffoldBackgroundColor: colorWhite,
+          dialogTheme: DialogTheme(backgroundColor: colorWhite, surfaceTintColor: colorWhite),
           appBarTheme: AppBarTheme(backgroundColor: colorWhite, surfaceTintColor: colorWhite, elevation: 5, shadowColor: colorShadow),
         ),
         debugShowCheckedModeBanner: false,

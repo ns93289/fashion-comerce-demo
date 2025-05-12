@@ -125,11 +125,11 @@ final List<ModelProduct> globalProductList = [
 ];
 
 final List<ModelDrawer> drawerList = [
-  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.person_outline),
+  ModelDrawer(screen: Container(), title: language.myProfile, icon: Icons.person_outline),
   ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
-  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.settings_outlined),
-  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.help_outline),
-  ModelDrawer(screen: Container(), title: language.wallet, icon: Icons.logout_outlined),
+  ModelDrawer(screen: Container(), title: language.preferences, icon: Icons.settings_outlined),
+  ModelDrawer(screen: Container(), title: language.helpAndSupport, icon: Icons.help_outline),
+  ModelDrawer(screen: Container(), title: language.logout, icon: Icons.logout_outlined),
 ];
 
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
