@@ -13,6 +13,25 @@ import '../../data/models/model_drawer.dart';
 import '../../data/models/model_product.dart';
 import '../../presentation/screens/myProfile/my_profile_screen.dart';
 
+class DataNotifier extends AsyncNotifier<List<ModelProduct>> {
+  @override
+  Future<List<ModelProduct>> build() async {
+    return await fetchDataFromApi();
+  }
+
+  Future<void> refreshData() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() => fetchDataFromApi());
+  }
+}
+
+final dataProvider = AsyncNotifierProvider<DataNotifier, List<ModelProduct>>(DataNotifier.new);
+
+Future<List<ModelProduct>> fetchDataFromApi() async {
+  List<ModelProduct> productList = globalProductList;
+  return productList;
+}
+
 final List<ModelProduct> globalProductList = [
   ModelProduct(
     id: 1,
@@ -158,9 +177,7 @@ final newProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((ref) 
   return [globalProductList[1], globalProductList[2], globalProductList[3], globalProductList[4]];
 });
 
-final allProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((ref) {
-  return globalProductList;
-});
+final allProductProvider = AsyncNotifierProvider<DataNotifier, List<ModelProduct>>(DataNotifier.new);
 
 final popularProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((ref) {
   return [globalProductList[5], globalProductList[3], globalProductList[2], globalProductList[1]];

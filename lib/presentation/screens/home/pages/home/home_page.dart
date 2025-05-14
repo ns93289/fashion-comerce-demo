@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                         child: ItemProduct(
                           item: productList[index],
                           onFavorite: () {
-                            favoriteUnFavoriteProduct(ref, productList[index]);
+                            ref.read(favoriteUnFavorite(productList[index]));
                           },
                         ),
                       );
@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                         child: ItemProduct(
                           item: productList[index],
                           onFavorite: () {
-                            favoriteUnFavoriteProduct(ref, productList[index]);
+                            ref.read(favoriteUnFavorite(productList[index]));
                           },
                         ),
                       );
@@ -253,7 +253,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                         child: ItemProduct(
                           item: productList[index],
                           onFavorite: () {
-                            favoriteUnFavoriteProduct(ref, productList[index]);
+                            ref.read(favoriteUnFavorite(productList[index]));
                           },
                         ),
                       );

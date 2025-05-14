@@ -14,3 +14,10 @@ sealed class AddressTypes {
   static const int work = 2;
   static const int other = 3;
 }
+
+sealed class GenderTypes {
+  static const int all = 0;
+  static const int male = 1;
+  static const int female = 2;
+  static const int kids = 3;
+}

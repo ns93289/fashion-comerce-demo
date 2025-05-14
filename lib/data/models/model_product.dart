@@ -121,6 +121,56 @@ class ModelProduct {
     _selectedColor = selectedColor;
   }
 
+  ModelProduct.fromJson(Map<String, dynamic> json) {
+    _productId = json['product_id'];
+    _productName = json['product_name'];
+    _productImage = json['product_image'];
+    _categoryName = json['category_name'];
+    _productPrice = json['product_price'];
+    _favorite = json['favorite'];
+    _productDescription = json['product_description'];
+    _productSizes = json['product_sizes'].cast<num>();
+    _noOfReview = json['no_of_review'];
+    _averageRatings = json['average_ratings'];
+    _reviewerList = json['reviewer_list'].cast<String>();
+    _isBestSeller = json['is_best_seller'];
+    _sellerId = json['seller_id'];
+    _sellerName = json['seller_name'];
+    _productCare = json['product_care'];
+    _productDesign = json['product_design'];
+    _productCountry = json['product_country'];
+    _productMaterial = json['product_material'];
+    _productColors = json['product_colors'].cast<String>();
+    _productQuantities = json['product_quantities'].cast<int>();
+    _selectedColor = json['selected_color'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['product_id'] = _productId;
+    map['product_name'] = _productName;
+    map['product_image'] = _productImage;
+    map['category_name'] = _categoryName;
+    map['product_price'] = _productPrice;
+    map['favorite'] = _favorite;
+    map['product_description'] = _productDescription;
+    map['product_sizes'] = _productSizes;
+    map['no_of_review'] = _noOfReview;
+    map['average_ratings'] = _averageRatings;
+    map['reviewer_list'] = _reviewerList;
+    map['is_best_seller'] = _isBestSeller;
+    map['seller_id'] = _sellerId;
+    map['seller_name'] = _sellerName;
+    map['product_care'] = _productCare;
+    map['product_design'] = _productDesign;
+    map['product_country'] = _productCountry;
+    map['product_material'] = _productMaterial;
+    map['product_colors'] = _productColors;
+    map['product_quantities'] = _productQuantities;
+    map['selected_color'] = _selectedColor;
+    return map;
+  }
+
   bool get favorite => _favorite ?? false;
 
   bool get isBestSeller => _isBestSeller ?? false;
@@ -181,29 +231,5 @@ class ModelProduct {
 
   set selectedColor(String value) {
     _selectedColor = value;
-  }
-
-  ModelProduct.fromJson(dynamic json) {
-    _productId = json['product_id'];
-    _productName = json['product_name'];
-    _productPrice = json['product_price'];
-    _productDescription = json['product_description'];
-    _productImage = json['product_image'];
-    _sellerName = json['seller_name'];
-    _selectedSize = json['selected_size'];
-    _selectedQuantity = json['selected_quantity'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['product_id'] = _productId;
-    map['product_name'] = _productName;
-    map['product_price'] = _productPrice;
-    map['product_description'] = _productDescription;
-    map['product_image'] = _productImage;
-    map['seller_name'] = _sellerName;
-    map['selected_size'] = _selectedSize;
-    map['selected_quantity'] = _selectedQuantity;
-    return map;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
+import '../../../../../main.dart';
 import '../../../../components/empty_record_view.dart';
 import '../../../../../domain/provider/order_history_provider.dart';
 import '../../../orderDetails/order_details_screen.dart';
@@ -28,17 +29,20 @@ class _OrdersPageState extends State<OrdersPage> with AutomaticKeepAliveClientMi
         final data = ref.watch(orderHistoryProvider);
 
         return data.when(
-          data: (data) {
-            return ListView.separated(
-              itemCount: data.length,
+          data: (orderHistoryList) {
+            if (orderHistoryList.isEmpty) {
+              return EmptyRecordView(message: language.emptyOrdersMsg);
+            }
+            return  ListView.separated(
+              itemCount: orderHistoryList.length,
               shrinkWrap: true,
               padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    openScreen(context, OrderDetailsScreen(orderId: data[index].orderId));
+                    openScreen(context, OrderDetailsScreen(orderId: orderHistoryList[index].orderId));
                   },
-                  child: ItemOrderHistory(orderHistoryItem: data[index]),
+                  child: ItemOrderHistory(orderHistoryItem: orderHistoryList[index]),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

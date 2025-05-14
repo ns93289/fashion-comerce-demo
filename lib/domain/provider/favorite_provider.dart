@@ -9,12 +9,11 @@ final favoriteProductListProvider = FutureProvider<List<ModelProduct>>((ref) {
   return favoriteProducts;
 });
 
-favoriteUnFavoriteProduct(WidgetRef ref, ModelProduct data) {
+final favoriteUnFavorite = Provider.family<void, ModelProduct>((ref, data) {
   var ModelProduct(:favorite) = data;
   favorite = !favorite;
   globalProductList.where((element) => element.productId == data.productId).forEach((element) => element.favorite = favorite);
-  // ignore: unused_result
-  ref.refresh(allProductProvider);
+  ref.read(allProductProvider.notifier).refreshData();
 
   if (favorite) {
     favoriteProducts.add(data);
@@ -23,4 +22,4 @@ favoriteUnFavoriteProduct(WidgetRef ref, ModelProduct data) {
   }
   // ignore: unused_result
   ref.refresh(favoriteProductListProvider);
-}
+});

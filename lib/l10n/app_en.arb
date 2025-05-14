@@ -17,6 +17,7 @@
   "yourCart": "Your Cart",
   "emptyCartMsg": "Your Cart is empty. Lets explore something great.",
   "emptyFavoriteMsg": "Your Wish List is empty. Lets explore something great.",
+  "emptyOrdersMsg": "Your Order List is empty. Lets explore something great.",
   "size": "Size",
   "quantity": "Quantity",
   "price": "Price",
@@ -111,5 +112,14 @@
   "enterPinCode": "Enter Pin Code",
   "enterHouseOrPlace": "Enter House/Place",
   "enterHouseNo": "Enter House No",
-  "enterStreet": "Enter Street"
+  "enterStreet": "Enter Street",
+  "men": "Men",
+  "women": "Women",
+  "kids": "Kids",
+  "topWear": "Top Wear",
+  "bottomWear": "Bottom Wear",
+  "footWear": "Footwear",
+  "bestsellers": "Bestsellers",
+  "accessories": "Accessories",
+  "collections": "Collections"
 }

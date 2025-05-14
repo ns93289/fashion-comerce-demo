@@ -35,7 +35,7 @@ class _FavoritePageState extends State<FavoritePage> with AutomaticKeepAliveClie
                     return ItemFavoriteProduct(
                       item: productList[index],
                       onUnfavorite: () {
-                        favoriteUnFavoriteProduct(ref, productList[index]);
+                        ref.read(favoriteUnFavorite(productList[index]));
                       },
                     );
                   },

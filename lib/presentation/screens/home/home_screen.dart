@@ -15,6 +15,7 @@ import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../cart/cart_screen.dart';
 import '../serachProduct/search_product_screen.dart';
+import 'pages/category/category_page.dart';
 import 'pages/favorite/favorite_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/orders/orders_page.dart';
@@ -63,7 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Expanded(
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),
-            children: [HomePage(), Text("Category Page"), Text("Search Page"), OrdersPage(), FavoritePage()],
+            children: [HomePage(), CategoryPage(), Text("Search Page"), OrdersPage(), FavoritePage()],
           ),
         ),
         _homeTabBar(),
@@ -84,7 +85,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           TabBar(
             tabs: [
               Tab(icon: Icon(Icons.home_outlined)),
-              Tab(icon: Icon(Icons.person_outline)),
+              Tab(icon: Icon(Icons.category_outlined)),
               Tab(icon: Icon(Icons.search, size: 0)),
               Tab(icon: Icon(Icons.history_outlined)),
               Tab(icon: Icon(Icons.favorite_outline)),
