@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../main.dart';
+import '../constants/app_constants.dart';
 import '../constants/colors.dart';
 
 TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight}) {
@@ -12,6 +14,10 @@ TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight}
 
 openScreen(BuildContext context, Widget screen) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+}
+
+Future<dynamic> openScreenWithResult(BuildContext context, Widget screen, {List<Override> overrides = const []}) async {
+  return await Navigator.push(context, MaterialPageRoute(builder: (context) => ProviderScope(overrides: overrides, child: screen)));
 }
 
 openScreenWithClearStack(BuildContext context, Widget screen) {
@@ -38,6 +44,26 @@ DateTime getDateTimeObjFromString(String dateTime, {String format = "yyyy-MM-dd 
   } catch (e) {
     logD("getFormatedDate>>>", e.toString());
     return DateTime.now();
+  }
+}
+
+IconData getAddressIcon(int addressType) {
+  if (addressType == AddressTypes.home) {
+    return Icons.home_outlined;
+  } else if (addressType == AddressTypes.work) {
+    return Icons.work_outline;
+  } else {
+    return Icons.location_on_outlined;
+  }
+}
+
+String getAddressTitle(int addressType) {
+  if (addressType == AddressTypes.home) {
+    return language.home;
+  } else if (addressType == AddressTypes.work) {
+    return language.work;
+  } else {
+    return language.other;
   }
 }
 

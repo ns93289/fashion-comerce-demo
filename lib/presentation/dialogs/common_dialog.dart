@@ -1,8 +1,9 @@
-import 'package:fashion_comerce_demo/core/utils/tools.dart';
-import 'package:fashion_comerce_demo/main.dart';
-import 'package:fashion_comerce_demo/presentation/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../core/utils/tools.dart';
+import '../../main.dart';
+import '../components/custom_button.dart';
 
 class CommonDialog extends StatelessWidget {
   final String title;

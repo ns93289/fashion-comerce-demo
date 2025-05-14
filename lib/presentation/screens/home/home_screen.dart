@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:fashion_comerce_demo/data/dataSources/local/hive_helper.dart';
-import 'package:fashion_comerce_demo/data/models/model_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import '../../../data/dataSources/local/hive_helper.dart';
+import '../../../data/models/model_drawer.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_constants.dart';
@@ -121,6 +121,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       builder: (context, box, _) {
         final profilePicture = box.get(hiveProfilePicture, defaultValue: "");
         final fullName = box.get(hiveFullName, defaultValue: language.userName);
+        final List<ModelDrawer> drawerList = ref.watch(drawerListProvider);
 
         return Container(
           color: colorWhite,

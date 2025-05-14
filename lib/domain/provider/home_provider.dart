@@ -5,6 +5,8 @@ import '../../core/utils/tools.dart';
 import '../../data/dataSources/local/hive_helper.dart';
 import '../../main.dart';
 import '../../presentation/dialogs/common_dialog.dart';
+import '../../presentation/screens/address/my_address_screen.dart';
+import '../../presentation/screens/preferences/preferences_screen.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/wallet/wallet_screen.dart';
 import '../../data/models/model_drawer.dart';
@@ -128,13 +130,16 @@ final List<ModelProduct> globalProductList = [
   ),
 ];
 
-final List<ModelDrawer> drawerList = [
-  ModelDrawer(screen: MyProfileScreen(), title: language.myProfile, icon: Icons.person_outline),
-  ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
-  ModelDrawer(screen: Container(), title: language.preferences, icon: Icons.settings_outlined),
-  ModelDrawer(screen: Container(), title: language.helpAndSupport, icon: Icons.help_outline),
-  ModelDrawer(screen: Container(), drawerType: DrawerType.logout, title: language.logout, icon: Icons.logout_outlined),
-];
+final drawerListProvider = StateProvider.autoDispose<List<ModelDrawer>>((ref) {
+  return [
+    ModelDrawer(screen: MyProfileScreen(), title: language.myProfile, icon: Icons.person_outline),
+    ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
+    ModelDrawer(screen: MyAddressScreen(), title: language.myAddress, icon: Icons.location_city_outlined),
+    ModelDrawer(screen: PreferencesScreen(), title: language.preferences, icon: Icons.settings_outlined),
+    ModelDrawer(screen: Container(), title: language.helpAndSupport, icon: Icons.help_outline),
+    ModelDrawer(screen: Container(), drawerType: DrawerType.logout, title: language.logout, icon: Icons.logout_outlined),
+  ];
+});
 
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -161,7 +166,7 @@ final popularProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((r
   return [globalProductList[5], globalProductList[3], globalProductList[2], globalProductList[1]];
 });
 
-final openDrawerItemProvider = Provider.family<int, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {
+final openDrawerItemProvider = Provider.family<void, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {
   homeScaffoldKey.currentState?.closeDrawer();
   if (args.drawerItem.screen is! Container) {
     openScreen(args.context, args.drawerItem.screen);
@@ -178,7 +183,7 @@ final openDrawerItemProvider = Provider.family<int, ({ModelDrawer drawerItem, Bu
           },
           onPositiveClick: () {
             Navigator.pop(context);
-            clearAllBoxex().then((value) {
+            clearAllBoxes().then((value) {
               if (!context.mounted) return;
               return openScreenWithClearStack(context, SplashScreen());
             });
@@ -187,5 +192,4 @@ final openDrawerItemProvider = Provider.family<int, ({ModelDrawer drawerItem, Bu
       },
     );
   }
-  return 0;
 });

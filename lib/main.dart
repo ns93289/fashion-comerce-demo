@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'core/constants/app_constants.dart';
 import 'core/constants/colors.dart';
+import 'core/provider/locale_provider.dart';
 import 'data/dataSources/local/hive_helper.dart';
 import 'presentation/screens/splash/splash_screen.dart';
 import 'src/generated/l10n/app_localizations.dart';
@@ -11,6 +13,7 @@ import 'src/generated/l10n/app_localizations.dart';
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 final navigatorKey = GlobalKey<NavigatorState>();
 late AppLocalizations language;
+Locale selectedLocale = Locale(LanguageCodes.english);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,22 +22,23 @@ Future<void> main() async {
   runApp(ProviderScope(child: const MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
+    selectedLocale = ref.watch(localeProvider);
+
     return ScreenUtilInit(
       designSize: Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp(
-        title: 'Flutter Demo',
         scaffoldMessengerKey: scaffoldKey,
         navigatorKey: navigatorKey,
         theme: ThemeData(
@@ -46,6 +50,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
+        locale: selectedLocale,
         home: SplashScreen(),
         builder: (context, child) {
           if (AppLocalizations.of(context) != null) {
