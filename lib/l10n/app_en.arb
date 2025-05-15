@@ -121,5 +121,10 @@
   "footWear": "Footwear",
   "bestsellers": "Bestsellers",
   "accessories": "Accessories",
-  "collections": "Collections"
+  "collections": "Collections",
+  "privacyPolicy": "Privacy Policy",
+  "termsAndConditions": "Terms & Conditions",
+  "contactUs": "Contact Us",
+  "faqs": "FAQs",
+  "aboutUs": "About Us"
 }

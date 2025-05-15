@@ -6,6 +6,7 @@ import '../../data/dataSources/local/hive_helper.dart';
 import '../../main.dart';
 import '../../presentation/dialogs/common_dialog.dart';
 import '../../presentation/screens/address/my_address_screen.dart';
+import '../../presentation/screens/helpAndSupprt/help_and_support_screen.dart';
 import '../../presentation/screens/preferences/preferences_screen.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/wallet/wallet_screen.dart';
@@ -155,7 +156,7 @@ final drawerListProvider = StateProvider.autoDispose<List<ModelDrawer>>((ref) {
     ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
     ModelDrawer(screen: MyAddressScreen(), title: language.myAddress, icon: Icons.location_city_outlined),
     ModelDrawer(screen: PreferencesScreen(), title: language.preferences, icon: Icons.settings_outlined),
-    ModelDrawer(screen: Container(), title: language.helpAndSupport, icon: Icons.help_outline),
+    ModelDrawer(screen: HelpAndSupportScreen(), title: language.helpAndSupport, icon: Icons.help_outline),
     ModelDrawer(screen: Container(), drawerType: DrawerType.logout, title: language.logout, icon: Icons.logout_outlined),
   ];
 });
