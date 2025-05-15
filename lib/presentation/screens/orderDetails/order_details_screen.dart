@@ -126,7 +126,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         orderTime: orderTime,
         packedTime: packedTime,
         shippedTime: shippedTime,
-        cacncelledBy: cancelledBy,
+        cancelledBy: cancelledBy,
       ),
     );
   }

@@ -29,6 +29,7 @@ dependencies:
   image_cropper: ^9.1.0
   country_code_picker: ^3.3.0
   flutter_inappwebview: ^6.1.5
+  easy_image_viewer: ^1.5.1
 
 dev_dependencies:
   flutter_test:

@@ -82,7 +82,7 @@ Future<int> clearCartAndPutOrderData() async {
 }
 
 List<OrderHistoryItem> getOrderHistoryDataFromOrderBox() {
-  List<dynamic> jsonList = orderBox.get(hiveCartData, defaultValue: []);
+  List<dynamic> jsonList = orderBox.get(hiveOrderData, defaultValue: []);
   List<OrderHistoryItem> orderData = jsonList.map((json) => OrderHistoryItem.fromJson(Map<String, dynamic>.from(json))).toList();
 
   return orderData;

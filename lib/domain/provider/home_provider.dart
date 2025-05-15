@@ -36,6 +36,25 @@ Future<List<ModelProduct>> fetchDataFromApi() async {
 final List<ModelProduct> globalProductList = [
   ModelProduct(
     id: 1,
+    name: "Bru",
+    category: "Basketball",
+    price: 40.10,
+    averageRatings: 4.1,
+    noOfReview: 6,
+    description: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    sizes: [6, 7, 8, 9, 10],
+    sellerId: 1,
+    sellerName: "Shop Maxx",
+    productCare: "Only apply dry cleaning",
+    productCountry: "USA",
+    productMaterial: "Soft Leather",
+    productDesign: "Home",
+    image: "assets/images/bru.png",
+    productColors: ["White", "Black"],
+    productQuantities: [1, 2, 3, 4, 5],
+  ),
+  ModelProduct(
+    id: 2,
     name: "Classic Slip-On",
     category: "Casual",
     price: 77.65,
@@ -54,7 +73,7 @@ final List<ModelProduct> globalProductList = [
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
-    id: 2,
+    id: 3,
     name: "GrandPro Tennis Sneaker",
     category: "Sneakers",
     price: 50,
@@ -73,7 +92,7 @@ final List<ModelProduct> globalProductList = [
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
-    id: 3,
+    id: 4,
     name: "Women's Arizona Sandals",
     category: "Sandals",
     price: 66.35,
@@ -92,7 +111,7 @@ final List<ModelProduct> globalProductList = [
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
-    id: 4,
+    id: 5,
     name: "Air Max 90",
     category: "Sneakers",
     price: 44.30,
@@ -111,7 +130,7 @@ final List<ModelProduct> globalProductList = [
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
-    id: 5,
+    id: 6,
     name: "Zoom Freak 4",
     category: "Basketball",
     price: 55.50,
@@ -130,7 +149,7 @@ final List<ModelProduct> globalProductList = [
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
-    id: 6,
+    id: 7,
     name: "Gel Kayano 29",
     category: "Running",
     price: 35,

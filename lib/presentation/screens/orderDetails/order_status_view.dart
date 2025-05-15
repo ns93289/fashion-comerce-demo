@@ -11,7 +11,7 @@ class OrderStatusView extends StatelessWidget {
   final String shippedTime;
   final String packedTime;
   final String orderTime;
-  final String cacncelledBy;
+  final String cancelledBy;
 
   const OrderStatusView({
     super.key,
@@ -20,7 +20,7 @@ class OrderStatusView extends StatelessWidget {
     required this.shippedTime,
     required this.packedTime,
     required this.orderTime,
-    this.cacncelledBy = "",
+    this.cancelledBy = "",
   });
 
   @override
@@ -94,7 +94,7 @@ class OrderStatusView extends StatelessWidget {
                       style: bodyTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 0 ? colorText : colorTextLight),
                     ),
                     SizedBox(height: 2.5.h),
-                    Text("${language.orderCancelBy} $cacncelledBy", style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight)),
+                    Text("${language.orderCancelBy} $cancelledBy", style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight)),
                   ],
                 ),
               ),

@@ -62,10 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Column(
       children: [
         Expanded(
-          child: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            children: [HomePage(), CategoryPage(), Text("Search Page"), OrdersPage(), FavoritePage()],
-          ),
+          child: TabBarView(physics: NeverScrollableScrollPhysics(), children: [HomePage(), CategoryPage(), Text("Search Page"), OrdersPage(), FavoritePage()]),
         ),
         _homeTabBar(),
       ],
@@ -120,8 +117,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return ValueListenableBuilder(
       valueListenable: userBox.listenable(),
       builder: (context, box, _) {
-        final profilePicture = box.get(hiveProfilePicture, defaultValue: "");
-        final fullName = box.get(hiveFullName, defaultValue: language.userName);
+        final profilePicture = box.get(hiveProfilePicture, defaultValue: "") ?? "";
+        final fullName = box.get(hiveFullName, defaultValue: language.userName) ?? "";
         final List<ModelDrawer> drawerList = ref.watch(drawerListProvider);
 
         return Container(

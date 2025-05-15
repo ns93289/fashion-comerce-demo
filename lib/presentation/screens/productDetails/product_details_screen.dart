@@ -1,3 +1,4 @@
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,7 +95,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ],
               ),
             ),
-            Expanded(flex: 2, child: Image.asset(data.productImage)),
+            Expanded(
+              flex: 2,
+              child: GestureDetector(
+                onTap: () {
+                  final imageProvider = Image.asset(data.productImage).image;
+                  showImageViewer(
+                    context,
+                    imageProvider,
+                    backgroundColor: colorBlack.withAlpha(100),
+                    barrierColor: Colors.transparent,
+                    doubleTapZoomable: true,
+                    useSafeArea: false,
+                    immersive: false,
+                  );
+                },
+                child: Image.asset(data.productImage),
+              ),
+            ),
           ],
         ),
       ],
@@ -281,8 +299,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     data.selectedSize = selectedSize;
                     data.selectedQuantity = selectedQuantity;
                     await putDataIntoCartBox(data);
-                    ref.refresh(checkoutInvoiceProvider);
-                    ref.refresh(checkoutDataProvider);
+                    ref.read(checkoutInvoiceProvider);
+                    ref.read(checkoutDataProvider);
                   }
                 },
               ),

@@ -29,11 +29,11 @@ openSimpleSnackBar(String message) {
   scaffoldKey.currentState?.showSnackBar(snackBar);
 }
 
-String getFormatedDate(String dateTime, {String format = "yyyy-MM-dd HH:mm:ss", String returnFormat = "EEE dd MMM yyyy hh:mm aa"}) {
+String getFormatedDate(String dateTime, {String format = "yyyy-MM-dd HH:mm:ss", String returnFormat = "EEEE dd MMM yyyy hh:mm aa"}) {
   try {
     return DateFormat(returnFormat).format(DateFormat(format).parse(dateTime));
   } catch (e) {
-    logD("getFormatedDate>>>", e.toString());
+    logD("getFormatedDate>>>", "${e.toString()} $dateTime");
     return "0000-00-00";
   }
 }

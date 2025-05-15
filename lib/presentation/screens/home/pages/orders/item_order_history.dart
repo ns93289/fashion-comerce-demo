@@ -22,24 +22,22 @@ class ItemOrderHistory extends StatelessWidget {
         gradient: LinearGradient(colors: [colorProductStart, colorProductEnd], begin: AlignmentDirectional.bottomEnd, end: AlignmentDirectional.topStart),
       ),
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-      child: Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              productName.replaceAll(RegExp(r'[\[\]]'), ""),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: bodyTextStyle(fontWeight: FontWeight.w500),
-            ),
-            Spacer(),
-            Text(orderStatusMsg, style: bodyTextStyle(fontSize: 12.sp, color: colorGreen)),
-            Spacer(),
-            Text("${language.items}: $orderQuantity", style: bodyTextStyle(fontSize: 12.sp)),
-            Spacer(),
-            Text("${language.total}: ${orderAmount.withCurrency}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            productName.replaceAll(RegExp(r'[\[\]]'), ""),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: bodyTextStyle(fontWeight: FontWeight.w500),
+          ),
+          Spacer(),
+          Text(orderStatusMsg, style: bodyTextStyle(fontSize: 12.sp, color: colorGreen)),
+          Spacer(),
+          Text("${language.items}: $orderQuantity", style: bodyTextStyle(fontSize: 12.sp)),
+          Spacer(),
+          Text("${language.total}: ${orderAmount.withCurrency}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+        ],
       ),
     );
   }

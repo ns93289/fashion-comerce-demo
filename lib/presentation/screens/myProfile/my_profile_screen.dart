@@ -35,11 +35,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     return ValueListenableBuilder(
       valueListenable: userBox.listenable(),
       builder: (context, box, _) {
-        final fullName = box.get(hiveFullName, defaultValue: "");
-        final email = box.get(hiveEmailAddress, defaultValue: "");
-        final phoneNo = box.get(hivePhoneNumber, defaultValue: "");
-        final countryCode = box.get(hiveCountryCode, defaultValue: "");
-        final filePath = box.get(hiveProfilePicture, defaultValue: "");
+        final fullName = box.get(hiveFullName, defaultValue: "") ?? "";
+        final email = box.get(hiveEmailAddress, defaultValue: "") ?? "";
+        final phoneNo = box.get(hivePhoneNumber, defaultValue: "") ?? "";
+        final countryCode = box.get(hiveCountryCode, defaultValue: "") ?? "";
+        final filePath = box.get(hiveProfilePicture, defaultValue: "") ?? "";
 
         return Stack(
           children: [
