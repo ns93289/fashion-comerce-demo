@@ -8,6 +8,24 @@ class TextFieldValidator {
     return null;
   }
 
+  static String? passwordValidator({required String password}) {
+    if (password.isEmpty) {
+      return language.enterPassword;
+    } else if (password.length < 6) {
+      return language.minPassLength;
+    }
+    return null;
+  }
+
+  static String? passwordMatchValidator({required String password, required String confirmPassword}) {
+    if (confirmPassword.isEmpty) {
+      return language.enterConfirmPassword;
+    } else if (password != confirmPassword) {
+      return language.confirmPassMatch;
+    }
+    return null;
+  }
+
   static String? emailValidator(String email) {
     if (email.isEmpty) {
       return language.enterEmail;

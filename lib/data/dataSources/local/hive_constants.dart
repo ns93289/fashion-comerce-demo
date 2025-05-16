@@ -21,3 +21,5 @@ const String hiveEmailAddress = "emailAddress";
 const String hivePhoneNumber = "phoneNumber";
 const String hiveCountryCode = "countryCode";
 const String hiveProfilePicture = "profilePicture";
+const String hiveUserPassword = "userPassword";
+const String hiveUserIsVerified = "userIsVerified";

@@ -21,3 +21,7 @@ sealed class GenderTypes {
   static const int female = 2;
   static const int kids = 3;
 }
+
+sealed class DefaultData {
+  static const String countryCodeName = "US";
+}

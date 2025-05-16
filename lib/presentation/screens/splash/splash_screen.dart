@@ -1,26 +1,24 @@
-import 'package:fashion_comerce_demo/core/constants/colors.dart';
-import 'package:fashion_comerce_demo/presentation/components/common_circle_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/colors.dart';
+import '../../../domain/provider/splash_provider.dart';
+import '../../components/common_circle_progress_bar.dart';
 import '../../../main.dart';
 import '../../../core/utils/tools.dart';
-import '../home/home_screen.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void didChangeDependencies() {
-    Future.delayed(Duration(seconds: 3), () {
-      if (!mounted) return;
-      openScreen(context, HomeScreen());
-    });
+    ref.read(splashActionProvider(context));
     super.didChangeDependencies();
   }
 

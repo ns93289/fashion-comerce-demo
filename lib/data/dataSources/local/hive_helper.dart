@@ -100,6 +100,10 @@ int getIntDataFromUserBox({required String key}) {
   return userBox.get(key, defaultValue: 0) ?? 0;
 }
 
+bool getBoolDataFromUserBox({required String key}) {
+  return userBox.get(key, defaultValue: false) ?? false;
+}
+
 List<ModelAddress> getAddressDataFromAddressBox() {
   List<dynamic> jsonList = addressBox.get(hiveAddressData, defaultValue: []);
   List<ModelAddress> addressData = jsonList.map((json) => ModelAddress.fromJson(Map<String, dynamic>.from(json))).toList();
