@@ -131,7 +131,9 @@ Future<void> deleteAddressFromAddressBox(int addressId) async {
 }
 
 Future<void> clearAllBoxes() async {
-  await userBox.clear();
+  // await userBox.clear();
+  putDataInUserBox(key: hiveUserIsVerified, value: false);
+  putDataInUserBox(key: hiveProfilePicture, value: "");
   await orderBox.clear();
   await cartBox.clear();
 }
