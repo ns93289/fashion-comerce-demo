@@ -151,5 +151,6 @@
   "verify": "Verify",
   "notGetOTP": "Didn't get OTP?",
   "resendOTP": "Resend OTP",
-  "resendOTPIn": "Resend OTP in"
+  "resendOTPIn": "Resend OTP in",
+  "enterFullOTP": "Enter full OTP"
 }

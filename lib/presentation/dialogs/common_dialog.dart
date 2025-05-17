@@ -5,15 +5,21 @@ import '../../core/utils/tools.dart';
 import '../../main.dart';
 import '../components/custom_button.dart';
 
-class CommonDialog extends StatelessWidget {
+class CommonDialog extends StatefulWidget {
   final String title;
   final String? positiveText;
   final String? negativeText;
+  final Widget? widget;
   final Function() onPositiveClick;
   final Function()? onNegativeClick;
 
-  const CommonDialog({super.key, required this.title, required this.onPositiveClick, this.onNegativeClick, this.positiveText, this.negativeText});
+  const CommonDialog({super.key, required this.title, required this.onPositiveClick, this.onNegativeClick, this.positiveText, this.negativeText, this.widget});
 
+  @override
+  State<CommonDialog> createState() => _CommonDialogState();
+}
+
+class _CommonDialogState extends State<CommonDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -24,27 +30,28 @@ class CommonDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(title, style: bodyTextStyle()),
+            Text(widget.title, style: bodyTextStyle()),
+            if (widget.widget != null) widget.widget!,
             Padding(
               padding: EdgeInsetsDirectional.only(top: 20.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomButton(
-                    title: negativeText ?? language.cancel,
+                    title: widget.negativeText ?? language.cancel,
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
                     fontSize: 14.sp,
                     height: 25.h,
                     borderedButton: true,
-                    onPress: () => onNegativeClick?.call(),
+                    onPress: () => widget.onNegativeClick?.call(),
                   ),
-                  if (onNegativeClick != null) SizedBox(width: 10.w),
+                  if (widget.onNegativeClick != null) SizedBox(width: 10.w),
                   CustomButton(
-                    title: positiveText ?? language.okay,
+                    title: widget.positiveText ?? language.okay,
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
                     fontSize: 14.sp,
                     height: 25.h,
-                    onPress: () => onPositiveClick.call(),
+                    onPress: () => widget.onPositiveClick.call(),
                   ),
                 ],
               ),

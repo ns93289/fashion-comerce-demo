@@ -12,12 +12,12 @@ final splashActionProvider = FutureProvider.autoDispose.family<void, BuildContex
     if (!context.mounted) return;
     if (getStringDataFromUserBox(key: hivePhoneNumber).isNotEmpty) {
       if (getBoolDataFromUserBox(key: hiveUserIsVerified)) {
-        openScreen(context, HomeScreen());
+        openScreenWithClearStack(context, HomeScreen());
       } else {
-        openScreen(context, LoginScreen());
+        openScreenWithClearStack(context, LoginScreen());
       }
     } else {
-      openScreen(context, LoginScreen());
+      openScreenWithClearStack(context, LoginScreen());
     }
   });
 });

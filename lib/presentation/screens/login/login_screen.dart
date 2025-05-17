@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/colors.dart';
+import '../../../domain/provider/forgot_password_provider.dart';
 import '../../../domain/provider/login_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../core/utils/text_field_validators.dart';
@@ -104,12 +105,21 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _forgotPassword() {
-    return Align(
-      alignment: AlignmentDirectional.topEnd,
-      child: Padding(
-        padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-        child: TextButton(onPressed: () {}, child: Text(language.forgotPassword, style: bodyTextStyle(fontSize: 12.sp))),
-      ),
+    return Consumer(
+      builder: (context, ref, _) {
+        return Align(
+          alignment: AlignmentDirectional.topEnd,
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+            child: TextButton(
+              onPressed: () {
+                ref.read(forgotPasswordProvider(context));
+              },
+              child: Text(language.forgotPassword, style: bodyTextStyle(fontSize: 12.sp)),
+            ),
+          ),
+        );
+      },
     );
   }
 

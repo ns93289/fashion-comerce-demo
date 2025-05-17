@@ -30,9 +30,6 @@ final passwordTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   ref.onDispose(() => controller.dispose());
   return controller;
 });
-final passwordTextProvider = StateProvider.autoDispose<String>((ref) {
-  return "";
-});
 final confirmPasswordTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
   ref.onDispose(() => controller.dispose());
@@ -50,7 +47,7 @@ final registrationProvider = Provider.autoDispose.family<void, BuildContext>((re
   putDataInUserBox(key: hiveEmailAddress, value: emailTEC.text);
   putDataInUserBox(key: hiveUserPassword, value: passwordTEC.text);
 
-  openScreen(context, OtpScreen());
+  openScreenWithReplace(context, OtpScreen());
 });
 
 final signupFormKey = GlobalKey<FormState>();

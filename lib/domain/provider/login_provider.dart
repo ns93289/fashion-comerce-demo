@@ -30,7 +30,7 @@ final loginCheckProvider = Provider.autoDispose.family<void, BuildContext>((ref,
     final passwordTEC = ref.watch(passwordTECProvider);
     if (getStringDataFromUserBox(key: hiveUserPassword) == passwordTEC.text) {
       if (getBoolDataFromUserBox(key: hiveUserIsVerified)) {
-        openScreen(context, HomeScreen());
+        openScreenWithClearStack(context, HomeScreen());
       } else {
         openScreen(context, OtpScreen());
       }

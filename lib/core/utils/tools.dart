@@ -16,6 +16,10 @@ openScreen(BuildContext context, Widget screen) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
 }
 
+openScreenWithReplace(BuildContext context, Widget screen) {
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => screen));
+}
+
 Future<dynamic> openScreenWithResult(BuildContext context, Widget screen, {List<Override> overrides = const []}) async {
   return await Navigator.push(context, MaterialPageRoute(builder: (context) => ProviderScope(overrides: overrides, child: screen)));
 }

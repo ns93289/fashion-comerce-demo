@@ -17,6 +17,15 @@ class TextFieldValidator {
     return null;
   }
 
+  static String? otpValidator({required String otp}) {
+    if (otp.isEmpty) {
+      return language.enterOTP;
+    } else if (otp.length < 6) {
+      return language.enterFullOTP;
+    }
+    return null;
+  }
+
   static String? passwordMatchValidator({required String password, required String confirmPassword}) {
     if (confirmPassword.isEmpty) {
       return language.enterConfirmPassword;
