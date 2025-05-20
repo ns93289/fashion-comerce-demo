@@ -7,8 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/colors.dart';
-import '../../../domain/provider/forgot_password_provider.dart';
-import '../../../domain/provider/login_provider.dart';
+import '../../provider/forgot_password_provider.dart';
+import '../../provider/login_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../core/utils/text_field_validators.dart';
 import '../../../core/utils/tools.dart';
@@ -145,12 +145,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _loginButton() {
     return Consumer(
       builder: (context, ref, _) {
+        final apiResponse = ref.watch(authenticationServiceProvider);
+
         return CustomButton(
           title: language.login,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 10.h),
+          // isLoading: apiResponse.isLoading,
           onPress: () {
             if (loginFormKey.currentState!.validate()) {
               ref.read(loginCheckProvider(context));
+              // ref.read(loginProvider(context));
             }
           },
         );

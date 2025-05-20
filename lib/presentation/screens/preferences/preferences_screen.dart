@@ -6,7 +6,7 @@ import '../../../core/utils/tools.dart';
 import '../../components/custom_button.dart';
 import '../../../core/provider/locale_provider.dart';
 import '../../../data/models/modle_preference.dart';
-import '../../../domain/provider/preference_provider.dart';
+import '../../provider/preference_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../home/home_screen.dart';

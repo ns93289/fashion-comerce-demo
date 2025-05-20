@@ -10,7 +10,7 @@ import '../../../data/models/model_product.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
-import '../../../domain/provider/order_details_provider.dart';
+import '../../provider/order_details_provider.dart';
 import '../home/home_screen.dart';
 import 'item_ordered.dart';
 import 'order_details_shimmer.dart';

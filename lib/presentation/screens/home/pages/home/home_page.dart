@@ -7,8 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../data/models/model_product.dart';
-import '../../../../../domain/provider/favorite_provider.dart';
-import '../../../../../domain/provider/home_provider.dart';
+import '../../../../provider/favorite_provider.dart';
+import '../../../../provider/home_provider.dart';
 import '../../../productDetails/product_details_screen.dart';
 import 'item_product.dart';
 

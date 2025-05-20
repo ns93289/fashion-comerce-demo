@@ -9,7 +9,7 @@ import '../../../core/utils/tools.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../domain/provider/payment_provider.dart';
+import '../../provider/payment_provider.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_radio.dart';
 

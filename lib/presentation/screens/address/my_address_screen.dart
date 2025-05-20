@@ -6,7 +6,7 @@ import '../../../core/constants/colors.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../components/empty_record_view.dart';
 import '../../../core/utils/tools.dart';
-import '../../../domain/provider/address_provider.dart';
+import '../../provider/address_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';

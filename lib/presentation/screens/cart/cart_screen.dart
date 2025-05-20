@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../core/utils/tools.dart';
-import '../../../domain/provider/cart_data_provider.dart';
+import '../../provider/cart_data_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../core/constants/colors.dart';
 import '../../components/empty_record_view.dart';

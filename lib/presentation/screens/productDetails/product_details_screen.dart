@@ -6,8 +6,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
-import '../../../domain/provider/cart_data_provider.dart';
-import '../../../domain/provider/product_details_provider.dart';
+import '../../provider/cart_data_provider.dart';
+import '../../provider/product_details_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';

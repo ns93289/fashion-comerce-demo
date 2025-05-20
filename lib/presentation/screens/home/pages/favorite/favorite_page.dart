@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../components/empty_record_view.dart';
 import '../../../../../data/models/model_product.dart';
-import '../../../../../domain/provider/favorite_provider.dart';
+import '../../../../provider/favorite_provider.dart';
 import 'item_favorite_product.dart';
 
 class FavoritePage extends StatefulWidget {

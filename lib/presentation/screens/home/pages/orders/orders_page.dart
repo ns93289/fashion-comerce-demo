@@ -6,7 +6,7 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../main.dart';
 import '../../../../components/empty_record_view.dart';
-import '../../../../../domain/provider/order_history_provider.dart';
+import '../../../../provider/order_history_provider.dart';
 import '../../../orderDetails/order_details_screen.dart';
 import 'item_order_history.dart';
 

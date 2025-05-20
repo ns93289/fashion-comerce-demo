@@ -9,7 +9,7 @@ import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/text_field_validators.dart';
 import '../../../core/utils/tools.dart';
-import '../../../domain/provider/signup_provider.dart';
+import '../../provider/signup_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';

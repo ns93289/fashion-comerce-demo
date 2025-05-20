@@ -16,7 +16,7 @@ import '../../components/custom_text_field.dart';
 import '../../../core/constants/colors.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
-import '../../../domain/provider/my_profile_provider.dart';
+import '../../provider/my_profile_provider.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});

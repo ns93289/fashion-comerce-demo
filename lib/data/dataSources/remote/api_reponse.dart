@@ -1,14 +1,14 @@
-sealed class ApiResult<T> {
-  const ApiResult();
+sealed class ApiResponse<T> {
+  const ApiResponse();
 }
 
-class ApiSuccess<T> extends ApiResult<T> {
+class ApiSuccess<T> extends ApiResponse<T> {
   final T data;
 
   const ApiSuccess(this.data);
 }
 
-class ApiError<T> extends ApiResult<T> {
+class ApiError<T> extends ApiResponse<T> {
   final ErrorModel errorData;
 
   const ApiError(this.errorData);

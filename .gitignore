@@ -12,6 +12,7 @@
 .swiftpm/
 migrate_working_dir/
 /lib/src/generated/
+test/
 some_untranslated_strings.txt
 
 # IntelliJ related

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
-import '../../../domain/provider/support_pages_provider.dart';
+import '../../provider/support_pages_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import 'support_page_details.dart';

@@ -7,7 +7,7 @@ import '../../data/models/model_order_details.dart';
 import '../../data/models/order_history_model.dart';
 import 'home_provider.dart';
 
-final orderDetailsFP = FutureProvider.autoDispose.family<ApiResult<ModelOrderDetails>, int>((ref, orderId) {
+final orderDetailsFP = FutureProvider.autoDispose.family<ApiResponse<ModelOrderDetails>, int>((ref, orderId) {
   List<OrderHistoryItem> orderItems = getOrderHistoryDataFromOrderBox();
   OrderHistoryItem? firstItem = orderItems.where((element) => element.orderId == orderId).firstOrNull;
   List<int> productIds = firstItem?.productIdList ?? [];

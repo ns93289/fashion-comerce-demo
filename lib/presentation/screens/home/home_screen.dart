@@ -10,7 +10,7 @@ import '../../../data/models/model_drawer.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_constants.dart';
-import '../../../domain/provider/home_provider.dart';
+import '../../provider/home_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../cart/cart_screen.dart';

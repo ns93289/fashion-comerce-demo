@@ -10,7 +10,7 @@ import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../../main.dart';
 import '../../components/common_circle_progress_bar.dart';
-import '../../../domain/provider/wallet_provider.dart';
+import '../../provider/wallet_provider.dart';
 import '../../components/common_app_bar.dart';
 
 class WalletScreen extends ConsumerStatefulWidget {

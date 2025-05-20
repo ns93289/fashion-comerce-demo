@@ -5,7 +5,7 @@ import 'package:image_cropper/image_cropper.dart';
 
 import '../../main.dart';
 import '../components/custom_button.dart';
-import '../../domain/provider/my_profile_provider.dart';
+import '../provider/my_profile_provider.dart';
 
 class ImagePickerDialog extends ConsumerWidget {
   const ImagePickerDialog({super.key});

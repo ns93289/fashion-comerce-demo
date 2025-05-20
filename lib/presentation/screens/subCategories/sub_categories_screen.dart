@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/models/model_category.dart';
-import '../../../domain/provider/category_provider.dart';
+import '../../provider/category_provider.dart';
 import '../../components/common_app_bar.dart';
 
 class SubCategoriesScreen extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../domain/provider/otp_verify_provider.dart';
+import '../../provider/otp_verify_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';

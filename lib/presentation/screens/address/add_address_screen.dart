@@ -12,7 +12,7 @@ import '../../components/common_app_bar.dart';
 import '../../components/custom_text_field.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../data/models/model_address.dart';
-import '../../../domain/provider/address_provider.dart';
+import '../../provider/address_provider.dart';
 import '../../components/custom_button.dart';
 
 class AddAddressScreen extends StatefulWidget {

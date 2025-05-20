@@ -8,7 +8,7 @@ import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_text_field.dart';
 import '../../../data/models/model_product.dart';
-import '../../../domain/provider/search_product_provider.dart';
+import '../../provider/search_product_provider.dart';
 import '../productDetails/product_details_screen.dart';
 
 class SearchProductScreen extends ConsumerStatefulWidget {

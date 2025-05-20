@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
-import '../../../domain/provider/splash_provider.dart';
+import '../../provider/splash_provider.dart';
 import '../../components/common_circle_progress_bar.dart';
 import '../../../main.dart';
 import '../../../core/utils/tools.dart';
