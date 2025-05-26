@@ -1,7 +1,8 @@
-import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/constants/extensions.dart';
+import '../../../../../main.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../data/models/order_history_model.dart';
@@ -29,14 +30,14 @@ class ItemOrderHistory extends StatelessWidget {
             productName.replaceAll(RegExp(r'[\[\]]'), ""),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: bodyTextStyle(fontWeight: FontWeight.w500),
+            style: bodyStyle(fontWeight: FontWeight.w500),
           ),
           Spacer(),
-          Text(orderStatusMsg, style: bodyTextStyle(fontSize: 12.sp, color: colorGreen)),
+          Text(orderStatusMsg, style: bodyStyle(fontSize: 12.sp, color: colorGreen)),
           Spacer(),
-          Text("${language.items}: $orderQuantity", style: bodyTextStyle(fontSize: 12.sp)),
+          Text("${language.items}: $orderQuantity", style: bodyStyle(fontSize: 12.sp)),
           Spacer(),
-          Text("${language.total}: ${orderAmount.withCurrency}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+          Text("${language.total}: ${orderAmount.withCurrency}", style: bodyStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
         ],
       ),
     );

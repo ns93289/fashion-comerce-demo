@@ -9,4 +9,6 @@ final productDetailsProvider = Provider.family<ModelProduct, int>((ref, productI
 
 final productSizeProvider = StateProvider<num>((ref) => 0);
 
+final productColorProvider = StateProvider<int>((ref) => 0);
+
 final productQuantityProvider = StateProvider<int>((ref) => 1);

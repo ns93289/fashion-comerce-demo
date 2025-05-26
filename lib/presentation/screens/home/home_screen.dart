@@ -30,6 +30,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    ///Logout check...
+    logoutCheck(ref, context);
     return DefaultTabController(
       length: 5,
       child: Scaffold(
@@ -141,7 +143,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.only(top: 10.h, start: 10.w, end: 10.w, bottom: 10.h),
-                      child: Text(fullName, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+                      child: Text(fullName, style: bodyStyle(fontWeight: FontWeight.w500)),
                     ),
                   ],
                 ),
@@ -162,7 +164,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         child: Row(
                           children: [
                             Padding(padding: EdgeInsetsDirectional.only(start: 20.w, end: 10.w), child: Icon(item.icon)),
-                            Expanded(child: Text(item.title, style: bodyTextStyle())),
+                            Expanded(child: Text(item.title, style: bodyStyle())),
                             Padding(
                               padding: EdgeInsetsDirectional.only(start: 10.w, end: 10.w),
                               child: Icon(Icons.arrow_forward_ios, size: 15.sp, color: colorTextLight),

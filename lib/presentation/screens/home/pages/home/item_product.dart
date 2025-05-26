@@ -30,16 +30,19 @@ class ItemProduct extends StatelessWidget {
               AspectRatio(aspectRatio: 1, child: Image.asset(productImage, width: double.maxFinite, fit: BoxFit.cover)),
               Padding(
                 padding: EdgeInsetsDirectional.only(start: 10.w, end: 10.w, top: 5.h),
-                child: Text(categoryName, style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight)),
+                child: Text(categoryName, style: bodyStyle(fontSize: 12.sp, color: colorTextLight)),
               ),
-              Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Text(productName, style: bodyTextStyle(fontWeight: FontWeight.w500))),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Text(productName, style: bodyStyle(fontWeight: FontWeight.w500), maxLines: 1),
+              ),
               Expanded(
                 child: Row(
                   children: [
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: Text("\$$productPrice", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+                        child: Text("\$$productPrice", style: bodyStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
                       ),
                     ),
                     Container(

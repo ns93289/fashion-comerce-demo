@@ -29,7 +29,7 @@ class _OtpScreenState extends State<OtpScreen> {
         children: [
           Padding(
             padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
-            child: Text(language.enterOTP, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+            child: Text(language.enterOTP, style: bodyStyle(fontWeight: FontWeight.w500)),
           ),
           _otpField(),
           _verifyButton(),

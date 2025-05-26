@@ -10,10 +10,20 @@ class CommonDialog extends StatefulWidget {
   final String? positiveText;
   final String? negativeText;
   final Widget? widget;
+  final bool isLoading;
   final Function() onPositiveClick;
   final Function()? onNegativeClick;
 
-  const CommonDialog({super.key, required this.title, required this.onPositiveClick, this.onNegativeClick, this.positiveText, this.negativeText, this.widget});
+  const CommonDialog({
+    super.key,
+    required this.title,
+    required this.onPositiveClick,
+    this.onNegativeClick,
+    this.positiveText,
+    this.negativeText,
+    this.widget,
+    this.isLoading = false,
+  });
 
   @override
   State<CommonDialog> createState() => _CommonDialogState();
@@ -30,7 +40,7 @@ class _CommonDialogState extends State<CommonDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(widget.title, style: bodyTextStyle()),
+            Text(widget.title, style: bodyStyle()),
             if (widget.widget != null) widget.widget!,
             Padding(
               padding: EdgeInsetsDirectional.only(top: 20.h),
@@ -51,6 +61,7 @@ class _CommonDialogState extends State<CommonDialog> {
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
                     fontSize: 14.sp,
                     height: 25.h,
+                    isLoading: widget.isLoading,
                     onPress: () => widget.onPositiveClick.call(),
                   ),
                 ],

@@ -53,8 +53,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
     final InputDecoration decoration = InputDecoration(
       hintText: widget.decoration?.hintText,
       labelText: widget.decoration?.labelText,
-      hintStyle: widget.decoration?.hintStyle ?? bodyTextStyle(fontSize: 14.sp, color: colorTextLight),
-      labelStyle: widget.decoration?.hintStyle ?? bodyTextStyle(fontSize: 14.sp, color: colorTextLight),
+      hintStyle: widget.decoration?.hintStyle ?? bodyStyle(fontSize: 14.sp, color: colorTextLight),
+      labelStyle: widget.decoration?.hintStyle ?? bodyStyle(fontSize: 14.sp, color: colorTextLight),
       border: normalBorder,
       disabledBorder: normalBorder,
       enabledBorder: normalBorder,
@@ -64,7 +64,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       contentPadding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
       isDense: true,
       prefixIcon: widget.decoration?.icon,
-      errorStyle: widget.decoration?.errorStyle ?? bodyTextStyle(fontSize: 10.sp, color: colorRed),
+      errorStyle: widget.decoration?.errorStyle ?? bodyStyle(fontSize: 10.sp, color: colorRed),
       suffixIcon:
           widget.obscureText
               ? Padding(
@@ -78,7 +78,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
-      style: widget.style ?? bodyTextStyle(),
+      style: widget.style ?? bodyStyle(),
       maxLength: widget.maxLength,
       inputFormatters: widget.inputFormatters,
       cursorColor: colorPrimary,

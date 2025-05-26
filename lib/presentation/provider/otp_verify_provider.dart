@@ -14,7 +14,7 @@ final otpVerifyProvider = Provider.autoDispose.family<void, BuildContext>((ref, 
   final otpText = pinCodeKey.currentState?.getPin();
   logD("otpVerifyProvider>>>", otpText?.length.toString() ?? "");
   if (otpText?.length == 6) {
-    putDataInUserBox(key: hiveUserIsVerified);
+    putDataInUserBox(key: hiveUserIsVerified, value: true);
     openScreenWithClearStack(context, HomeScreen());
   } else {
     openSimpleSnackBar(language.enterVerificationCode);

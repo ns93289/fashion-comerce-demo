@@ -54,7 +54,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
         ModelProduct modelProduct = filteredItems[index];
         return GestureDetector(
           onTap: () {
-            openScreen(context, ProductDetailsScreen(productId: modelProduct.productId));
+            openScreen(context, ProductDetailsScreen(productId: modelProduct.productId, productName: modelProduct.productName));
           },
           child: Container(
             color: colorWhite,
@@ -87,9 +87,9 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
     return RichText(
       text: TextSpan(
         children: [
-          TextSpan(text: beforeMatch, style: bodyTextStyle()),
-          TextSpan(text: matchText, style: bodyTextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: afterMatch, style: bodyTextStyle()),
+          TextSpan(text: beforeMatch, style: bodyStyle()),
+          TextSpan(text: matchText, style: bodyStyle(fontWeight: FontWeight.bold)),
+          TextSpan(text: afterMatch, style: bodyStyle()),
         ],
       ),
     );

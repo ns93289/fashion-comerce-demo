@@ -5,7 +5,6 @@
   "seeAll": "See all",
   "selectSize": "Select Size",
   "specifications": "Specifications",
-  "care": "Care",
   "region": "Region",
   "country": "Country",
   "colors": "Colors",
@@ -152,5 +151,13 @@
   "notGetOTP": "Didn't get OTP?",
   "resendOTP": "Resend OTP",
   "resendOTPIn": "Resend OTP in",
-  "enterFullOTP": "Enter full OTP"
+  "enterFullOTP": "Enter full OTP",
+  "more": "more",
+  "less": "less",
+  "sizeGuide": "Size guide",
+  "origin": "Origin",
+  "caringGuide": "Caring guide",
+  "standard": "Standard",
+  "express": "Express",
+  "buyNow": "Buy Now"
 }

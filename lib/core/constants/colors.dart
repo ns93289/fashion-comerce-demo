@@ -16,6 +16,7 @@ const colorDivider = Color(0xffEEEEEE);
 const colorOrderStatusProgress = Color(0xffDDDDDD);
 const colorTabDivider = Color(0xffCCCCCC);
 const colorShadow = Color(0x1A000000);
+const colorDiscount = Color(0xFFF81140);
 ///Gradient colors
 const colorProductStart = Color(0xffF8F7F1);
 const colorShimmerBg = Color(0xffDDDDDD);

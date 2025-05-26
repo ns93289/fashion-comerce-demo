@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/constants/extensions.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../data/models/model_product.dart';
@@ -37,12 +38,12 @@ class ItemFavoriteProduct extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 5.h),
-                Text(productName, maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontWeight: FontWeight.w500)),
-                Text(categoryName, style: bodyTextStyle(fontSize: 14.sp)),
+                Text(productName, maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyStyle(fontWeight: FontWeight.w500)),
+                Text(categoryName, style: bodyStyle(fontSize: 14.sp)),
                 Spacer(),
                 Row(
                   children: [
-                    Expanded(child: Text("${language.price}: ${productPrice.withCurrency}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp))),
+                    Expanded(child: Text("${language.price}: ${productPrice.withCurrency}", style: bodyStyle(fontWeight: FontWeight.w500, fontSize: 14.sp))),
                     GestureDetector(
                       onTap: () => onUnfavorite?.call(),
                       child: Container(

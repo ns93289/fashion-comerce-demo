@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import '../../../core/constants/extensions.dart';
 import '../../../core/utils/tools.dart';
 import '../../provider/cart_data_provider.dart';
 import '../../components/custom_button.dart';
@@ -67,11 +68,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               children: [
                 Row(
                   children: [
-                    Padding(padding: EdgeInsetsDirectional.only(end: 5.w), child: Text("${language.deliverTo}:", style: bodyTextStyle(fontSize: 14.sp))),
-                    Expanded(child: Text(language.home, style: bodyTextStyle(fontSize: 14.sp))),
+                    Padding(padding: EdgeInsetsDirectional.only(end: 5.w), child: Text("${language.deliverTo}:", style: bodyStyle(fontSize: 14.sp))),
+                    Expanded(child: Text(language.home, style: bodyStyle(fontSize: 14.sp))),
                   ],
                 ),
-                Text("101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India", style: bodyTextStyle(fontSize: 14.sp, color: colorTextLight)),
+                Text("101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India", style: bodyStyle(fontSize: 14.sp, color: colorTextLight)),
               ],
             ),
           ),
@@ -102,7 +103,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(language.invoice, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+          Text(language.invoice, style: bodyStyle(fontWeight: FontWeight.w500)),
           ListView.builder(
             itemCount: data.length,
             shrinkWrap: true,
@@ -125,7 +126,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 5, offset: Offset(0, 5))]),
         child: Row(
           children: [
-            Expanded(child: Text(data.withCurrency, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp))),
+            Expanded(child: Text(data.withCurrency, style: bodyStyle(fontWeight: FontWeight.bold, fontSize: 20.sp))),
             CustomButton(
               title: language.placeOrder,
               height: 30.h,

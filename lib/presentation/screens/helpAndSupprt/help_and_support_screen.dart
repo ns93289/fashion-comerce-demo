@@ -19,7 +19,7 @@ class HelpAndSupportScreen extends StatefulWidget {
 class _HelpAndSupportScreenState extends State<HelpAndSupportScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.helpAndSupport, style: bodyTextStyle())), body: SafeArea(child: _buildHelpAndSupport()));
+    return Scaffold(appBar: CommonAppBar(title: Text(language.helpAndSupport, style: bodyStyle())), body: SafeArea(child: _buildHelpAndSupport()));
   }
 
   Widget _buildHelpAndSupport() {
@@ -42,7 +42,7 @@ class _HelpAndSupportScreenState extends State<HelpAndSupportScreen> {
                 color: colorWhite,
                 padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
                 child: Row(
-                  children: [Expanded(child: Text(supportPage.pageTitle, style: bodyTextStyle())), Icon(Icons.arrow_forward_ios, color: colorTextLight)],
+                  children: [Expanded(child: Text(supportPage.pageTitle, style: bodyStyle())), Icon(Icons.arrow_forward_ios, color: colorTextLight)],
                 ),
               ),
             );

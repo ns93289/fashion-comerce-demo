@@ -32,7 +32,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             Center(child: Image.asset("assets/images/splash_image.webp")),
             Align(
               alignment: Alignment.topCenter,
-              child: Padding(padding: EdgeInsetsDirectional.only(top: 50.h), child: Text(language.appName, style: bodyTextStyle(fontWeight: FontWeight.w500))),
+              child: Padding(padding: EdgeInsetsDirectional.only(top: 50.h), child: Text(language.appName, style: bodyStyle(fontWeight: FontWeight.w500))),
             ),
             Align(
               alignment: Alignment.bottomCenter,

@@ -43,10 +43,10 @@ class OrderStatusView extends StatelessWidget {
                 children: [
                   Text(
                     language.ordered,
-                    style: bodyTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 0 ? colorText : colorTextLight),
+                    style: bodyStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 0 ? colorText : colorTextLight),
                   ),
                   SizedBox(height: 2.5.h),
-                  Text(orderTime, style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight)),
+                  Text(orderTime, style: bodyStyle(fontSize: 12.sp, color: colorTextLight)),
                 ],
               ),
             ),
@@ -68,10 +68,10 @@ class OrderStatusView extends StatelessWidget {
                 children: [
                   Text(
                     language.packed,
-                    style: bodyTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 1 ? colorText : colorTextLight),
+                    style: bodyStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 1 ? colorText : colorTextLight),
                   ),
                   if (orderStatus > 1) SizedBox(height: 2.5.h),
-                  if (orderStatus > 1) Text(packedTime, style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight)),
+                  if (orderStatus > 1) Text(packedTime, style: bodyStyle(fontSize: 12.sp, color: colorTextLight)),
                 ],
               ),
             ),
@@ -91,10 +91,10 @@ class OrderStatusView extends StatelessWidget {
                   children: [
                     Text(
                       language.cancelled,
-                      style: bodyTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 0 ? colorText : colorTextLight),
+                      style: bodyStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 0 ? colorText : colorTextLight),
                     ),
                     SizedBox(height: 2.5.h),
-                    Text("${language.orderCancelBy} $cancelledBy", style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight)),
+                    Text("${language.orderCancelBy} $cancelledBy", style: bodyStyle(fontSize: 12.sp, color: colorTextLight)),
                   ],
                 ),
               ),
@@ -117,10 +117,10 @@ class OrderStatusView extends StatelessWidget {
                   children: [
                     Text(
                       language.shipped,
-                      style: bodyTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 3 ? colorText : colorTextLight),
+                      style: bodyStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 3 ? colorText : colorTextLight),
                     ),
                     SizedBox(height: 2.5.h),
-                    Text(shippedTime, style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight)),
+                    Text(shippedTime, style: bodyStyle(fontSize: 12.sp, color: colorTextLight)),
                   ],
                 ),
               ),
@@ -138,12 +138,12 @@ class OrderStatusView extends StatelessWidget {
                   children: [
                     Text(
                       language.delivery,
-                      style: bodyTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 4 ? colorText : colorTextLight),
+                      style: bodyStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: orderStatus > 4 ? colorText : colorTextLight),
                     ),
                     SizedBox(height: 2.5.h),
                     Text(
                       orderStatus <= 5 ? "${language.expectedBy} $deliveryTime" : "${language.delivered} $deliveryTime",
-                      style: bodyTextStyle(fontSize: 12.sp, color: colorTextLight),
+                      style: bodyStyle(fontSize: 12.sp, color: colorTextLight),
                     ),
                   ],
                 ),

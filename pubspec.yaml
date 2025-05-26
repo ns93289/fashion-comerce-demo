@@ -30,6 +30,7 @@ dependencies:
   country_code_picker: ^3.3.0
   flutter_inappwebview: ^6.1.5
   easy_image_viewer: ^1.5.1
+  expandable_richtext: ^1.0.7
 
 dev_dependencies:
   flutter_test:

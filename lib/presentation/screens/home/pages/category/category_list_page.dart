@@ -46,7 +46,7 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
                 child: Container(
                   decoration: BoxDecoration(color: selectedCategoryId == category.categoryId ? colorPrimary.withAlpha(50) : colorMainBackground),
                   padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 10.w),
-                  child: Text(category.categoryName, style: bodyTextStyle()),
+                  child: Text(category.categoryName, style: bodyStyle()),
                 ),
               );
             },

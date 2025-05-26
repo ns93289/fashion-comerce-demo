@@ -60,7 +60,7 @@ class CustomButton extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (icon != null) Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: icon),
-                        Text(title, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: fontSize, color: textColor)),
+                        Text(title, style: bodyStyle(fontWeight: FontWeight.w500, fontSize: fontSize, color: textColor)),
                       ],
                     ),
                   ],

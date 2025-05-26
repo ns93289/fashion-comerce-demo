@@ -61,7 +61,7 @@ class CustomPinCodeFieldState extends State<CustomPinCodeField> {
             maxLength: 1,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
-            style: widget.style ?? bodyTextStyle(fontWeight: FontWeight.bold),
+            style: widget.style ?? bodyStyle(fontWeight: FontWeight.bold),
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               counterText: "",

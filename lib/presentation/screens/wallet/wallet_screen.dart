@@ -1,8 +1,9 @@
-import 'package:fashion_comerce_demo/presentation/components/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/extensions.dart';
+import '../../components/custom_button.dart';
 import '../../../core/utils/decimal_text_input_formatter.dart';
 import '../../../core/utils/text_field_validators.dart';
 import '../../components/custom_text_field.dart';
@@ -40,10 +41,10 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
       width: 1.sw,
       child: Column(
         children: [
-          Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Text(language.walletBalance, style: bodyTextStyle(fontWeight: FontWeight.w500))),
+          Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Text(language.walletBalance, style: bodyStyle(fontWeight: FontWeight.w500))),
           result.isLoading
               ? CommonCircleProgressBar(color: colorBlack, size: 25.sp, stroke: 2.sp)
-              : Text(result.asData?.value.withCurrency ?? "0", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 21.sp)),
+              : Text(result.asData?.value.withCurrency ?? "0", style: bodyStyle(fontWeight: FontWeight.bold, fontSize: 21.sp)),
         ],
       ),
     );

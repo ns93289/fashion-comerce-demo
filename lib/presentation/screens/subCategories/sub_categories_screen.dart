@@ -51,7 +51,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           padding: EdgeInsets.symmetric(vertical: 5.h),
           child: TabBar(
             tabs: subCategories.map((e) => Tab(text: e.subCategoryName, height: 25.h)).toList(),
-            labelStyle: bodyTextStyle(fontWeight: FontWeight.w500),
+            labelStyle: bodyStyle(fontWeight: FontWeight.w500),
             unselectedLabelColor: colorTextLight,
             labelColor: colorPrimary,
             indicatorColor: colorPrimary,

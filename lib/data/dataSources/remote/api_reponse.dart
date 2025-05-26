@@ -1,3 +1,13 @@
+class ResponseWrapper<T> {
+  static ApiResponse<T> fromJson<T>(dynamic json, T Function(Map<String, dynamic>) fromJsonT) {
+    if (json['error'] != null) {
+      return ApiError(ErrorModel.fromJson(json));
+    } else {
+      return ApiSuccess(fromJsonT(json));
+    }
+  }
+}
+
 sealed class ApiResponse<T> {
   const ApiResponse();
 }

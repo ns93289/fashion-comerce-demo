@@ -26,7 +26,7 @@ class ItemAddressList extends StatelessWidget {
               "$houseNo, $houseNanme, $street, $addressLine1, $addressLine2, $city, $state",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: bodyTextStyle(fontSize: 14.sp),
+              style: bodyStyle(fontSize: 14.sp),
             ),
           ),
           GestureDetector(

@@ -8,7 +8,7 @@ import '../../main.dart';
 import '../constants/app_constants.dart';
 import '../constants/colors.dart';
 
-TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight}) {
+TextStyle bodyStyle({Color? color, double? fontSize, FontWeight? fontWeight}) {
   return GoogleFonts.roboto(color: color ?? colorText, fontSize: fontSize ?? 16.sp, fontWeight: fontWeight ?? FontWeight.normal, height: 0);
 }
 
@@ -29,7 +29,7 @@ openScreenWithClearStack(BuildContext context, Widget screen) {
 }
 
 openSimpleSnackBar(String message) {
-  SnackBar snackBar = SnackBar(content: Text(message, style: bodyTextStyle(color: colorWhite)));
+  SnackBar snackBar = SnackBar(content: Text(message, style: bodyStyle(color: colorWhite)));
   scaffoldKey.currentState?.showSnackBar(snackBar);
 }
 
@@ -73,8 +73,4 @@ String getAddressTitle(int addressType) {
 
 logD(String tag, String text) {
   debugPrint("$tag $text");
-}
-
-extension CurrencyExtension on dynamic {
-  String get withCurrency => "\$$this";
 }

@@ -1,7 +1,7 @@
 import '../../domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
-  UserModel({super.userId, super.fullName, super.profilePicture, super.email, super.mobileNo, super.countryCode, super.isVerified = false});
+  UserModel({super.userId, super.fullName, super.profilePicture, super.email, super.mobileNo, super.countryCode, super.isVerified = false, super.accessToken});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -11,9 +11,11 @@ class UserModel extends UserEntity {
       email: json['email'],
       mobileNo: json['mobile_no'],
       countryCode: json['country_code'],
-      isVerified: json['is_verified'] == 1 ? true : false,
+      isVerified: json['otp_verified'],
+      accessToken: json['token'],
     );
   }
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['user_id'] = userId;
@@ -22,7 +24,8 @@ class UserModel extends UserEntity {
     map['email'] = email;
     map['mobile_no'] = mobileNo;
     map['country_code'] = countryCode;
-    map['is_verified'] = isVerified;
+    map['otp_verified'] = isVerified;
+    map['token'] = accessToken;
     return map;
   }
 }

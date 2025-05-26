@@ -19,7 +19,7 @@ class EmptyRecordView extends StatelessWidget {
           Icon(Icons.info_outlined, color: colorPrimary, size: 100.sp),
           Padding(
             padding: EdgeInsetsDirectional.only(top: 5.sp, start: 40.w, end: 40.w),
-            child: Text(message ?? "No Record Found", textAlign: TextAlign.center, style: bodyTextStyle(fontSize: 18.sp)),
+            child: Text(message ?? "No Record Found", textAlign: TextAlign.center, style: bodyStyle(fontSize: 18.sp)),
           ),
         ],
       ),

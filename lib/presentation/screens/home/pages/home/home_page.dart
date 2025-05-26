@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fashion_comerce_demo/domain/entities/product_entity.dart';
 import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,22 +87,23 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
                   child: Row(
                     children: [
-                      Expanded(child: Text(language.newArrival, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
-                      Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
+                      Expanded(child: Text(language.newArrival, style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                      Text(language.seeAll, style: bodyStyle(fontSize: 14.sp)),
                     ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsetsDirectional.only(top: 10.h),
-                  height: 205.h,
+                  height: 220.h,
                   child: ListView.builder(
                     itemCount: productList.length,
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
                     itemBuilder: (context, index) {
+                      ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(context, ProductDetailsScreen(productId: productList[index].productId));
+                          openScreen(context, ProductDetailsScreen(productId: product.productId, productName: product.productName));
                         },
                         child: ItemProduct(
                           item: productList[index],
@@ -136,22 +138,23 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
                   child: Row(
                     children: [
-                      Expanded(child: Text(language.popular, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
-                      Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
+                      Expanded(child: Text(language.popular, style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                      Text(language.seeAll, style: bodyStyle(fontSize: 14.sp)),
                     ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsetsDirectional.only(top: 10.h),
-                  height: 205.h,
+                  height: 220.h,
                   child: ListView.builder(
                     itemCount: productList.length,
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
                     itemBuilder: (context, index) {
+                      ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(context, ProductDetailsScreen(productId: productList[index].productId));
+                          openScreen(context, ProductDetailsScreen(productId: product.productId, productName: product.productName));
                         },
                         child: ItemProduct(
                           item: productList[index],
@@ -183,7 +186,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           children: [
             Padding(
               padding: EdgeInsetsDirectional.only(top: 20.h, bottom: 10.h, start: 20.w),
-              child: Text(language.exploreCategory, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+              child: Text(language.exploreCategory, style: bodyStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
             ),
             GridView.builder(
               itemCount: filters.length,
@@ -207,7 +210,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                           decoration: BoxDecoration(shape: BoxShape.circle),
                           child: Image.asset(item.categoryIcon),
                         ),
-                        Padding(padding: EdgeInsetsDirectional.only(start: 10.w), child: Text(item.categoryName, style: bodyTextStyle(fontSize: 12.sp))),
+                        Padding(padding: EdgeInsetsDirectional.only(start: 10.w), child: Text(item.categoryName, style: bodyStyle(fontSize: 12.sp))),
                       ],
                     ),
                   ),
@@ -233,22 +236,23 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
                   child: Row(
                     children: [
-                      Expanded(child: Text(language.allProducts, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
-                      Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
+                      Expanded(child: Text(language.allProducts, style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                      Text(language.seeAll, style: bodyStyle(fontSize: 14.sp)),
                     ],
                   ),
                 ),
                 Container(
                   margin: EdgeInsetsDirectional.only(top: 10.h),
-                  height: 205.h,
+                  height: 220.h,
                   child: ListView.builder(
                     itemCount: productList.length,
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w),
                     itemBuilder: (context, index) {
+                      ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(context, ProductDetailsScreen(productId: productList[index].productId));
+                          openScreen(context, ProductDetailsScreen(productId: product.productId, productName: product.productName));
                         },
                         child: ItemProduct(
                           item: productList[index],

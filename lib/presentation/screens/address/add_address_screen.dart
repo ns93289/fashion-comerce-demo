@@ -89,7 +89,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     children: [
                       Icon(getAddressIcon(AddressTypes.home), color: addressType == AddressTypes.home ? colorPrimary : colorTextLight),
                       SizedBox(height: 5.h),
-                      Text(getAddressTitle(AddressTypes.home), style: bodyTextStyle(color: addressType == AddressTypes.home ? colorPrimary : colorTextLight)),
+                      Text(getAddressTitle(AddressTypes.home), style: bodyStyle(color: addressType == AddressTypes.home ? colorPrimary : colorTextLight)),
                     ],
                   ),
                 ),
@@ -113,7 +113,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     children: [
                       Icon(getAddressIcon(AddressTypes.work), color: addressType == AddressTypes.work ? colorPrimary : colorTextLight),
                       SizedBox(height: 5.h),
-                      Text(getAddressTitle(AddressTypes.work), style: bodyTextStyle(color: addressType == AddressTypes.work ? colorPrimary : colorTextLight)),
+                      Text(getAddressTitle(AddressTypes.work), style: bodyStyle(color: addressType == AddressTypes.work ? colorPrimary : colorTextLight)),
                     ],
                   ),
                 ),
@@ -137,7 +137,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     children: [
                       Icon(getAddressIcon(AddressTypes.other), color: addressType == AddressTypes.other ? colorPrimary : colorTextLight),
                       SizedBox(height: 5.h),
-                      Text(getAddressTitle(AddressTypes.other), style: bodyTextStyle(color: addressType == AddressTypes.other ? colorPrimary : colorTextLight)),
+                      Text(getAddressTitle(AddressTypes.other), style: bodyStyle(color: addressType == AddressTypes.other ? colorPrimary : colorTextLight)),
                     ],
                   ),
                 ),

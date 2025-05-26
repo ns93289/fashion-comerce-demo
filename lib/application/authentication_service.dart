@@ -1,16 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/utils/tools.dart';
+import '../data/dataSources/local/hive_constants.dart';
+import '../data/dataSources/local/hive_helper.dart';
 import '../data/dataSources/remote/api_reponse.dart';
-import '../data/models/user_model.dart';
 import '../domain/entities/user_entity.dart';
 import '../domain/repositories/auth_repo.dart';
 
-class AuthenticationService extends StateNotifier<AsyncValue<UserEntity>> {
+class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
   final AuthRepo authRepo;
 
-  AuthenticationService(this.authRepo) : super(AsyncValue.loading());
+  AuthenticationService(this.authRepo) : super(AsyncValue.data(null));
 
-  Future<void> callSignIn({required String email, required String password}) async {
+  Future<void> callSignInApi({required String email, required String password}) async {
     if (email.isEmpty) {
       state = const AsyncValue.error("email cannot be empty", StackTrace.empty);
       return;
@@ -22,13 +24,66 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity>> {
     state = const AsyncValue.loading();
 
     try {
-      final ApiResponse res = await authRepo.signIn(email: email, password: password);
+      final res = await authRepo.signIn(email: email, password: password);
       if (res is ApiSuccess) {
-        state = AsyncValue.data(UserModel.fromJson(res.data));
+        state = AsyncValue.data(res.data);
       } else {
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
+      logD("callSignIn>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> callRegisterApi({required String email, required String password, required String phoneNo, required String name}) async {
+    if (email.isEmpty) {
+      state = const AsyncValue.error("email cannot be empty", StackTrace.empty);
+      return;
+    } else if (password.isEmpty) {
+      state = const AsyncValue.error("password cannot be empty", StackTrace.empty);
+      return;
+    } else if (name.isEmpty) {
+      state = const AsyncValue.error("name cannot be empty", StackTrace.empty);
+      return;
+    } else if (phoneNo.isEmpty) {
+      state = const AsyncValue.error("name cannot be empty", StackTrace.empty);
+      return;
+    }
+
+    state = const AsyncValue.loading();
+
+    try {
+      final res = await authRepo.registerUser(email: email, password: password, name: name, phoneNo: phoneNo);
+      if (res is ApiSuccess) {
+        final UserEntity user = res.data;
+        putDataInUserBox(key: hivePhoneNumber, value: user.mobileNo);
+        putDataInUserBox(key: hiveFullName, value: user.fullName);
+        putDataInUserBox(key: hiveEmailAddress, value: user.email);
+        putDataInUserBox(key: hiveAccessToken, value: user.accessToken);
+        putDataInUserBox(key: hiveUserIsVerified, value: user.isVerified);
+        state = AsyncValue.data(user);
+      } else {
+        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callRegisterApi>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> callLogoutApi() async {
+    state = const AsyncValue.loading();
+
+    try {
+      final res = await authRepo.logout();
+      if (res is ApiSuccess) {
+        state = AsyncValue.data(res.data);
+      } else {
+        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callLogoutApi>>>", "error: ${e.toString()}");
       state = AsyncValue.error(e, st);
     }
   }

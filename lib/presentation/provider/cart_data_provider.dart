@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/utils/tools.dart';
+import '../../core/constants/extensions.dart';
 import '../../data/dataSources/local/hive_helper.dart';
 import '../../data/models/model_product.dart';
 import '../../main.dart';

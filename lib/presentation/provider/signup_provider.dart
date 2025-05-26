@@ -1,11 +1,10 @@
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:fashion_comerce_demo/core/utils/tools.dart';
-import 'package:fashion_comerce_demo/data/dataSources/local/hive_constants.dart';
-import 'package:fashion_comerce_demo/data/dataSources/local/hive_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../presentation/screens/otp/otp_screen.dart';
+import '../../application/authentication_service.dart';
+import '../../data/repositories/auth_repo_impl.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/repositories/auth_repo.dart';
 
 final fullNameTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
@@ -22,9 +21,6 @@ final emailTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   ref.onDispose(() => controller.dispose());
   return controller;
 });
-final countryCodeTECProvider = StateProvider<CountryCode>((ref) {
-  return CountryCode(name: "US", dialCode: "+1", code: "US");
-});
 final passwordTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
   ref.onDispose(() => controller.dispose());
@@ -35,19 +31,23 @@ final confirmPasswordTECProvider = Provider.autoDispose<TextEditingController>((
   ref.onDispose(() => controller.dispose());
   return controller;
 });
-final registrationProvider = Provider.autoDispose.family<void, BuildContext>((ref, context) {
-  final countryCode = ref.watch(countryCodeTECProvider);
+final authRepoProvider = Provider.autoDispose<AuthRepo>((ref) {
+  return AuthRepoImpl();
+});
+final authenticationServiceProvider = StateNotifierProvider<AuthenticationService, AsyncValue<dynamic>>((ref) {
+  return AuthenticationService(ref.watch(authRepoProvider));
+});
+final signUpProvider = Provider.autoDispose.family<void, BuildContext>((ref, context) {
   final phoneNoTEC = ref.watch(phoneNoTECProvider);
+  final passwordTEC = ref.watch(passwordTECProvider);
   final fullNameTEC = ref.watch(fullNameTECProvider);
   final emailTEC = ref.watch(emailTECProvider);
-  final passwordTEC = ref.watch(passwordTECProvider);
-  putDataInUserBox(key: hiveCountryCode, value: countryCode.dialCode);
-  putDataInUserBox(key: hivePhoneNumber, value: phoneNoTEC.text);
-  putDataInUserBox(key: hiveFullName, value: fullNameTEC.text);
-  putDataInUserBox(key: hiveEmailAddress, value: emailTEC.text);
-  putDataInUserBox(key: hiveUserPassword, value: passwordTEC.text);
 
-  openScreenWithReplace(context, OtpScreen());
+  Future.microtask(() {
+    ref
+        .read(authenticationServiceProvider.notifier)
+        .callRegisterApi(email: emailTEC.text, password: passwordTEC.text, name: fullNameTEC.text, phoneNo: phoneNoTEC.text);
+  });
 });
 
 final signupFormKey = GlobalKey<FormState>();

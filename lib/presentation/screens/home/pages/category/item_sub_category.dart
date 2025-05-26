@@ -21,8 +21,8 @@ class ItemSubCategory extends StatelessWidget {
           child: Container(decoration: BoxDecoration(color: colorPrimary.withAlpha(50), borderRadius: BorderRadius.circular(10.r))),
         ),
         SizedBox(height: 5.h),
-        Text(subCategoryName, style: bodyTextStyle(fontSize: 14.sp), maxLines: 1, overflow: TextOverflow.ellipsis),
-        if (tagline.isNotEmpty) Text(tagline, style: bodyTextStyle(fontSize: 10.sp, color: colorRed)),
+        Text(subCategoryName, style: bodyStyle(fontSize: 14.sp), maxLines: 1, overflow: TextOverflow.ellipsis),
+        if (tagline.isNotEmpty) Text(tagline, style: bodyStyle(fontSize: 10.sp, color: colorRed)),
       ],
     );
   }

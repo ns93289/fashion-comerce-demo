@@ -40,7 +40,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
         _orderSuccessCard(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
-          child: Text("${language.orderPlacedMsg} ${widget.orderNo}", style: bodyTextStyle()),
+          child: Text("${language.orderPlacedMsg} ${widget.orderNo}", style: bodyStyle()),
         ),
         CustomButton(
           title: language.viewOrder,
@@ -62,7 +62,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
           Icon(Icons.check_circle, color: colorGreen, size: 30.sp),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-            child: Text(language.orderPlacedSuccess, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)),
+            child: Text(language.orderPlacedSuccess, style: bodyStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)),
           ),
         ],
       ),

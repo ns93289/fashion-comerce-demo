@@ -30,7 +30,7 @@ class _CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClie
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: TabBar(
         tabs: [Tab(text: language.men, height: 25.h), Tab(text: language.women, height: 25.h), Tab(text: language.kids, height: 25.h)],
-        labelStyle: bodyTextStyle(fontWeight: FontWeight.w500),
+        labelStyle: bodyStyle(fontWeight: FontWeight.w500),
         unselectedLabelColor: colorTextLight,
         labelColor: colorPrimary,
         indicatorColor: colorPrimary,

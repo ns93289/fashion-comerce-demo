@@ -1,19 +1,20 @@
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/text_field_validators.dart';
 import '../../../core/utils/tools.dart';
+import '../../../domain/entities/user_entity.dart';
 import '../../provider/signup_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_text_field.dart';
+import '../home/home_screen.dart';
+import '../otp/otp_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -89,18 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
           child: CustomTextField(
             controller: phoneNoTEC,
-            decoration: InputDecoration(
-              labelText: language.mobileNumber,
-              icon: CountryCodePicker(
-                initialSelection: DefaultData.countryCodeName,
-                textStyle: bodyTextStyle(),
-                padding: EdgeInsets.zero,
-                favorite: [DefaultData.countryCodeName],
-                onChanged: (value) {
-                  ref.read(countryCodeTECProvider.notifier).state = value;
-                },
-              ),
-            ),
+            decoration: InputDecoration(labelText: language.mobileNumber),
             keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.next,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -162,12 +152,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: RichText(
         text: TextSpan(
           text: language.agreeWithOur,
-          style: bodyTextStyle(fontSize: 14.sp),
+          style: bodyStyle(fontSize: 14.sp),
           children: [
             TextSpan(
               text: " ${language.termsAndConditions}",
               recognizer: TapGestureRecognizer()..onTap = () {},
-              style: bodyTextStyle(fontSize: 14.sp, color: colorPrimary, fontWeight: FontWeight.w500),
+              style: bodyStyle(fontSize: 14.sp, color: colorPrimary, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -178,12 +168,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _signUpButton() {
     return Consumer(
       builder: (context, ref, _) {
+        final apiResponse = ref.watch(authenticationServiceProvider);
+        ref.listen(authenticationServiceProvider, (previous, next) {
+          if (next is AsyncData<UserEntity?>) {
+            UserEntity? data = next.value;
+            if (data != null) {
+              if (data.isVerified) {
+                openScreenWithClearStack(context, HomeScreen());
+              } else {
+                openScreen(context, OtpScreen());
+              }
+            }
+          }
+        });
+
         return CustomButton(
           title: language.signUp,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+          isLoading: apiResponse.isLoading,
           onPress: () {
             if (signupFormKey.currentState!.validate()) {
-              ref.read(registrationProvider(context));
+              ref.read(signUpProvider(context));
             }
           },
         );

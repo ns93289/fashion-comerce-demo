@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/authentication_service.dart';
 import '../../core/utils/tools.dart';
 import '../../data/dataSources/local/hive_helper.dart';
+import '../../data/repositories/auth_repo_impl.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/repositories/auth_repo.dart';
 import '../../main.dart';
 import '../../presentation/dialogs/common_dialog.dart';
 import '../../presentation/screens/address/my_address_screen.dart';
@@ -33,6 +37,9 @@ Future<List<ModelProduct>> fetchDataFromApi() async {
   return productList;
 }
 
+const String temDesc =
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+final List<String> colorList = ["#EBEBEB", "#2A2A2A", "#0C29B9", "#FF3333", "#0CA8B9", "#E4A719", "#9D3CB9"];
 final List<ModelProduct> globalProductList = [
   ModelProduct(
     productId: 1,
@@ -41,7 +48,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 40.10,
     averageRatings: 4.1,
     noOfReview: 6,
-    productDescription: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
@@ -50,7 +57,7 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Soft Leather",
     productDesign: "Home",
     productImage: "assets/images/bru.png",
-    productColors: ["White", "Black"],
+    productColors: colorList,
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
@@ -60,7 +67,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 77.65,
     averageRatings: 4.3,
     noOfReview: 6,
-    productDescription: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
@@ -69,7 +76,7 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Soft Leather",
     productDesign: "Home",
     productImage: "assets/images/classic_slip_on.png",
-    productColors: ["Checkerboard", "Black"],
+    productColors: colorList,
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
@@ -79,7 +86,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 50,
     averageRatings: 4.0,
     noOfReview: 6,
-    productDescription: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
@@ -88,7 +95,7 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/grandpro_tennis_sneaker.png",
-    productColors: ["White", "Tan", "Navy"],
+    productColors: colorList,
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
@@ -98,7 +105,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 66.35,
     averageRatings: 4.5,
     noOfReview: 6,
-    productDescription: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
@@ -107,7 +114,7 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Rubber",
     productDesign: "Sandals",
     productImage: "assets/images/women_arizona_sandals.png",
-    productColors: ["White", "Black", "Brown"],
+    productColors: colorList,
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
@@ -117,7 +124,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 44.30,
     averageRatings: 4.2,
     noOfReview: 6,
-    productDescription: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
@@ -126,7 +133,7 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/air_max_90.png",
-    productColors: ["White", "Black", "Red"],
+    productColors: colorList,
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
@@ -136,7 +143,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 55.50,
     averageRatings: 4.2,
     noOfReview: 6,
-    productDescription: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
@@ -145,7 +152,7 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/zoom_freak_4.png",
-    productColors: ["Multicolor", "Black"],
+    productColors: colorList,
     productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
@@ -155,7 +162,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 35,
     averageRatings: 4.2,
     noOfReview: 6,
-    productDescription: "Its happened 1977. The Nike Blazer Mid '77 makes a legendary debut on the cort. A durable leather makes its perfect.",
+    productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
@@ -164,7 +171,7 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/gel_kayano_29.png",
-    productColors: ["Blue", "Black", "Green"],
+    productColors: colorList,
     productQuantities: [1, 2, 3, 4, 5],
   ),
 ];
@@ -205,6 +212,8 @@ final popularProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((r
 
 final openDrawerItemProvider = Provider.family<void, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {
   homeScaffoldKey.currentState?.closeDrawer();
+  final apiResponse = ref.read(authenticationServiceProvider);
+
   if (args.drawerItem.screen is! Container) {
     openScreen(args.context, args.drawerItem.screen);
   } else if (args.drawerItem.drawerType == DrawerType.logout) {
@@ -215,18 +224,41 @@ final openDrawerItemProvider = Provider.family<void, ({ModelDrawer drawerItem, B
           title: language.sureToLogout,
           negativeText: language.cancel,
           positiveText: language.logout,
+          isLoading: apiResponse.isLoading,
           onNegativeClick: () {
             Navigator.pop(context);
           },
           onPositiveClick: () {
-            Navigator.pop(context);
-            clearAllBoxes().then((value) {
-              if (!context.mounted) return;
-              return openScreenWithClearStack(context, SplashScreen());
-            });
+            ref.read(logoutProvider);
           },
         );
       },
     );
   }
 });
+
+final authRepoProvider = Provider.autoDispose<AuthRepo>((ref) {
+  return AuthRepoImpl();
+});
+final authenticationServiceProvider = StateNotifierProvider<AuthenticationService, AsyncValue<UserEntity?>>((ref) {
+  return AuthenticationService(ref.watch(authRepoProvider));
+});
+final logoutProvider = Provider.autoDispose<void>((ref) {
+  Future.microtask(() {
+    ref.read(authenticationServiceProvider.notifier).callLogoutApi();
+  });
+});
+
+logoutCheck(WidgetRef ref, BuildContext context) {
+  Future.microtask(() {
+    ref.listen(authenticationServiceProvider, (previous, next) {
+      if (next.value != null) {
+        Navigator.pop(context);
+        clearAllBoxes().then((value) {
+          if (!context.mounted) return;
+          return openScreenWithClearStack(context, SplashScreen());
+        });
+      }
+    });
+  });
+}

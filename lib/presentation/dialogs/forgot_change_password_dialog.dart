@@ -37,7 +37,7 @@ class _ForgotChangePasswordDialogState extends State<ForgotChangePasswordDialog>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(widget.title, style: bodyTextStyle()),
+                  Text(widget.title, style: bodyStyle()),
                   _otpField(),
                   _passwordField(),
                   _confirmPasswordField(),

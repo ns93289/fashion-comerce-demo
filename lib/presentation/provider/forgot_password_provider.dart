@@ -35,7 +35,7 @@ final forgotPasswordProvider = Provider.autoDispose.family<void, BuildContext>((
               labelText: language.mobileNumber,
               icon: CountryCodePicker(
                 initialSelection: DefaultData.countryCodeName,
-                textStyle: bodyTextStyle(),
+                textStyle: bodyStyle(),
                 padding: EdgeInsets.zero,
                 favorite: [DefaultData.countryCodeName],
                 onChanged: (value) {},

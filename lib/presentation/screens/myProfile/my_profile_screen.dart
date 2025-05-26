@@ -162,7 +162,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               labelText: language.mobileNumber,
               icon: CountryCodePicker(
                 initialSelection: dialCode,
-                textStyle: bodyTextStyle(),
+                textStyle: bodyStyle(),
                 padding: EdgeInsets.zero,
                 onChanged: (value) {
                   ref.read(countryCodeTECProvider.notifier).state = value;

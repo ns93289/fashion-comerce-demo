@@ -2,6 +2,7 @@ class ProductEntity {
   int? _productId;
   int? _sellerId;
   int? _selectedQuantity;
+  int? _discountPercentage;
   String? _productName;
   String? _productImage;
   String? _categoryName;
@@ -16,6 +17,9 @@ class ProductEntity {
   num? _noOfReview;
   num? _averageRatings;
   num? _selectedSize;
+  num? _productDiscount;
+  num? _deliveryCharge;
+  num? _expressCharge;
   List<num>? _productSizes;
   List<String>? _reviewerList;
   List<String>? _productColors;
@@ -27,6 +31,7 @@ class ProductEntity {
     int? productId,
     int? sellerId,
     int? selectedQuantity,
+    int? discountPercentage,
     String? productName,
     String? productImage,
     String? categoryName,
@@ -41,6 +46,9 @@ class ProductEntity {
     num? noOfReview,
     num? averageRatings,
     num? selectedSize,
+    num? productDiscount,
+    num? deliveryCharge,
+    num? expressCharge,
     List<num>? productSizes,
     List<String>? reviewerList,
     List<String>? productColors,
@@ -51,6 +59,7 @@ class ProductEntity {
     _productId = productId;
     _sellerId = sellerId;
     _selectedQuantity = selectedQuantity;
+    _discountPercentage = discountPercentage;
     _productName = productName;
     _productImage = productImage;
     _categoryName = categoryName;
@@ -61,6 +70,9 @@ class ProductEntity {
     _noOfReview = noOfReview;
     _averageRatings = averageRatings;
     _selectedSize = selectedSize;
+    _productDiscount = productDiscount;
+    _deliveryCharge = deliveryCharge;
+    _expressCharge = expressCharge;
     _reviewerList = reviewerList;
     _isBestSeller = isBestSeller;
     _sellerName = sellerName;
@@ -78,6 +90,8 @@ class ProductEntity {
   int get sellerId => _sellerId ?? 0;
 
   int get selectedQuantity => _selectedQuantity ?? 0;
+
+  int get discountPercentage => _discountPercentage ?? 0;
 
   String get productName => _productName ?? "";
 
@@ -106,6 +120,12 @@ class ProductEntity {
   num get noOfReview => _noOfReview ?? 0;
 
   num get selectedSize => _selectedSize ?? 0;
+
+  num get productDiscount => _productDiscount ?? 0;
+
+  num get deliveryCharge => _deliveryCharge ?? 0;
+
+  num get expressCharge => _expressCharge ?? 0;
 
   List<num> get productSizes => _productSizes ?? [];
 
