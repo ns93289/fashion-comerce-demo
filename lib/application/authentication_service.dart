@@ -26,12 +26,56 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
     try {
       final res = await authRepo.signIn(email: email, password: password);
       if (res is ApiSuccess) {
-        state = AsyncValue.data(res.data);
+        final UserEntity user = res.data;
+        putDataInUserBox(key: hiveUserId, value: user.userId);
+        putDataInUserBox(key: hivePhoneNumber, value: user.mobileNo);
+        putDataInUserBox(key: hiveFullName, value: user.fullName);
+        putDataInUserBox(key: hiveEmailAddress, value: user.email);
+        putDataInUserBox(key: hiveProfilePicture, value: user.profilePicture);
+        putDataInUserBox(key: hiveAccessToken, value: user.accessToken);
+        putDataInUserBox(key: hiveUserIsVerified, value: user.isVerified);
+        putDataInUserBox(key: hivePhoneNumberVerified, value: user.mobileVerified);
+        putDataInUserBox(key: hiveEmailVerified, value: user.emailVerified);
+        state = AsyncValue.data(user);
       } else {
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callSignIn>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> callEmailVerifyApi({required String otp}) async {
+    state = const AsyncValue.loading();
+
+    try {
+      final res = await authRepo.emailVerify(otp: otp);
+      if (res is ApiSuccess) {
+        putDataInUserBox(key: hiveEmailVerified, value: true);
+        state = AsyncValue.data(res.data);
+      } else {
+        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callEmailVerifyApi>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> callPhoneNumberVerifyApi({required String otp}) async {
+    state = const AsyncValue.loading();
+
+    try {
+      final res = await authRepo.phoneNumberVerify(otp: otp);
+      if (res is ApiSuccess) {
+        putDataInUserBox(key: hivePhoneNumberVerified, value: true);
+        state = AsyncValue.data(res.data);
+      } else {
+        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callPhoneNumberVerifyApi>>>", "error: ${e.toString()}");
       state = AsyncValue.error(e, st);
     }
   }
@@ -57,11 +101,15 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
       final res = await authRepo.registerUser(email: email, password: password, name: name, phoneNo: phoneNo);
       if (res is ApiSuccess) {
         final UserEntity user = res.data;
+        putDataInUserBox(key: hiveUserId, value: user.userId);
         putDataInUserBox(key: hivePhoneNumber, value: user.mobileNo);
         putDataInUserBox(key: hiveFullName, value: user.fullName);
         putDataInUserBox(key: hiveEmailAddress, value: user.email);
+        putDataInUserBox(key: hiveProfilePicture, value: user.profilePicture);
         putDataInUserBox(key: hiveAccessToken, value: user.accessToken);
         putDataInUserBox(key: hiveUserIsVerified, value: user.isVerified);
+        putDataInUserBox(key: hivePhoneNumberVerified, value: user.mobileVerified);
+        putDataInUserBox(key: hiveEmailVerified, value: user.emailVerified);
         state = AsyncValue.data(user);
       } else {
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
@@ -78,7 +126,9 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
     try {
       final res = await authRepo.logout();
       if (res is ApiSuccess) {
-        state = AsyncValue.data(res.data);
+        clearAllBoxes().then((value) {
+          state = AsyncValue.data(res.data);
+        });
       } else {
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }

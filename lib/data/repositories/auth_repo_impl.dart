@@ -30,9 +30,33 @@ class AuthRepoImpl implements AuthRepo {
   @override
   Future<ApiResponse<UserEntity>> logout() async {
     final response = await _apiHelper.post(
-      api: EndPoint.register,
+      api: EndPoint.logout,
       body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken)},
     );
     return ResponseWrapper.fromJson<UserEntity>(response, UserModel.fromJson);
+  }
+
+  @override
+  Future<ApiResponse<UserEntity>> emailVerify({required String otp}) async {
+    final response = await _apiHelper.post(
+      api: EndPoint.emailVerification,
+      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.email: getStringDataFromUserBox(key: hiveEmailAddress), ApiParams.code: otp},
+    );
+
+    return ResponseWrapper.fromJson<UserModel>(response, UserModel.fromJson);
+  }
+
+  @override
+  Future<ApiResponse<UserEntity>> phoneNumberVerify({required String otp}) async {
+    final response = await _apiHelper.post(
+      api: EndPoint.mobileVerification,
+      body: {
+        ApiParams.userId: getIntDataFromUserBox(key: hiveUserId),
+        ApiParams.phoneNumber: getStringDataFromUserBox(key: hivePhoneNumber),
+        ApiParams.code: otp,
+      },
+    );
+
+    return ResponseWrapper.fromJson<UserModel>(response, UserModel.fromJson);
   }
 }

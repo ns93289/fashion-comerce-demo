@@ -140,7 +140,9 @@
   "forgotPassword": "Forgot Password?",
   "otp": "OTP",
   "enterOTP": "Enter OTP",
-  "enterVerificationCode": "Enter verification code sent to your mobile number",
+  "enterVerificationCode": "Enter verification code",
+  "enterVerificationCodePhone": "Enter verification code sent to your mobile number",
+  "enterVerificationCodeEmail": "Enter verification code sent to your email address",
   "agreeWithOur": "By continuing you agree to our",
   "signUp": "Sign Up",
   "enterNumberToContinue": "Enter your mobile number to continue",
@@ -159,5 +161,8 @@
   "caringGuide": "Caring guide",
   "standard": "Standard",
   "express": "Express",
-  "buyNow": "Buy Now"
+  "buyNow": "Buy Now",
+  "verificationsMsg": "These verification steps are necessary to verify your email address and phone number. You will receive an OTP on each account respectively.",
+  "verifyEmail": "Verify Email",
+  "verifyMobile": "Verify Mobile Number"
 }

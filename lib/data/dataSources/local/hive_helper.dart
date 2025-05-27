@@ -136,4 +136,6 @@ Future<void> clearAllBoxes() async {
   putDataInUserBox(key: hiveProfilePicture, value: "");
   await orderBox.clear();
   await cartBox.clear();
+  await userBox.clear();
+  await addressBox.clear();
 }

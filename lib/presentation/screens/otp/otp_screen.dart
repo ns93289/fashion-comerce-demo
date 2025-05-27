@@ -1,9 +1,9 @@
-import 'package:fashion_comerce_demo/core/constants/colors.dart';
-import 'package:fashion_comerce_demo/core/utils/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/colors.dart';
+import '../../../core/utils/tools.dart';
 import '../../provider/otp_verify_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
@@ -11,7 +11,9 @@ import '../../components/custom_button.dart';
 import '../../components/custom_pin_code_field.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final bool isPhone;
+
+  const OtpScreen({super.key, this.isPhone = false});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -29,7 +31,7 @@ class _OtpScreenState extends State<OtpScreen> {
         children: [
           Padding(
             padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
-            child: Text(language.enterOTP, style: bodyStyle(fontWeight: FontWeight.w500)),
+            child: Text(language.enterVerificationCode, style: bodyStyle(fontWeight: FontWeight.w500)),
           ),
           _otpField(),
           _verifyButton(),
@@ -50,11 +52,21 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget _verifyButton() {
     return Consumer(
       builder: (context, ref, _) {
+        final apiResponse = ref.watch(authenticationServiceProvider);
+        ref.listen(authenticationServiceProvider, (previous, next) {
+          if (next.value != null) {
+            Navigator.pop(context, true);
+          } else if (next.hasError) {
+            openSimpleSnackBar(next.error.toString());
+          }
+        });
+
         return CustomButton(
           title: language.verify,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 30.h),
+          isLoading: apiResponse.isLoading,
           onPress: () {
-            ref.read(otpVerifyProvider(context));
+            ref.read(otpVerifyProvider((context: context, isPhone: widget.isPhone)));
           },
         );
       },

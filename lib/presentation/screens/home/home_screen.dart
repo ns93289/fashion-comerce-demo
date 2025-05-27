@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,23 +16,22 @@ import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../cart/cart_screen.dart';
 import '../serachProduct/search_product_screen.dart';
+import '../splash/splash_screen.dart';
 import 'pages/category/category_page.dart';
 import 'pages/favorite/favorite_page.dart';
 import 'pages/home/home_page.dart';
 import 'pages/orders/orders_page.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    ///Logout check...
-    logoutCheck(ref, context);
     return DefaultTabController(
       length: 5,
       child: Scaffold(
@@ -116,38 +116,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _drawerList() {
-    return ValueListenableBuilder(
-      valueListenable: userBox.listenable(),
-      builder: (context, box, _) {
-        final profilePicture = box.get(hiveProfilePicture, defaultValue: "") ?? "";
-        final fullName = box.get(hiveFullName, defaultValue: language.userName) ?? "";
+    return Consumer(
+      builder: (context, ref, _) {
         final List<ModelDrawer> drawerList = ref.watch(drawerListProvider);
+        ref.listen(authenticationServiceProvider, (previous, next) {
+          if (next.value != null) {
+            Navigator.pop(context);
+            if (!context.mounted) return;
+            openScreenWithClearStack(context, SplashScreen());
+          }
+        });
 
         return Container(
           color: colorWhite,
           width: 230.w,
           child: Column(
             children: [
-              Container(
-                color: colorPrimary.withAlpha(50),
-                width: 1.sw,
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(color: colorMainBackground, shape: BoxShape.circle),
-                      height: 60.sp,
-                      width: 60.sp,
-                      margin: EdgeInsetsDirectional.only(top: 24.h),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: profilePicture.isNotEmpty ? Image.file(File(profilePicture), fit: BoxFit.cover) : Container(),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.only(top: 10.h, start: 10.w, end: 10.w, bottom: 10.h),
-                      child: Text(fullName, style: bodyStyle(fontWeight: FontWeight.w500)),
-                    ),
-                  ],
-                ),
-              ),
+              _userCard(),
               Expanded(
                 child: ListView.separated(
                   itemCount: drawerList.length,
@@ -178,6 +163,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.h, color: colorDivider));
                   },
                 ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _userCard() {
+    return ValueListenableBuilder(
+      valueListenable: userBox.listenable(),
+      builder: (context, box, _) {
+        final profilePicture = getStringDataFromUserBox(key: hiveProfilePicture);
+        final fullName = getStringDataFromUserBox(key: hiveFullName);
+
+        return Container(
+          color: colorPrimary.withAlpha(50),
+          width: 1.sw,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(color: colorMainBackground, shape: BoxShape.circle),
+                height: 60.sp,
+                width: 60.sp,
+                margin: EdgeInsetsDirectional.only(top: 24.h),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: profilePicture.isNotEmpty ? CachedNetworkImage(imageUrl: profilePicture, fit: BoxFit.cover) : Container(),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.only(top: 10.h, start: 10.w, end: 10.w, bottom: 10.h),
+                child: Text(fullName, style: bodyStyle(fontWeight: FontWeight.w500)),
               ),
             ],
           ),

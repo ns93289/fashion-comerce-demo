@@ -20,7 +20,7 @@ class ProductRepositoryImpl extends ProductRepository {
   @override
   Future<ApiResponse<ProductEntity>> getPopularProductList() {
     return _apiHelper.get(
-      api: EndPoint.popularPproductList,
+      api: EndPoint.popularProductList,
       queryParameters: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken)},
     );
   }

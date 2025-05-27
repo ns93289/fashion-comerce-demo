@@ -14,8 +14,8 @@ import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_text_field.dart';
 import '../home/home_screen.dart';
-import '../otp/otp_screen.dart';
 import '../signUp/sign_up_screen.dart';
+import '../verifications/verifications_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -138,10 +138,10 @@ class _LoginScreenState extends State<LoginScreen> {
           if (next is AsyncData<UserEntity?>) {
             UserEntity? data = next.value;
             if (data != null) {
-              if (data.isVerified) {
+              if (data.mobileVerified && data.emailVerified) {
                 openScreenWithClearStack(context, HomeScreen());
               } else {
-                openScreen(context, OtpScreen());
+                openScreen(context, VerificationsScreen());
               }
             }
           }

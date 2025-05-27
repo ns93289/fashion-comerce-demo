@@ -1,6 +1,8 @@
 class UserEntity {
   int? _userId;
   bool? _isVerified;
+  bool? _mobileVerified;
+  bool? _emailVerified;
   String? _fullName;
   String? _profilePicture;
   String? _email;
@@ -17,6 +19,8 @@ class UserEntity {
     String? countryCode,
     String? accessToken,
     bool? isVerified,
+    bool? mobileVerified,
+    bool? emailVerified,
   }) {
     _userId = userId;
     _fullName = fullName;
@@ -26,6 +30,8 @@ class UserEntity {
     _countryCode = countryCode;
     _accessToken = accessToken;
     _isVerified = isVerified;
+    _mobileVerified = mobileVerified;
+    _emailVerified = emailVerified;
   }
 
   int get userId => _userId ?? 0;
@@ -43,4 +49,8 @@ class UserEntity {
   String get accessToken => _accessToken ?? '';
 
   bool get isVerified => _isVerified ?? false;
+
+  bool get mobileVerified => _mobileVerified ?? false;
+
+  bool get emailVerified => _emailVerified ?? false;
 }

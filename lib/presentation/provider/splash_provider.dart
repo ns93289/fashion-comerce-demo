@@ -10,12 +10,8 @@ import '../../presentation/screens/login/login_screen.dart';
 final splashActionProvider = FutureProvider.autoDispose.family<void, BuildContext>((ref, context) {
   Future.delayed(Duration(seconds: 3), () {
     if (!context.mounted) return;
-    if (getStringDataFromUserBox(key: hivePhoneNumber).isNotEmpty) {
-      if (getBoolDataFromUserBox(key: hiveUserIsVerified)) {
-        openScreenWithClearStack(context, HomeScreen());
-      } else {
-        openScreenWithClearStack(context, LoginScreen());
-      }
+    if (getBoolDataFromUserBox(key: hiveEmailVerified) && getBoolDataFromUserBox(key: hivePhoneNumberVerified)) {
+      openScreenWithClearStack(context, HomeScreen());
     } else {
       openScreenWithClearStack(context, LoginScreen());
     }

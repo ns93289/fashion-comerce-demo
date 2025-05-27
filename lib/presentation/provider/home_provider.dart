@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/authentication_service.dart';
 import '../../core/utils/tools.dart';
-import '../../data/dataSources/local/hive_helper.dart';
 import '../../data/repositories/auth_repo_impl.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repo.dart';
@@ -12,7 +11,6 @@ import '../../presentation/dialogs/common_dialog.dart';
 import '../../presentation/screens/address/my_address_screen.dart';
 import '../../presentation/screens/helpAndSupprt/help_and_support_screen.dart';
 import '../../presentation/screens/preferences/preferences_screen.dart';
-import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/wallet/wallet_screen.dart';
 import '../../data/models/model_drawer.dart';
 import '../../data/models/model_product.dart';
@@ -212,14 +210,14 @@ final popularProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((r
 
 final openDrawerItemProvider = Provider.family<void, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {
   homeScaffoldKey.currentState?.closeDrawer();
-  final apiResponse = ref.read(authenticationServiceProvider);
-
   if (args.drawerItem.screen is! Container) {
     openScreen(args.context, args.drawerItem.screen);
   } else if (args.drawerItem.drawerType == DrawerType.logout) {
     showDialog(
       context: args.context,
       builder: (context) {
+        final apiResponse = ref.watch(authenticationServiceProvider);
+
         return CommonDialog(
           title: language.sureToLogout,
           negativeText: language.cancel,
@@ -229,7 +227,9 @@ final openDrawerItemProvider = Provider.family<void, ({ModelDrawer drawerItem, B
             Navigator.pop(context);
           },
           onPositiveClick: () {
-            ref.read(logoutProvider);
+            Future.microtask(() {
+              ref.read(logoutProvider);
+            });
           },
         );
       },
@@ -250,15 +250,5 @@ final logoutProvider = Provider.autoDispose<void>((ref) {
 });
 
 logoutCheck(WidgetRef ref, BuildContext context) {
-  Future.microtask(() {
-    ref.listen(authenticationServiceProvider, (previous, next) {
-      if (next.value != null) {
-        Navigator.pop(context);
-        clearAllBoxes().then((value) {
-          if (!context.mounted) return;
-          return openScreenWithClearStack(context, SplashScreen());
-        });
-      }
-    });
-  });
+  Future.microtask(() {});
 }

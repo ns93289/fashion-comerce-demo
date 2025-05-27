@@ -17,6 +17,7 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final bool isLoading;
   final bool borderedButton;
+  final bool enabled;
   final Widget? icon;
 
   const CustomButton({
@@ -33,12 +34,13 @@ class CustomButton extends StatelessWidget {
     this.icon,
     this.padding,
     this.textColor,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isLoading ? null : onPress,
+      onTap: isLoading || !enabled ? null : onPress,
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor ?? (borderedButton ? Colors.transparent : colorPrimary),

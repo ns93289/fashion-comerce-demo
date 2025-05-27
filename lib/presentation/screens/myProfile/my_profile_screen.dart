@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,11 +33,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     return ValueListenableBuilder(
       valueListenable: userBox.listenable(),
       builder: (context, box, _) {
-        final fullName = box.get(hiveFullName, defaultValue: "") ?? "";
-        final email = box.get(hiveEmailAddress, defaultValue: "") ?? "";
-        final phoneNo = box.get(hivePhoneNumber, defaultValue: "") ?? "";
-        final countryCode = box.get(hiveCountryCode, defaultValue: "") ?? "";
-        final filePath = box.get(hiveProfilePicture, defaultValue: "") ?? "";
+        final fullName = getStringDataFromUserBox(key: hiveFullName);
+        final email = getStringDataFromUserBox(key: hiveEmailAddress);
+        final phoneNo = getStringDataFromUserBox(key: hivePhoneNumber);
+        final filePath = getStringDataFromUserBox(key: hiveProfilePicture);
 
         return Stack(
           children: [
@@ -47,7 +44,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               padding: EdgeInsetsDirectional.only(bottom: 90.h),
               child: Form(
                 key: profileFormKey,
-                child: Column(children: [_profilePicture(filePath), _fullNameField(fullName), _emailField(email), _phoneField(phoneNo, countryCode)]),
+                child: Column(children: [_profilePicture(filePath), _fullNameField(fullName), _emailField(email), _phoneField(phoneNo)]),
               ),
             ),
             Align(alignment: Alignment.bottomCenter, child: _updateButton()),
@@ -76,7 +73,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       file != null
                           ? Image.file(file, fit: BoxFit.cover)
                           : filePath.isNotEmpty
-                          ? Image.file(File(filePath), fit: BoxFit.cover)
+                          ? CachedNetworkImage(imageUrl: filePath, fit: BoxFit.cover)
                           : Container(),
                 ),
                 Padding(
@@ -148,7 +145,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     );
   }
 
-  Widget _phoneField(String mobileNo, String dialCode) {
+  Widget _phoneField(String mobileNo) {
     return Consumer(
       builder: (context, ref, _) {
         final phoneNoTEC = ref.watch(phoneNoTECProvider);
@@ -158,17 +155,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
           child: CustomTextField(
             controller: phoneNoTEC,
-            decoration: InputDecoration(
-              labelText: language.mobileNumber,
-              icon: CountryCodePicker(
-                initialSelection: dialCode,
-                textStyle: bodyStyle(),
-                padding: EdgeInsets.zero,
-                onChanged: (value) {
-                  ref.read(countryCodeTECProvider.notifier).state = value;
-                },
-              ),
-            ),
+            decoration: InputDecoration(labelText: language.mobileNumber),
             keyboardType: TextInputType.phone,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             textInputAction: TextInputAction.done,
@@ -184,23 +171,22 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Widget _updateButton() {
     return Consumer(
       builder: (context, ref, _) {
+        final apiResponse = ref.watch(userProfileServiceProvider);
+        ref.listen(userProfileServiceProvider, (previous, next) {
+          if (next.value != null) {
+            ref.read(imagePickerProvider.notifier).state = null;
+            openSimpleSnackBar(language.profileUpdateSuccess);
+          }
+        });
+
         return CustomButton(
           title: language.update,
           margin: EdgeInsetsDirectional.only(bottom: 20.h),
+          isLoading: apiResponse.isLoading,
           onPress: () {
             if (profileFormKey.currentState?.validate() ?? false) {
-              final fullNameTEC = ref.watch(fullNameTECProvider);
-              final emailTEC = ref.watch(emailTECProvider);
-              final phoneNoTEC = ref.watch(phoneNoTECProvider);
-              final countryCode = ref.watch(countryCodeTECProvider);
-              final file = ref.watch(imagePickerProvider);
-
-              putDataInUserBox(key: hiveFullName, value: fullNameTEC.text);
-              putDataInUserBox(key: hiveEmailAddress, value: emailTEC.text);
-              putDataInUserBox(key: hivePhoneNumber, value: phoneNoTEC.text);
-              putDataInUserBox(key: hiveCountryCode, value: countryCode.dialCode);
-              putDataInUserBox(key: hiveProfilePicture, value: file?.path);
-              openSimpleSnackBar(language.profileUpdateSuccess);
+              FocusManager.instance.primaryFocus?.unfocus();
+              ref.read(updateProfileProvider);
             }
           },
         );
