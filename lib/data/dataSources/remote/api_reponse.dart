@@ -6,6 +6,15 @@ class ResponseWrapper<T> {
       return ApiSuccess(fromJsonT(json));
     }
   }
+
+  static ApiResponse<List<T>> fromJsonList<T>(dynamic json, T Function(Map<String, dynamic>) fromJsonT) {
+    if (json is! List && json['error'] != null) {
+      return ApiError(ErrorModel.fromJson(json));
+    } else {
+      final List list = json ?? [];
+      return ApiSuccess(list.map((e) => fromJsonT(e as Map<String, dynamic>)).toList());
+    }
+  }
 }
 
 sealed class ApiResponse<T> {

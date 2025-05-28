@@ -13,6 +13,11 @@ class EndPoint {
 
   ///User Profile APIs...
   static const String updateProfile = "/users/update";
+  static const String changePassword = "/users/change-password";
+
+  ///Categories APIs...
+  static const String getCategories = "/category/get";
+  static const String getSubCategories = "/sub-category/get";
 
   ///Product list apis
   static const String productList = "/product-list";
@@ -33,4 +38,8 @@ class ApiParams {
   static const String password = "password";
   static const String code = "code";
   static const String profilePicture = "profile_picture";
+  static const String genderId = "gender_id";
+  static const String categoryId = "category_id";
+  static const String currentPassword = "current_password";
+  static const String newPassword = "new_password";
 }

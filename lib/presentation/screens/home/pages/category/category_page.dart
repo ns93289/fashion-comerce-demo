@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../main.dart';
+import '../../../../provider/category_provider.dart';
 import 'category_list_page.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -41,12 +43,20 @@ class _CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClie
   }
 
   Widget _genderWiseCategoryList() {
-    return TabBarView(
-      children: [
-        CategoryListPage(genderType: GenderTypes.male),
-        CategoryListPage(genderType: GenderTypes.female),
-        CategoryListPage(genderType: GenderTypes.kids),
-      ],
+    return Consumer(
+      builder: (context, ref, _) {
+        // Call the API when screen loads
+        Future.microtask(() {
+          ref.read(categoryServiceProvider.notifier).callCategoryApi(genderId: 0);
+        });
+        return TabBarView(
+          children: [
+            CategoryListPage(genderType: GenderTypes.male),
+            CategoryListPage(genderType: GenderTypes.female),
+            CategoryListPage(genderType: GenderTypes.kids),
+          ],
+        );
+      },
     );
   }
 }

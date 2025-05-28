@@ -164,5 +164,13 @@
   "buyNow": "Buy Now",
   "verificationsMsg": "These verification steps are necessary to verify your email address and phone number. You will receive an OTP on each account respectively.",
   "verifyEmail": "Verify Email",
-  "verifyMobile": "Verify Mobile Number"
+  "verifyMobile": "Verify Mobile Number",
+  "changePassword": "Change Password",
+  "oldPassword": "Old Password",
+  "newPassword": "New Password",
+  "confirmNewPassword": "Confirm New Password",
+  "enterOldPassword": "Enter Old Password",
+  "enterNewPassword": "Enter New Password",
+  "enterConfirmNewPassword": "Enter Confirm New Password",
+  "passwordUpdated": "Password updated successfully"
 }

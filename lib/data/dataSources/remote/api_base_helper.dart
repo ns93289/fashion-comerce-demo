@@ -30,6 +30,16 @@ class ApiBaseHelper {
     }
   }
 
+  Future<dynamic> put({required String api, Map<String, dynamic>? body, Map<String, dynamic>? queryParameters}) async {
+    Response response = await _dio.put(api, data: body, queryParameters: queryParameters);
+    try {
+      logD("post>>>", response.data.toString());
+      return response.data;
+    } catch (e) {
+      throw ApiException().getErrorMessage(e);
+    }
+  }
+
   dynamic putForm({required String api, FormData? body, Map<String, dynamic>? queryParameters}) async {
     Response response = await _dio.put(api, data: body, queryParameters: queryParameters);
     try {
@@ -39,8 +49,8 @@ class ApiBaseHelper {
     }
   }
 
-  dynamic get({required String api, Map<String, dynamic>? queryParameters}) async {
-    Response response = await _dio.get(api, queryParameters: queryParameters);
+  dynamic get({required String api, Map<String, dynamic>? queryParameters, Map<String, dynamic>? body}) async {
+    Response response = await _dio.get(api, queryParameters: queryParameters, data: body);
     try {
       return response.data;
     } catch (e) {

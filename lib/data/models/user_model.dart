@@ -12,6 +12,7 @@ class UserModel extends UserEntity {
     super.accessToken,
     super.mobileVerified = false,
     super.emailVerified = false,
+    super.message,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +27,7 @@ class UserModel extends UserEntity {
       accessToken: json['token'],
       mobileVerified: json['mobile_number_verified'],
       emailVerified: json['email_verified'],
+      message: json['message'],
     );
   }
 
@@ -41,6 +43,7 @@ class UserModel extends UserEntity {
     map['mobile_number_verified'] = mobileVerified;
     map['email_verified'] = emailVerified;
     map['token'] = accessToken;
+    map['message'] = message;
     return map;
   }
 }

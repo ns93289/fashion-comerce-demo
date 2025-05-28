@@ -15,6 +15,7 @@ import '../../presentation/screens/wallet/wallet_screen.dart';
 import '../../data/models/model_drawer.dart';
 import '../../data/models/model_product.dart';
 import '../../presentation/screens/myProfile/my_profile_screen.dart';
+import '../screens/changePassword/change_password_screen.dart';
 
 class DataNotifier extends AsyncNotifier<List<ModelProduct>> {
   @override
@@ -177,9 +178,10 @@ final List<ModelProduct> globalProductList = [
 final drawerListProvider = StateProvider.autoDispose<List<ModelDrawer>>((ref) {
   return [
     ModelDrawer(screen: MyProfileScreen(), title: language.myProfile, icon: Icons.person_outline),
-    ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
+    ModelDrawer(screen: ChangePasswordScreen(), title: language.changePassword, icon: Icons.password_outlined),
     ModelDrawer(screen: MyAddressScreen(), title: language.myAddress, icon: Icons.location_city_outlined),
     ModelDrawer(screen: PreferencesScreen(), title: language.preferences, icon: Icons.settings_outlined),
+    ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
     ModelDrawer(screen: HelpAndSupportScreen(), title: language.helpAndSupport, icon: Icons.help_outline),
     ModelDrawer(screen: Container(), drawerType: DrawerType.logout, title: language.logout, icon: Icons.logout_outlined),
   ];

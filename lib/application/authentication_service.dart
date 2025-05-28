@@ -120,6 +120,28 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
     }
   }
 
+  Future<void> callChangePasswordApi({required String password, required String newPassword}) async {
+    if (password.isEmpty) {
+      state = const AsyncValue.error("password cannot be empty", StackTrace.empty);
+      return;
+    } else if (newPassword.isEmpty) {
+      state = const AsyncValue.error("new password cannot be empty", StackTrace.empty);
+      return;
+    }
+    state = const AsyncValue.loading();
+    try {
+      final res = await authRepo.changePassword(password: password, newPassword: newPassword);
+      if (res is ApiSuccess) {
+        state = AsyncValue.data(res.data);
+      } else {
+        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callChangePasswordApi>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
+
   Future<void> callLogoutApi() async {
     state = const AsyncValue.loading();
 

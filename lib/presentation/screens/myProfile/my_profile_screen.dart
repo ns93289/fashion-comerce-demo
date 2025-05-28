@@ -9,6 +9,7 @@ import '../../../core/utils/text_field_validators.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_constants.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
+import '../../../data/dataSources/remote/api_constant.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_text_field.dart';
 import '../../../core/constants/colors.dart';
@@ -73,7 +74,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       file != null
                           ? Image.file(file, fit: BoxFit.cover)
                           : filePath.isNotEmpty
-                          ? CachedNetworkImage(imageUrl: filePath, fit: BoxFit.cover)
+                          ? CachedNetworkImage(imageUrl: "${BaseUrl.url}$filePath", fit: BoxFit.cover)
                           : Container(),
                 ),
                 Padding(

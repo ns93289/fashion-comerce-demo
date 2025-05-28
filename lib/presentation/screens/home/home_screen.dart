@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../data/dataSources/local/hive_helper.dart';
+import '../../../data/dataSources/remote/api_constant.dart';
 import '../../../data/models/model_drawer.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
@@ -189,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 60.sp,
                 margin: EdgeInsetsDirectional.only(top: 24.h),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: profilePicture.isNotEmpty ? CachedNetworkImage(imageUrl: profilePicture, fit: BoxFit.cover) : Container(),
+                child: profilePicture.isNotEmpty ? CachedNetworkImage(imageUrl: "${BaseUrl.url}$profilePicture", fit: BoxFit.cover) : Container(),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.only(top: 10.h, start: 10.w, end: 10.w, bottom: 10.h),

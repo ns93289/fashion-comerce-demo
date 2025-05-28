@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
-import '../../../data/models/model_category.dart';
+import '../../../domain/entities/category_entity.dart';
+import '../../components/common_circle_progress_bar.dart';
+import '../../components/empty_record_view.dart';
 import '../../provider/category_provider.dart';
 import '../../components/common_app_bar.dart';
 
@@ -31,19 +33,33 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
-        List<ModelSubCategory> subCategories = ref.watch(genderWiseSubCategoryProvider((genderType: widget.genderType, categoryId: widget.categoryId)));
-        int selectedIndex = subCategories.indexWhere((element) => element.subCategoryId == widget.selectedSubCategoryId);
+        final apiResponse = ref.watch(subCategoryServiceProvider(widget.categoryId));
 
-        return DefaultTabController(
-          length: subCategories.length,
-          initialIndex: selectedIndex,
-          child: Scaffold(appBar: CommonAppBar(title: Text(widget.selectedSubCategoryName)), body: _genderWiseSubCategories(subCategories)),
+        return apiResponse.when(
+          data: (data) {
+            if (data == null) {
+              return CommonCircleProgressBar();
+            }
+            List<SubCategoryEntity> subCategories = data as List<SubCategoryEntity>;
+            int selectedIndex = subCategories.indexWhere((element) => element.subCategoryId == widget.selectedSubCategoryId);
+
+            return DefaultTabController(
+              length: subCategories.length,
+              initialIndex: selectedIndex,
+              child: Scaffold(appBar: CommonAppBar(title: Text(widget.selectedSubCategoryName)), body: _genderWiseSubCategories(subCategories)),
+            );
+          },
+          error: (error, stackTrace) {
+            debugPrintStack(stackTrace: stackTrace);
+            return EmptyRecordView(message: error.toString());
+          },
+          loading: () => CommonCircleProgressBar(),
         );
       },
     );
   }
 
-  Widget _genderWiseSubCategories(List<ModelSubCategory> subCategories) {
+  Widget _genderWiseSubCategories(List<SubCategoryEntity> subCategories) {
     return Consumer(
       builder: (context, ref, _) {
         return Container(

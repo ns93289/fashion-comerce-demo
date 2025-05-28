@@ -9,6 +9,7 @@ class UserEntity {
   String? _mobileNo;
   String? _countryCode;
   String? _accessToken;
+  String? _message;
 
   UserEntity({
     int? userId,
@@ -21,6 +22,7 @@ class UserEntity {
     bool? isVerified,
     bool? mobileVerified,
     bool? emailVerified,
+    String? message,
   }) {
     _userId = userId;
     _fullName = fullName;
@@ -32,6 +34,7 @@ class UserEntity {
     _isVerified = isVerified;
     _mobileVerified = mobileVerified;
     _emailVerified = emailVerified;
+    _message = message;
   }
 
   int get userId => _userId ?? 0;
@@ -47,6 +50,8 @@ class UserEntity {
   String get countryCode => _countryCode ?? '';
 
   String get accessToken => _accessToken ?? '';
+
+  String get message => _message ?? '';
 
   bool get isVerified => _isVerified ?? false;
 

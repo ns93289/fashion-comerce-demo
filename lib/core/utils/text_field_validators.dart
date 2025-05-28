@@ -8,9 +8,9 @@ class TextFieldValidator {
     return null;
   }
 
-  static String? passwordValidator({required String password}) {
+  static String? passwordValidator({required String password, String? message}) {
     if (password.isEmpty) {
-      return language.enterPassword;
+      return message ?? language.enterPassword;
     } else if (password.length < 6) {
       return language.minPassLength;
     }

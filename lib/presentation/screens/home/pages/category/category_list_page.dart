@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../components/common_circle_progress_bar.dart';
+import '../../../../components/empty_record_view.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
-import '../../../../../data/models/model_category.dart';
+import '../../../../../domain/entities/category_entity.dart';
 import '../../../../provider/category_provider.dart';
 import '../../../subCategories/sub_categories_screen.dart';
 import 'item_sub_category.dart';
@@ -28,29 +30,43 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
   Widget _categoryList() {
     return Consumer(
       builder: (context, ref, child) {
-        List<ModelCategory> categories = ref.watch(categoryCategoryProvider);
-        int selectedCategoryId = ref.watch(selectedCategoryProvider);
+        final apiResponse = ref.watch(categoryServiceProvider);
+        return apiResponse.when(
+          data: (data) {
+            if (data == null) {
+              return CommonCircleProgressBar();
+            }
+            int selectedCategoryId = ref.watch(selectedCategoryProvider(widget.genderType));
+            List<CategoryEntity> categories = data as List<CategoryEntity>;
+            categories = categories.where((element) => element.genderId == widget.genderType).toList();
 
-        return Container(
-          color: colorMainBackground,
-          height: 1.sh,
-          child: ListView.builder(
-            itemCount: categories.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              ModelCategory category = categories[index];
-              return GestureDetector(
-                onTap: () {
-                  ref.read(selectedCategoryProvider.notifier).state = category.categoryId;
+            return Container(
+              color: colorMainBackground,
+              height: 1.sh,
+              child: ListView.builder(
+                itemCount: categories.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  CategoryEntity category = categories[index];
+                  return GestureDetector(
+                    onTap: () {
+                      ref.read(selectedCategoryProvider(widget.genderType).notifier).state = category.categoryId;
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(color: selectedCategoryId == category.categoryId ? colorPrimary.withAlpha(50) : colorMainBackground),
+                      padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 10.w),
+                      child: Text(category.categoryName, style: bodyStyle()),
+                    ),
+                  );
                 },
-                child: Container(
-                  decoration: BoxDecoration(color: selectedCategoryId == category.categoryId ? colorPrimary.withAlpha(50) : colorMainBackground),
-                  padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 10.w),
-                  child: Text(category.categoryName, style: bodyStyle()),
-                ),
-              );
-            },
-          ),
+              ),
+            );
+          },
+          error: (error, stackTrace) {
+            debugPrintStack(stackTrace: stackTrace);
+            return EmptyRecordView(message: error.toString());
+          },
+          loading: () => CommonCircleProgressBar(),
         );
       },
     );
@@ -59,32 +75,48 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
   Widget _subCategoryList() {
     return Consumer(
       builder: (context, ref, child) {
-        int selectedCategoryId = ref.watch(selectedCategoryProvider);
-        List<ModelSubCategory> subCategories = ref.watch(genderWiseSubCategoryProvider((genderType: widget.genderType, categoryId: selectedCategoryId)));
+        int selectedCategoryId = ref.watch(selectedCategoryProvider(widget.genderType));
+        if (selectedCategoryId == 0) {
+          return Container();
+        }
+        final apiResponse = ref.watch(subCategoryServiceProvider(selectedCategoryId));
 
-        return GridView.builder(
-          itemCount: subCategories.length,
-          shrinkWrap: true,
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.64, crossAxisSpacing: 20.w, mainAxisSpacing: 10.h),
-          itemBuilder: (context, index) {
-            final ModelSubCategory modelSubCategory = subCategories[index];
+        return apiResponse.when(
+          data: (data) {
+            if (data == null) {
+              return CommonCircleProgressBar();
+            }
+            List<SubCategoryEntity> subCategories = data as List<SubCategoryEntity>;
+            return GridView.builder(
+              itemCount: subCategories.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.64, crossAxisSpacing: 20.w, mainAxisSpacing: 10.h),
+              itemBuilder: (context, index) {
+                final SubCategoryEntity modelSubCategory = subCategories[index];
 
-            return GestureDetector(
-              onTap: () {
-                openScreen(
-                  context,
-                  SubCategoriesScreen(
-                    genderType: widget.genderType,
-                    categoryId: selectedCategoryId,
-                    selectedSubCategoryId: modelSubCategory.subCategoryId,
-                    selectedSubCategoryName: modelSubCategory.subCategoryName,
-                  ),
+                return GestureDetector(
+                  onTap: () {
+                    openScreen(
+                      context,
+                      SubCategoriesScreen(
+                        genderType: widget.genderType,
+                        categoryId: selectedCategoryId,
+                        selectedSubCategoryId: modelSubCategory.subCategoryId,
+                        selectedSubCategoryName: modelSubCategory.subCategoryName,
+                      ),
+                    );
+                  },
+                  child: ItemSubCategory(modelSubCategory: modelSubCategory),
                 );
               },
-              child: ItemSubCategory(modelSubCategory: modelSubCategory),
             );
           },
+          error: (error, stackTrace) {
+            debugPrintStack(stackTrace: stackTrace);
+            return EmptyRecordView(message: error.toString());
+          },
+          loading: () => CommonCircleProgressBar(),
         );
       },
     );
