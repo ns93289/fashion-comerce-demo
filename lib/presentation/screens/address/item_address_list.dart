@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
-import '../../../data/models/model_address.dart';
+import '../../../domain/entities/address_entity.dart';
 
 class ItemAddressList extends StatelessWidget {
-  final ModelAddress modelAddress;
+  final AddressEntity modelAddress;
   final Function()? onEdit;
   final Function()? onDelete;
 
@@ -14,7 +14,7 @@ class ItemAddressList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ModelAddress(:houseNanme, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :addressType) = modelAddress;
+    final AddressEntity(:houseName, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :addressType) = modelAddress;
     return Container(
       color: colorWhite,
       padding: EdgeInsetsDirectional.symmetric(vertical: 5.h),
@@ -23,7 +23,7 @@ class ItemAddressList extends StatelessWidget {
           Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: Icon(getAddressIcon(addressType))),
           Expanded(
             child: Text(
-              "$houseNo, $houseNanme, $street, $addressLine1, $addressLine2, $city, $state",
+              "$houseNo, $houseName, $street, $addressLine1, $addressLine2, $city, $state",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: bodyStyle(fontSize: 14.sp),

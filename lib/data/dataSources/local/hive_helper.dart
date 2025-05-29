@@ -1,7 +1,6 @@
 import 'package:fashion_comerce_demo/main.dart';
 import 'package:hive/hive.dart';
 
-import '../../models/model_address.dart';
 import '../../models/model_product.dart';
 import '../../models/order_history_model.dart';
 import 'hive_constants.dart';
@@ -9,13 +8,11 @@ import 'hive_constants.dart';
 final Box cartBox = Hive.box(hiveCartBox);
 final Box orderBox = Hive.box(hiveOrderBox);
 final Box userBox = Hive.box(hiveUserBox);
-final Box addressBox = Hive.box(hiveAddressBox);
 
 Future<void> initHiveBoxes() async {
   await Hive.openBox(hiveCartBox);
   await Hive.openBox(hiveOrderBox);
   await Hive.openBox(hiveUserBox);
-  await Hive.openBox(hiveAddressBox);
 }
 
 Future<void> putDataIntoCartBox(ModelProduct data) async {
@@ -104,32 +101,6 @@ bool getBoolDataFromUserBox({required String key}) {
   return userBox.get(key, defaultValue: false) ?? false;
 }
 
-List<ModelAddress> getAddressDataFromAddressBox() {
-  List<dynamic> jsonList = addressBox.get(hiveAddressData, defaultValue: []);
-  List<ModelAddress> addressData = jsonList.map((json) => ModelAddress.fromJson(Map<String, dynamic>.from(json))).toList();
-  return addressData;
-}
-
-Future<void> putDataInAddressBox({required ModelAddress data}) async {
-  List<ModelAddress> addressData = getAddressDataFromAddressBox();
-  int index = addressData.indexWhere((element) => element.addressId == data.addressId);
-  if (index > -1) {
-    addressData[index] = data;
-  } else {
-    data.addressId = addressData.length + 1;
-    addressData.add(data);
-  }
-  List<Map<String, dynamic>> jsonList = addressData.map((p) => p.toJson()).toList();
-  await addressBox.put(hiveAddressData, jsonList);
-}
-
-Future<void> deleteAddressFromAddressBox(int addressId) async {
-  List<ModelAddress> addressData = getAddressDataFromAddressBox();
-  addressData.removeWhere((element) => element.addressId == addressId);
-  List<Map<String, dynamic>> jsonList = addressData.map((p) => p.toJson()).toList();
-  await addressBox.put(hiveAddressData, jsonList);
-}
-
 Future<void> clearAllBoxes() async {
   // await userBox.clear();
   putDataInUserBox(key: hiveUserIsVerified, value: false);
@@ -137,5 +108,4 @@ Future<void> clearAllBoxes() async {
   await orderBox.clear();
   await cartBox.clear();
   await userBox.clear();
-  await addressBox.clear();
 }

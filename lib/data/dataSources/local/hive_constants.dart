@@ -2,7 +2,6 @@
 const String hiveCartBox = "cartBox";
 const String hiveOrderBox = "orderBox";
 const String hiveUserBox = "userBox";
-const String hiveAddressBox = "addressBox";
 
 ///Cart data box
 const String hiveCartData = "cartData";

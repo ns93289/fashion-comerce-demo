@@ -118,13 +118,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return Consumer(
       builder: (context, ref, _) {
         final List<ModelDrawer> drawerList = ref.watch(drawerListProvider);
-        ref.listen(authenticationServiceProvider, (previous, next) {
+        /*ref.listen(authenticationServiceProvider, (previous, next) {
           if (next.value != null) {
             Navigator.pop(context);
             if (!context.mounted) return;
             openScreenWithClearStack(context, SplashScreen());
           }
-        });
+        });*/
 
         return Container(
           color: colorWhite,

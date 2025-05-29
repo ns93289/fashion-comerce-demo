@@ -23,7 +23,6 @@ class ApiBaseHelper {
   Future<dynamic> post({required String api, Map<String, dynamic>? body, Map<String, dynamic>? queryParameters}) async {
     Response response = await _dio.post(api, data: body, queryParameters: queryParameters);
     try {
-      logD("post>>>", response.data.toString());
       return response.data;
     } catch (e) {
       throw ApiException().getErrorMessage(e);
@@ -33,7 +32,15 @@ class ApiBaseHelper {
   Future<dynamic> put({required String api, Map<String, dynamic>? body, Map<String, dynamic>? queryParameters}) async {
     Response response = await _dio.put(api, data: body, queryParameters: queryParameters);
     try {
-      logD("post>>>", response.data.toString());
+      return response.data;
+    } catch (e) {
+      throw ApiException().getErrorMessage(e);
+    }
+  }
+
+  Future<dynamic> delete({required String api, Map<String, dynamic>? body, Map<String, dynamic>? queryParameters}) async {
+    Response response = await _dio.delete(api, data: body, queryParameters: queryParameters);
+    try {
       return response.data;
     } catch (e) {
       throw ApiException().getErrorMessage(e);

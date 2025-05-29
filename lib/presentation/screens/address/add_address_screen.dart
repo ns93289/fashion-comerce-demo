@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/text_field_validators.dart';
 import '../../../core/utils/tools.dart';
-import '../../../data/dataSources/local/hive_helper.dart';
+import '../../../domain/entities/address_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_text_field.dart';
@@ -16,7 +16,7 @@ import '../../provider/address_provider.dart';
 import '../../components/custom_button.dart';
 
 class AddAddressScreen extends StatefulWidget {
-  final ModelAddress? modelAddress;
+  final AddressEntity? modelAddress;
 
   const AddAddressScreen({super.key, this.modelAddress});
 
@@ -36,7 +36,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   Widget _buildAddressScreen() {
-    final ModelAddress(:houseNanme, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :addressType, :pinCode) =
+    final AddressEntity(:houseName, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :addressType, :pinCode) =
         widget.modelAddress ?? ModelAddress();
 
     return Stack(
@@ -48,7 +48,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             child: Column(
               children: [
                 _addressTypeView(),
-                _houseNameField(houseNanme),
+                _houseNameField(houseName),
                 _houseNoField(houseNo),
                 _streetField(street),
                 _addressLine1Field(addressLine1),
@@ -295,34 +295,25 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget _addOrUpdateButton() {
     return Consumer(
       builder: (context, ref, _) {
+        final apiResponse = ref.watch(addressServiceProvider);
+        ref.listen(addressServiceProvider, (previous, next) {
+          if (next.value != null) {
+            Navigator.pop(context, true);
+          }
+        });
+
         return CustomButton(
           title: widget.modelAddress == null ? language.add : language.update,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h),
+          isLoading: apiResponse.isLoading,
           onPress: () {
             if (addressFormKey.currentState?.validate() ?? false) {
-              final houseName = ref.read(houseNameTECProvider).text;
-              final houseNo = ref.read(houseNoTECProvider).text;
-              final street = ref.read(streetTECProvider).text;
-              final addressLine1 = ref.read(addressLine1TECProvider).text;
-              final addressLine2 = ref.read(addressLine2TECProvider).text;
-              final city = ref.read(cityTECProvider).text;
-              final state = ref.read(stateTECProvider).text;
-              final pinCode = ref.read(pinCodeTECProvider).text;
-              final addressType = ref.read(addressTypeProvider);
-              ModelAddress modelAddress = ModelAddress(
-                addressId: widget.modelAddress?.addressId,
-                addressType: addressType,
-                houseName: houseName,
-                houseNo: houseNo,
-                street: street,
-                addressLine1: addressLine1,
-                addressLine2: addressLine2,
-                city: city,
-                state: state,
-                pinCode: int.parse(pinCode),
-              );
-              putDataInAddressBox(data: modelAddress);
-              Navigator.pop(context, true);
+              FocusManager.instance.primaryFocus?.unfocus();
+              if (widget.modelAddress == null) {
+                ref.read(addAddressProvider);
+              } else {
+                ref.read(editAddressProvider(widget.modelAddress!.addressId));
+              }
             }
           },
         );

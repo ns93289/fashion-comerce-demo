@@ -152,6 +152,7 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
           state = AsyncValue.data(res.data);
         });
       } else {
+        logD("callLogoutApi>>>", "error: ");
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }
     } catch (e, st) {

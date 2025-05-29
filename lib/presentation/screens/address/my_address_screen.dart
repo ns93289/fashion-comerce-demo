@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../components/common_circle_progress_bar.dart';
 import '../../../core/constants/colors.dart';
-import '../../../data/dataSources/local/hive_helper.dart';
+import '../../../domain/entities/address_entity.dart';
 import '../../components/empty_record_view.dart';
 import '../../../core/utils/tools.dart';
 import '../../provider/address_provider.dart';
@@ -13,14 +14,22 @@ import '../../components/custom_button.dart';
 import 'add_address_screen.dart';
 import 'item_address_list.dart';
 
-class MyAddressScreen extends StatefulWidget {
+class MyAddressScreen extends ConsumerStatefulWidget {
   const MyAddressScreen({super.key});
 
   @override
-  State<MyAddressScreen> createState() => _MyAddressScreenState();
+  ConsumerState<MyAddressScreen> createState() => _MyAddressScreenState();
 }
 
-class _MyAddressScreenState extends State<MyAddressScreen> {
+class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
+  @override
+  void initState() {
+    Future.microtask(() {
+      ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: CommonAppBar(title: Text(language.myAddress)), body: SafeArea(child: _buildAddressScreen()));
@@ -33,38 +42,49 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
   Widget _addressListView() {
     return Consumer(
       builder: (context, ref, child) {
-        final addressList = ref.watch(addressListProvider);
+        final apiResponse = ref.watch(getAddressServiceProvider);
 
-        return addressList.isNotEmpty
-            ? ListView.separated(
-              itemCount: addressList.length,
-              shrinkWrap: true,
-              padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
-              itemBuilder: (context, index) {
-                final modelAddress = addressList[index];
-                return ItemAddressList(
-                  modelAddress: modelAddress,
-                  onEdit: () {
-                    openScreenWithResult(
-                      context,
-                      AddAddressScreen(modelAddress: modelAddress),
-                      overrides: [addressTypeProvider.overrideWith((ref) => (modelAddress.addressType))],
-                    ).then((value) {
-                      if (value ?? false) {
-                        ref.read(addressListProvider.notifier).state = getAddressDataFromAddressBox();
-                      }
-                    });
+        return apiResponse.when(
+          data: (data) {
+            if (data == null) {
+              return EmptyRecordView(message: language.emptyAddressMsg);
+            }
+            final List<AddressEntity> addressList = data as List<AddressEntity>;
+
+            return addressList.isNotEmpty
+                ? ListView.separated(
+                  itemCount: addressList.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+                  itemBuilder: (context, index) {
+                    final modelAddress = addressList[index];
+                    return ItemAddressList(
+                      modelAddress: modelAddress,
+                      onEdit: () {
+                        openScreenWithResult(
+                          context,
+                          AddAddressScreen(modelAddress: modelAddress),
+                          overrides: [addressTypeProvider.overrideWith((ref) => (modelAddress.addressType))],
+                        ).then((value) {
+                          if (value ?? false) {
+                            ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
+                          }
+                        });
+                      },
+                      onDelete: () {
+                        ref.read(deleteAddressProvider((context: context, addressId: modelAddress.addressId)));
+                      },
+                    );
                   },
-                  onDelete: () {
-                    ref.read(deleteAddressProvider((context: context, addressId: modelAddress.addressId)));
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h), child: Divider(color: colorDivider));
                   },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h), child: Divider(color: colorDivider));
-              },
-            )
-            : EmptyRecordView(message: language.emptyAddressMsg);
+                )
+                : EmptyRecordView(message: language.emptyAddressMsg);
+          },
+          error: (error, stackTrace) => EmptyRecordView(message: language.emptyAddressMsg),
+          loading: () => CommonCircleProgressBar(),
+        );
       },
     );
   }
@@ -78,7 +98,7 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
           onPress: () {
             openScreenWithResult(context, AddAddressScreen()).then((value) {
               if (value ?? false) {
-                ref.read(addressListProvider.notifier).state = getAddressDataFromAddressBox();
+                ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
               }
             });
           },

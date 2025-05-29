@@ -153,6 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
           isLoading: apiResponse.isLoading,
           onPress: () {
             if (loginFormKey.currentState!.validate()) {
+              FocusManager.instance.primaryFocus?.unfocus();
               ref.read(loginProvider(context));
             }
           },
