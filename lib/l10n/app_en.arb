@@ -172,5 +172,14 @@
   "enterOldPassword": "Enter Old Password",
   "enterNewPassword": "Enter New Password",
   "enterConfirmNewPassword": "Enter Confirm New Password",
-  "passwordUpdated": "Password updated successfully"
+  "passwordUpdated": "Password updated successfully",
+  "emailOrMobile": "Email or Mobile Number",
+  "enterEmailOrMobile": "Enter Email or Mobile Number",
+  "enterWalletAmount": "Enter wallet amount to add",
+  "enterNonZeroAmount": "Enter non-zero amount",
+  "transactions": "Transactions",
+  "all": "All",
+  "credit": "Credit",
+  "debit": "Debit",
+  "emptyTransactionMsg": "Your transaction list is empty. Lets explore something great."
 }

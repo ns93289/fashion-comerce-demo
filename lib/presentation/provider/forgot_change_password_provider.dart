@@ -1,10 +1,9 @@
-import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/utils/tools.dart';
-import '../../presentation/dialogs/forgot_change_password_dialog.dart';
-import '../../presentation/screens/home/home_screen.dart';
+import '../../application/authentication_service.dart';
+import '../../data/repositories/auth_repo_impl.dart';
+import '../../domain/repositories/auth_repo.dart';
 
 final passwordTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
@@ -21,23 +20,19 @@ final otpTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   ref.onDispose(() => controller.dispose());
   return controller;
 });
+final authRepoProvider = Provider.autoDispose<AuthRepo>((ref) {
+  return AuthRepoImpl();
+});
+final authenticationServiceProvider = StateNotifierProvider<AuthenticationService, AsyncValue<dynamic>>((ref) {
+  return AuthenticationService(ref.watch(authRepoProvider));
+});
+final changePasswordProvider = Provider.autoDispose<void>((ref) {
+  final passwordTEC = ref.watch(passwordTECProvider);
+  final otpTEC = ref.watch(otpTECProvider);
 
-final changePasswordProvider = Provider.autoDispose.family<void, BuildContext>((ref, context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return ForgotChangePasswordDialog(
-        title: language.change,
-        onPositiveClick: () {
-          if (changePasswordFormKey.currentState!.validate()) {
-            Navigator.pop(context);
-            openScreenWithClearStack(context, HomeScreen());
-          }
-        },
-        onNegativeClick: () => Navigator.pop(context),
-      );
-    },
-  );
+  Future.microtask(() {
+    ref.read(authenticationServiceProvider.notifier).callForgotChangePasswordApi(otp: otpTEC.text, password: passwordTEC.text);
+  });
 });
 
 final changePasswordFormKey = GlobalKey<FormState>();

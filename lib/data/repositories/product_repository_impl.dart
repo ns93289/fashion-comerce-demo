@@ -10,30 +10,21 @@ class ProductRepositoryImpl extends ProductRepository {
   final ApiBaseHelper _apiHelper = ApiBaseHelper();
 
   @override
-  Future<ApiResponse<ProductEntity>> getNewProductList() {
-    return _apiHelper.get(
-      api: EndPoint.productList,
-      queryParameters: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken)},
-    );
+  Future<ApiResponse<List<ProductEntity>>> getNewProductList() {
+    // TODO: implement getWalletTransactions
+    throw UnimplementedError();
   }
 
   @override
   Future<ApiResponse<ProductEntity>> getPopularProductList() {
-    return _apiHelper.get(
-      api: EndPoint.popularProductList,
-      queryParameters: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken)},
-    );
+    // TODO: implement getWalletTransactions
+    throw UnimplementedError();
   }
 
   @override
   Future<ApiResponse<ProductEntity>> getProductList({int page = 1}) {
-    return _apiHelper.get(
-      api: EndPoint.newProductList,
-      queryParameters: {
-        ApiParams.userId: getIntDataFromUserBox(key: hiveUserId),
-        ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken),
-        ApiParams.page: page,
-      },
-    );
+    // TODO: implement getWalletTransactions
+    throw UnimplementedError();
   }
+
 }

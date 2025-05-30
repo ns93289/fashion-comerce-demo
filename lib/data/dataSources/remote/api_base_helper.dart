@@ -47,7 +47,7 @@ class ApiBaseHelper {
     }
   }
 
-  dynamic putForm({required String api, FormData? body, Map<String, dynamic>? queryParameters}) async {
+  Future<dynamic> putForm({required String api, FormData? body, Map<String, dynamic>? queryParameters}) async {
     Response response = await _dio.put(api, data: body, queryParameters: queryParameters);
     try {
       return response.data;
@@ -56,7 +56,7 @@ class ApiBaseHelper {
     }
   }
 
-  dynamic get({required String api, Map<String, dynamic>? queryParameters, Map<String, dynamic>? body}) async {
+  Future<dynamic> get({required String api, Map<String, dynamic>? queryParameters, Map<String, dynamic>? body}) async {
     Response response = await _dio.get(api, queryParameters: queryParameters, data: body);
     try {
       return response.data;

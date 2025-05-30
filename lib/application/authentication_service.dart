@@ -142,6 +142,47 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
     }
   }
 
+  Future<void> callForgotPasswordApi({required String email}) async {
+    if (email.isEmpty) {
+      state = const AsyncValue.error("email cannot be empty", StackTrace.empty);
+      return;
+    }
+    state = const AsyncValue.loading();
+    try {
+      final res = await authRepo.forgotPassword(email: email);
+      if (res is ApiSuccess) {
+        state = AsyncValue.data(res.data);
+      } else {
+        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callForgotPasswordApi>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> callForgotChangePasswordApi({required String otp, required String password}) async {
+    if (otp.isEmpty) {
+      state = const AsyncValue.error("otp cannot be empty", StackTrace.empty);
+      return;
+    } else if (password.isEmpty) {
+      state = const AsyncValue.error("password cannot be empty", StackTrace.empty);
+      return;
+    }
+    state = const AsyncValue.loading();
+    try {
+      final res = await authRepo.forgotChangePassword(otp: otp, password: password);
+      if (res is ApiSuccess) {
+        state = AsyncValue.data(res.data);
+      } else {
+        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callForgotChangePasswordApi>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
+
   Future<void> callLogoutApi() async {
     state = const AsyncValue.loading();
 
@@ -152,7 +193,6 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
           state = AsyncValue.data(res.data);
         });
       } else {
-        logD("callLogoutApi>>>", "error: ");
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }
     } catch (e, st) {

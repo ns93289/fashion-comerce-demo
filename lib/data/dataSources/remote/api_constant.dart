@@ -1,5 +1,5 @@
 class BaseUrl {
-  static const String url = "http://192.168.1.5:8055/";
+  static const String url = "http://192.168.1.7:8055/";
   static const String apiUrl = "$url/api";
 }
 
@@ -10,6 +10,8 @@ class EndPoint {
   static const String logout = "/logout";
   static const String emailVerification = "/email-verification";
   static const String mobileVerification = "/mobile-verification";
+  static const String forgotPassword = "/auth/forgot-password";
+  static const String forgotChangePassword = "/auth/forgot-change-password";
 
   ///User Profile APIs...
   static const String updateProfile = "/users/update";
@@ -29,6 +31,11 @@ class EndPoint {
   static const String editAddress = "/address/update";
   static const String getAddress = "/address/get";
   static const String deleteAddress = "/address/delete";
+
+  ///Wallet Apis...
+  static const String getWalletBalance = "/wallet/balance";
+  static const String addMoneyToWallet = "/wallet/add-money";
+  static const String getWalletTransactions = "/wallet/transactions";
 }
 
 class ApiParams {
@@ -58,4 +65,7 @@ class ApiParams {
   static const String state = "state";
   static const String postalCode = "postal_code";
   static const String country = "country";
+  static const String otp = "otp";
+  static const String amount = "amount";
+  static const String type = "type";
 }

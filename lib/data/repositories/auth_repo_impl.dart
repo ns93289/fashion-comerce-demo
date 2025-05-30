@@ -69,4 +69,21 @@ class AuthRepoImpl implements AuthRepo {
 
     return ResponseWrapper.fromJson<UserModel>(response, UserModel.fromJson);
   }
+
+  @override
+  Future<ApiResponse<UserEntity>> forgotChangePassword({required String otp, required String password}) async {
+    final response = await _apiHelper.post(
+      api: EndPoint.forgotChangePassword,
+      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.password: password, ApiParams.otp: otp},
+    );
+
+    return ResponseWrapper.fromJson<UserModel>(response, UserModel.fromJson);
+  }
+
+  @override
+  Future<ApiResponse<UserEntity>> forgotPassword({required String email}) async {
+    final response = await _apiHelper.post(api: EndPoint.forgotPassword, body: {ApiParams.email: email});
+
+    return ResponseWrapper.fromJson<UserModel>(response, UserModel.fromJson);
+  }
 }
