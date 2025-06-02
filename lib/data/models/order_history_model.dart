@@ -5,6 +5,7 @@ class OrderHistoryItem {
   String? _productName;
   String? _orderStatusMsg;
   String? _orderedTime;
+  String? _orderNo;
   num? _orderAmount;
   List<int>? _productIdList;
 
@@ -17,6 +18,7 @@ class OrderHistoryItem {
     num? orderAmount,
     String? orderStatusMsg,
     List<int>? productIdList,
+    String? orderNo,
   }) {
     _orderId = orderId;
     _orderQuantity = orderQuantity;
@@ -26,6 +28,7 @@ class OrderHistoryItem {
     _orderStatusMsg = orderStatusMsg;
     _productIdList = productIdList;
     _orderedTime = orderedTime;
+    _orderNo = orderNo;
   }
 
   OrderHistoryItem.fromJson(dynamic json) {
@@ -36,6 +39,7 @@ class OrderHistoryItem {
     _orderAmount = json['order_amount'];
     _orderStatusMsg = json['order_status_msg'];
     _orderedTime = json['ordered_time'];
+    _orderNo = json['order_no'];
     if (json['product_id_list'] != null) {
       _productIdList = [];
       json['product_id_list'].forEach((v) {
@@ -53,6 +57,7 @@ class OrderHistoryItem {
     map['order_amount'] = _orderAmount;
     map['order_status_msg'] = _orderStatusMsg;
     map['ordered_time'] = _orderedTime;
+    map['order_no'] = _orderNo;
     if (_productIdList != null) {
       map['product_id_list'] = _productIdList?.map((v) => v).toList();
     }
@@ -74,6 +79,8 @@ class OrderHistoryItem {
   String get deliveryAddress => _deliveryAddress ?? "";
 
   String get orderedTime => _orderedTime ?? "";
+
+  String get orderNo => _orderNo ?? "14564564564";
 
   List<int> get productIdList => _productIdList ?? [];
 }

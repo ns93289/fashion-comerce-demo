@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/custom_icons.dart';
 import '../../../data/dataSources/local/hive_constants.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../core/constants/theme.dart';
@@ -23,7 +24,7 @@ class VerificationsScreen extends StatefulWidget {
 class _VerificationsScreenState extends State<VerificationsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.otpVerification)), body: SafeArea(child: _buildVerificationsScreen()));
+    return Scaffold(appBar: CommonAppBar(title: Text(language.verificationPending)), body: SafeArea(child: _buildVerificationsScreen()));
   }
 
   Widget _buildVerificationsScreen() {
@@ -31,7 +32,11 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
       children: [
         Padding(
           padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
-          child: Text(language.verificationsMsg, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+          child: Text(language.verificationsMsg, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+        ),
+        Padding(
+          padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+          child: Text(language.verificationMsg2, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
         ),
         _verifyEmailButton(),
         _verifyPhoneButton(),
@@ -44,24 +49,61 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
       valueListenable: userBox.listenable(),
       builder: (context, _, _) {
         bool isEmailVerified = getBoolDataFromUserBox(key: hiveEmailVerified);
-        return CustomButton(
-          title: language.verifyEmail,
-          backgroundColor: isEmailVerified ? colorGreen : colorPrimary,
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 30.h),
-          icon: isEmailVerified ? Icon(Icons.check_sharp, color: colorWhite) : null,
-          textColor: isEmailVerified ? colorWhite : colorText,
-          enabled: !isEmailVerified,
-          onPress: () {
-            openScreenWithResult(context, OtpScreen()).then((value) {
-              bool isPhoneVerified = getBoolDataFromUserBox(key: hivePhoneNumberVerified);
-              if (isPhoneVerified) {
-                Future.delayed(Duration(seconds: 1), () {
-                  if (!context.mounted) return;
-                  openScreenWithClearStack(context, HomeScreen());
-                });
-              }
-            });
-          },
+
+        return Container(
+          decoration: BoxDecoration(border: Border.all(color: colorBorder), borderRadius: BorderRadius.circular(20.r)),
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 25.h),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                child: Row(
+                  children: [
+                    Expanded(child: Text(language.emailVerification, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600))),
+                    Icon(isEmailVerified ? CustomIcons.checkCircle : CustomIcons.timesCircle, color: isEmailVerified ? colorGreen : colorRed),
+                  ],
+                ),
+              ),
+              Divider(color: colorBorder, height: 0, thickness: 1.sp),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                child: Text(language.byClickEmailVerify(getStringDataFromUserBox(key: hiveEmailAddress)), style: bodyTextStyle(fontSize: 12.sp)),
+              ),
+              if (!isEmailVerified)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CustomButton(
+                      title: language.changeEmail,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      fontSize: 12.sp,
+                      height: 25.h,
+                      borderedButton: true,
+                      margin: EdgeInsetsDirectional.only(end: 10.w),
+                    ),
+                    CustomButton(
+                      title: language.verify,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      fontSize: 12.sp,
+                      height: 25.h,
+                      margin: EdgeInsetsDirectional.only(end: 15.w),
+                      onPress: () {
+                        openScreenWithResult(context, OtpScreen()).then((value) {
+                          bool isPhoneVerified = getBoolDataFromUserBox(key: hivePhoneNumberVerified);
+                          if (isPhoneVerified) {
+                            Future.delayed(Duration(seconds: 1), () {
+                              if (!context.mounted) return;
+                              openScreenWithClearStack(context, HomeScreen());
+                            });
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              SizedBox(height: 10.h),
+            ],
+          ),
         );
       },
     );
@@ -72,24 +114,61 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
       valueListenable: userBox.listenable(),
       builder: (context, _, _) {
         bool isPhoneVerified = getBoolDataFromUserBox(key: hivePhoneNumberVerified);
-        return CustomButton(
-          title: language.verifyMobile,
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
-          icon: isPhoneVerified ? Icon(Icons.check_sharp, color: colorWhite) : null,
-          backgroundColor: isPhoneVerified ? colorGreen : colorPrimary,
-          textColor: isPhoneVerified ? colorWhite : colorText,
-          enabled: !isPhoneVerified,
-          onPress: () {
-            openScreenWithResult(context, OtpScreen(isPhone: true)).then((value) {
-              bool isEmailVerified = getBoolDataFromUserBox(key: hiveEmailVerified);
-              if (isEmailVerified) {
-                Future.delayed(Duration(seconds: 1), () {
-                  if (!context.mounted) return;
-                  openScreenWithClearStack(context, HomeScreen());
-                });
-              }
-            });
-          },
+
+        return Container(
+          decoration: BoxDecoration(border: Border.all(color: colorBorder), borderRadius: BorderRadius.circular(20.r)),
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 25.h),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                child: Row(
+                  children: [
+                    Expanded(child: Text(language.mobileNumberVerification, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600))),
+                    Icon(isPhoneVerified ? CustomIcons.checkCircle : CustomIcons.timesCircle, color: isPhoneVerified ? colorGreen : colorRed),
+                  ],
+                ),
+              ),
+              Divider(color: colorBorder, height: 0, thickness: 1.sp),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                child: Text(language.byClickMobileVerify(getStringDataFromUserBox(key: hivePhoneNumber)), style: bodyTextStyle(fontSize: 12.sp)),
+              ),
+              if (!isPhoneVerified)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CustomButton(
+                      title: language.changeMobileNumber,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      fontSize: 12.sp,
+                      height: 25.h,
+                      borderedButton: true,
+                      margin: EdgeInsetsDirectional.only(end: 10.w),
+                    ),
+                    CustomButton(
+                      title: language.verify,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      fontSize: 12.sp,
+                      height: 25.h,
+                      margin: EdgeInsetsDirectional.only(end: 15.w),
+                      onPress: () {
+                        openScreenWithResult(context, OtpScreen(isPhone: true)).then((value) {
+                          bool isEmailVerified = getBoolDataFromUserBox(key: hiveEmailVerified);
+                          if (isEmailVerified) {
+                            Future.delayed(Duration(seconds: 1), () {
+                              if (!context.mounted) return;
+                              openScreenWithClearStack(context, HomeScreen());
+                            });
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              SizedBox(height: 10.h),
+            ],
+          ),
         );
       },
     );

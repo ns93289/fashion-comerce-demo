@@ -33,16 +33,17 @@ class _OrdersPageState extends State<OrdersPage> with AutomaticKeepAliveClientMi
             if (orderHistoryList.isEmpty) {
               return EmptyRecordView(message: language.emptyOrdersMsg);
             }
-            return  ListView.separated(
+            return ListView.separated(
               itemCount: orderHistoryList.length,
               shrinkWrap: true,
               padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
+                final orderHistoryItem = orderHistoryList[index];
+                return ItemOrderHistory(
+                  orderHistoryItem: orderHistoryItem,
+                  onReviewPress: () {
                     openScreen(context, OrderDetailsScreen(orderId: orderHistoryList[index].orderId));
                   },
-                  child: ItemOrderHistory(orderHistoryItem: orderHistoryList[index]),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {

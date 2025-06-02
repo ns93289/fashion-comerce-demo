@@ -81,57 +81,57 @@ class ModelProduct extends ProductEntity {
 
   factory ModelProduct.fromJson(Map<String, dynamic> json) {
     return ModelProduct(
-      productId: json['product_id'],
-      productName: json['product_name'],
-      productImage: json['product_image'],
+      productId: json['id'],
+      productName: json['name'],
+      productImage: json['image'],
       categoryName: json['category_name'],
-      productPrice: json['product_price'],
+      productPrice: json['price'],
       favorite: json['favorite'] == 1 ? true : false,
-      productDescription: json['product_description'],
+      productDescription: json['description'],
       noOfReview: json['no_of_review'],
       averageRatings: json['average_ratings'],
       isBestSeller: json['is_best_seller'] == 1 ? true : false,
       sellerId: json['seller_id'],
       sellerName: json['seller_name'],
-      productCare: json['product_care'],
-      productDesign: json['product_design'],
-      productCountry: json['product_country'],
-      productMaterial: json['product_material'],
+      productCare: json['care'],
+      productDesign: json['design'],
+      productCountry: json['country'],
+      productMaterial: json['material'],
       selectedColor: json['selected_color'],
       selectedQuantity: json['selected_quantity'],
       selectedSize: json['selected_size'],
-      productSizes: (json['product_sizes'] as List?)?.map((e) => e as num).toList(),
+      productSizes: (json['sizes'] as List?)?.map((e) => e as num).toList(),
       reviewerList: (json['reviewer_list'] as List?)?.map((e) => e as String).toList(),
-      productColors: (json['product_colors'] as List?)?.map((e) => e as String).toList(),
-      productQuantities: (json['product_quantities'] as List?)?.map((e) => e as int).toList(),
+      productColors: (json['colors'] as List?)?.map((e) => e as String).toList(),
+      productQuantities: (json['quantities'] as List?)?.map((e) => e as int).toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['product_id'] = productId;
-    map['product_name'] = productName;
-    map['product_image'] = productImage;
+    map['id'] = productId;
+    map['name'] = productName;
+    map['image'] = productImage;
     map['category_name'] = categoryName;
-    map['product_price'] = productPrice;
+    map['price'] = productPrice;
     map['favorite'] = favorite;
-    map['product_description'] = productDescription;
+    map['description'] = productDescription;
     map['no_of_review'] = noOfReview;
     map['average_ratings'] = averageRatings;
     map['is_best_seller'] = isBestSeller;
     map['seller_id'] = sellerId;
     map['seller_name'] = sellerName;
-    map['product_care'] = productCare;
-    map['product_design'] = productDesign;
-    map['product_country'] = productCountry;
-    map['product_material'] = productMaterial;
+    map['care'] = productCare;
+    map['design'] = productDesign;
+    map['country'] = productCountry;
+    map['material'] = productMaterial;
     map['selected_color'] = selectedColor;
     map['selected_quantity'] = selectedQuantity;
     map['selected_size'] = selectedSize;
-    map['product_sizes'] = productSizes;
+    map['sizes'] = productSizes;
     map['reviewer_list'] = reviewerList;
-    map['product_colors'] = productColors;
-    map['product_quantities'] = productQuantities;
+    map['colors'] = productColors;
+    map['quantities'] = productQuantities;
     return map;
   }
 }

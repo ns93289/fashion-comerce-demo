@@ -44,10 +44,10 @@ class CustomButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor ?? (borderedButton ? Colors.transparent : colorPrimary),
-          borderRadius: BorderRadius.circular(30.r),
-          border: borderedButton ? Border.all(color: colorPrimary, width: 1.sp) : null,
+          borderRadius: BorderRadius.circular(10.r),
+          border: borderedButton ? Border.all(color: colorBorder, width: 1.sp) : null,
         ),
-        constraints: BoxConstraints(minWidth: width ?? 100.w),
+        constraints: BoxConstraints(minWidth: width ?? 50.w),
         width: width,
         height: height ?? 36.h,
         margin: margin,

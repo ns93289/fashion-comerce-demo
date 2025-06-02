@@ -1,45 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/constants/extensions.dart';
+import '../../../../../core/constants/theme.dart';
 import '../../../../../main.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../data/models/order_history_model.dart';
+import '../../../../components/custom_button.dart';
 
 class ItemOrderHistory extends StatelessWidget {
   final OrderHistoryItem orderHistoryItem;
+  final Function()? onReviewPress;
 
-  const ItemOrderHistory({super.key, required this.orderHistoryItem});
+  const ItemOrderHistory({super.key, required this.orderHistoryItem, this.onReviewPress});
 
   @override
   Widget build(BuildContext context) {
-    final OrderHistoryItem(:productName, :orderAmount, :orderStatusMsg, :orderQuantity) = orderHistoryItem;
+    final OrderHistoryItem(:productName, :orderNo, :orderedTime, :orderQuantity) = orderHistoryItem;
 
-    return Container(
-      height: 90.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.r),
-        gradient: LinearGradient(colors: [colorProductStart, colorProductEnd], begin: AlignmentDirectional.bottomEnd, end: AlignmentDirectional.topStart),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            productName.replaceAll(RegExp(r'[\[\]]'), ""),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: bodyStyle(fontWeight: FontWeight.w500),
+    return Row(
+      children: [
+        SizedBox(
+          width: 121.w,
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: colorProductStart,
+                borderRadius: BorderRadius.circular(10.r),
+                boxShadow: [BoxShadow(blurRadius: 10, offset: Offset(0, 5), color: colorShadow)],
+              ),
+            ),
           ),
-          Spacer(),
-          Text(orderStatusMsg, style: bodyStyle(fontSize: 12.sp, color: colorGreen)),
-          Spacer(),
-          Text("${language.items}: $orderQuantity", style: bodyStyle(fontSize: 12.sp)),
-          Spacer(),
-          Text("${language.total}: ${orderAmount.withCurrency}", style: bodyStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
-        ],
-      ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(start: 15.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(productName.replaceAll(RegExp(r'[\[\]]'), ""), maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontSize: 12.sp)),
+                SizedBox(height: 10.h),
+                Text("${language.orderId}: $orderNo", style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10.h),
+                Text(orderedTime, style: bodyStyle(fontSize: 14.sp)),
+                CustomButton(
+                  title: language.review,
+                  borderedButton: true,
+                  width: 1.sw,
+                  textColor: colorPrimary,
+                  margin: EdgeInsetsDirectional.only(top: 10.h),
+                  onPress: () {
+                    onReviewPress?.call();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

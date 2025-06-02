@@ -16,6 +16,7 @@ class CustomPinCodeField extends StatefulWidget {
 
 class CustomPinCodeFieldState extends State<CustomPinCodeField> {
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+  final List<String> _values = List.generate(6, (_) => "");
   final List<TextEditingController> _controllers = List.generate(6, (_) => TextEditingController());
 
   @override
@@ -30,6 +31,9 @@ class CustomPinCodeFieldState extends State<CustomPinCodeField> {
   }
 
   void _onChanged(String value, int index) {
+    setState(() {
+      _values[index] = value;
+    });
     if (value.isNotEmpty && index < 5) {
       _focusNodes[index + 1].requestFocus();
     } else if (value.isEmpty && index > 0) {
@@ -46,15 +50,15 @@ class CustomPinCodeFieldState extends State<CustomPinCodeField> {
 
   @override
   Widget build(BuildContext context) {
-    final normalBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(5.r), borderSide: BorderSide(color: colorTextLight, width: 1.sp));
-    final focusBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(5.r), borderSide: BorderSide(color: colorPrimary, width: 1.sp));
+    final normalBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(50.r), borderSide: BorderSide.none);
+    final focusBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(50.r), borderSide: BorderSide.none);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: List.generate(6, (index) {
         return SizedBox(
-          width: 35.sp,
-          height: 35.sp,
+          width: 40.sp,
+          height: 40.sp,
           child: TextField(
             controller: _controllers[index],
             focusNode: _focusNodes[index],
@@ -65,12 +69,14 @@ class CustomPinCodeFieldState extends State<CustomPinCodeField> {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               counterText: "",
-              // hides the character counter
               isDense: true,
               border: normalBorder,
               disabledBorder: normalBorder,
               enabledBorder: normalBorder,
               focusedBorder: focusBorder,
+              contentPadding: EdgeInsets.all(10.sp),
+              filled: true,
+              fillColor: _values[index].isNotEmpty ? colorPrimary : colorBorder,
             ),
             onChanged: (value) => _onChanged(value, index),
           ),

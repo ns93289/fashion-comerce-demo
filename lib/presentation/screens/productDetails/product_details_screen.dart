@@ -11,6 +11,7 @@ import '../../../core/utils/tools.dart';
 import '../../../domain/entities/product_entity.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
+import '../../provider/cart_data_provider.dart';
 import '../../provider/product_details_provider.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
@@ -409,16 +410,31 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _actionButtons() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 0, offset: Offset(0, -5))]),
-      child: Row(
-        children: [
-          Expanded(child: CustomButton(title: language.addToCart, backgroundColor: colorBlack, textColor: colorPrimary)),
-          SizedBox(width: 20.w),
-          Expanded(child: CustomButton(title: language.buyNow)),
-        ],
-      ),
+    return Consumer(
+      builder: (context,ref,_) {
+        final data = ref.watch(productDetailsProvider(widget.productId));
+
+        final selectedSize = ref.watch(productSizeProvider);
+        final selectedQuantity = ref.watch(productQuantityProvider);
+
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 0, offset: Offset(0, -5))]),
+          child: Row(
+            children: [
+              Expanded(child: CustomButton(onPress: () async {
+                data.selectedSize = selectedSize;
+                data.selectedQuantity = selectedQuantity;
+                await putDataIntoCartBox(data);
+                ref.read(checkoutInvoiceProvider);
+                ref.read(checkoutDataProvider);
+              },title: language.addToCart, backgroundColor: colorBlack, textColor: colorPrimary)),
+              SizedBox(width: 20.w),
+              Expanded(child: CustomButton(title: language.buyNow)),
+            ],
+          ),
+        );
+      }
     );
   }
 

@@ -1,8 +1,11 @@
+import 'package:fashion_comerce_demo/data/dataSources/local/hive_constants.dart';
+import 'package:fashion_comerce_demo/data/dataSources/local/hive_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../provider/otp_verify_provider.dart';
 import '../../../main.dart';
@@ -22,7 +25,7 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.otpVerification)), body: SafeArea(child: _buildOTPScreen()));
+    return Scaffold(appBar: CommonAppBar(), body: SafeArea(child: _buildOTPScreen()));
   }
 
   Widget _buildOTPScreen() {
@@ -31,10 +34,26 @@ class _OtpScreenState extends State<OtpScreen> {
         children: [
           Padding(
             padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
-            child: Text(language.enterVerificationCode, style: bodyStyle(fontWeight: FontWeight.w500)),
+            child: Text(
+              "${language.verifyYour}\n${widget.isPhone ? language.mobileNumber : language.emailAddress}",
+              style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsetsDirectional.only(top: 35.h, start: 20.w, end: 20.w),
+            child: Text(
+              widget.isPhone
+                  ? language.mobileVerifyMsg(getStringDataFromUserBox(key: hivePhoneNumber))
+                  : language.emailVerifyMsg(getStringDataFromUserBox(key: hiveEmailAddress)),
+              style: bodyTextStyle(fontSize: 14.sp),
+            ),
           ),
           _otpField(),
           _verifyButton(),
+          Padding(
+            padding: EdgeInsetsDirectional.only(top: 25.h, start: 20.w, end: 20.w),
+            child: Text(language.dontReceiveCode, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500)),
+          ),
           _resendOTP(),
         ],
       ),
@@ -44,7 +63,7 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget _otpField() {
     return Consumer(
       builder: (context, ref, _) {
-        return Padding(padding: EdgeInsetsDirectional.only(top: 30.h), child: CustomPinCodeField(key: pinCodeKey));
+        return Padding(padding: EdgeInsetsDirectional.only(top: 35.h), child: CustomPinCodeField(key: pinCodeKey));
       },
     );
   }
@@ -62,7 +81,7 @@ class _OtpScreenState extends State<OtpScreen> {
         });
 
         return CustomButton(
-          title: language.verify,
+          title: language.txtContinue,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 30.h),
           isLoading: apiResponse.isLoading,
           onPress: () {
@@ -81,17 +100,29 @@ class _OtpScreenState extends State<OtpScreen> {
         final minutes = remainingSeconds ~/ 60;
         final seconds = remainingSeconds % 60;
 
-        return CustomButton(
-          title: remainingSeconds > 0 ? "${language.resendOTPIn} $minutes:${seconds.toString().padLeft(2, '0')}" : language.resendOTP,
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 30.h),
-          borderedButton: remainingSeconds > 0,
-          textColor: remainingSeconds > 0 ? colorTextLight : colorText,
-          onPress:
-              remainingSeconds > 0
-                  ? null
-                  : () {
-                    ref.read(resendOTPProvider);
-                  },
+        return Column(
+          children: [
+            GestureDetector(
+              onTap:
+                  remainingSeconds > 0
+                      ? null
+                      : () {
+                        ref.read(resendOTPProvider);
+                      },
+              child: Padding(
+                padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+                child: Text(language.dontReceiveCode, style: bodyTextStyle(fontWeight: FontWeight.bold)),
+              ),
+            ),
+            if (remainingSeconds > 0)
+              Padding(
+                padding: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
+                child: Text(
+                  "${language.resendOTPIn} $minutes:${seconds.toString().padLeft(2, '0')}",
+                  style: bodyTextStyle(fontSize: 14.sp, color: colorTextLight),
+                ),
+              ),
+          ],
         );
       },
     );

@@ -152,7 +152,7 @@
   "verify": "Verify",
   "notGetOTP": "Didn't get OTP?",
   "resendOTP": "Resend OTP",
-  "resendOTPIn": "Resend OTP in",
+  "resendOTPIn": "Wait before sending another OTP:",
   "enterFullOTP": "Enter full OTP",
   "more": "more",
   "less": "less",
@@ -162,7 +162,7 @@
   "standard": "Standard",
   "express": "Express",
   "buyNow": "Buy Now",
-  "verificationsMsg": "These verification steps are necessary to verify your email address and phone number. You will receive an OTP on each account respectively.",
+  "verificationsMsg": "To continue shopping and place orders, please verify your email address and phone number. Verification helps us ensure the security of your account and keep you updated on your orders.",
   "verifyEmail": "Verify Email",
   "verifyMobile": "Verify Mobile Number",
   "changePassword": "Change Password",
@@ -181,5 +181,52 @@
   "all": "All",
   "credit": "Credit",
   "debit": "Debit",
-  "emptyTransactionMsg": "Your transaction list is empty. Lets explore something great."
+  "emptyTransactionMsg": "Your transaction list is empty. Lets explore something great.",
+  "review": "Review",
+  "reviewButton": "Say it!",
+  "yourComment": "Your Comment",
+  "done": "Done",
+  "reviewSuccessMsg": "Thank you for your review",
+  "verificationMsg2": "*Verified contact info is required to complete any purchases.",
+  "byClickEmailVerify": "By clicking verify button a 6 digit code will be sent to {email}. or you can change email if you want by clicking change button.",
+  "byClickMobileVerify": "By clicking verify button a 6 digit code will be sent to {mobileNumber}. or you can change mobile number if you want by clicking change button.",
+  "changeEmail": "Change Email",
+  "changeMobileNumber": "Change Mobile Number",
+  "verificationPending": "Verification Pending",
+  "mobileNumberVerification": "Mobile Number Verification",
+  "emailVerification": "Email Verification",
+  "verifyYour": "Verify Your",
+  "emailVerifyMsg": "A 6 digit code has been sent to email address {email}.\nEnter your code down below.",
+  "mobileVerifyMsg": "A 6 digit code has been sent to mobile number {mobileNumber}.\nEnter your code down below.",
+  "dontReceiveCode": "Didn't receive any code?",
+  "resendNewCode": "Resend New Code",
+  "txtContinue": "Continue",
+  "@byClickEmailVerify": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "@byClickMobileVerify": {
+    "placeholders": {
+      "mobileNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "@emailVerifyMsg": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "@mobileVerifyMsg": {
+    "placeholders": {
+      "mobileNumber": {
+        "type": "String"
+      }
+    }
+  }
 }
