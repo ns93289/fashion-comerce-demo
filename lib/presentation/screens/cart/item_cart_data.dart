@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
-import '../../../core/utils/tools.dart';
+import '../../../core/constants/theme.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
 import '../../../data/models/model_product.dart';
@@ -29,13 +29,13 @@ class ItemCartData extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(productName, maxLines: 1, overflow: TextOverflow.ellipsis, style: bodyStyle(fontWeight: FontWeight.w500)),
-              Text("${language.size}: ${selectedSize.toString()}", style: bodyStyle(fontSize: 14.sp)),
-              Text("${language.quantity}: ${selectedQuantity.toString()}", style: bodyStyle(fontSize: 14.sp)),
+              Text(productName, maxLines: 1, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+              Text("${language.size}: ${selectedSize.toString()}", style: bodyTextStyle(fontSize: 14.sp)),
+              Text("${language.quantity}: ${selectedQuantity.toString()}", style: bodyTextStyle(fontSize: 14.sp)),
               Row(
                 children: [
                   Expanded(
-                    child: Text("${language.totalPrice}: ${productPrice.withCurrency}", style: bodyStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+                    child: Text("${language.totalPrice}: ${productPrice.withCurrency}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
                   ),
                   GestureDetector(onTap: () => removeItemFromCartBox(productId), child: Icon(Icons.delete_outline, size: 20.sp, color: colorTextLight)),
                 ],

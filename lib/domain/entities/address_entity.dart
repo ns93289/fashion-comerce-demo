@@ -54,3 +54,17 @@ class AddressEntity {
 
   String get state => _state ?? "";
 }
+
+class AddressTypeEntity {
+  int? _addressType;
+  String? _title;
+
+  AddressTypeEntity({int? addressType, String? title}) {
+    _addressType = addressType;
+    _title = title;
+  }
+
+  int get addressType => _addressType ?? 0;
+
+  String get title => _title ?? "";
+}

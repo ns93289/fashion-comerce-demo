@@ -38,7 +38,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
         putDataInUserBox(key: hiveEmailVerified, value: user.emailVerified);
         state = AsyncValue.data(user);
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error((res).errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callSignIn>>>", "error: ${e.toString()}");
@@ -55,7 +56,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
         putDataInUserBox(key: hiveEmailVerified, value: true);
         state = AsyncValue.data(res.data);
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callEmailVerifyApi>>>", "error: ${e.toString()}");
@@ -72,7 +74,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
         putDataInUserBox(key: hivePhoneNumberVerified, value: true);
         state = AsyncValue.data(res.data);
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callPhoneNumberVerifyApi>>>", "error: ${e.toString()}");
@@ -112,7 +115,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
         putDataInUserBox(key: hiveEmailVerified, value: user.emailVerified);
         state = AsyncValue.data(user);
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callRegisterApi>>>", "error: ${e.toString()}");
@@ -134,7 +138,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
       if (res is ApiSuccess) {
         state = AsyncValue.data(res.data);
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callChangePasswordApi>>>", "error: ${e.toString()}");
@@ -153,7 +158,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
       if (res is ApiSuccess) {
         state = AsyncValue.data(res.data);
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callForgotPasswordApi>>>", "error: ${e.toString()}");
@@ -175,7 +181,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
       if (res is ApiSuccess) {
         state = AsyncValue.data(res.data);
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callForgotChangePasswordApi>>>", "error: ${e.toString()}");
@@ -193,7 +200,8 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
           state = AsyncValue.data(res.data);
         });
       } else {
-        state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
       }
     } catch (e, st) {
       logD("callLogoutApi>>>", "error: ${e.toString()}");

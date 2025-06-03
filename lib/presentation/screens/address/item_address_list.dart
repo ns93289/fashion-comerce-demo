@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../../domain/entities/address_entity.dart';
 
@@ -26,7 +27,7 @@ class ItemAddressList extends StatelessWidget {
               "$houseNo, $houseName, $street, $addressLine1, $addressLine2, $city, $state",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: bodyStyle(fontSize: 14.sp),
+              style: bodyTextStyle(fontSize: 14.sp),
             ),
           ),
           GestureDetector(

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../core/utils/text_field_validators.dart';
 import '../../../core/utils/tools.dart';
 import '../../../domain/entities/user_entity.dart';
@@ -26,7 +27,17 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.signUp)), body: SafeArea(child: _buildSignUpScreen()));
+    return Scaffold(
+      appBar: CommonAppBar(
+        actions: [
+          Padding(
+            padding: EdgeInsetsDirectional.only(end: 20.w),
+            child: Text(language.skip, style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+      body: SafeArea(child: _buildSignUpScreen()),
+    );
   }
 
   Widget _buildSignUpScreen() {
@@ -34,7 +45,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Form(
         key: signupFormKey,
         child: Column(
-          children: [_fullNameField(), _emailField(), _phoneNumberField(), _passwordField(), _confirmPasswordField(), _termsAndConditions(), _signUpButton()],
+          children: [
+            Text(language.signUp, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)),
+            SizedBox(height: 5.h),
+            Text(language.signUpText, style: bodyTextStyle(fontSize: 14.sp), textAlign: TextAlign.center),
+            _fullNameField(),
+            _emailField(),
+            _phoneNumberField(),
+            _passwordField(),
+            _confirmPasswordField(),
+            _termsAndConditions(),
+            _signUpButton(),
+          ],
         ),
       ),
     );
@@ -133,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
           child: CustomTextField(
             controller: confirmPasswordTEC,
-            decoration: InputDecoration(labelText: language.password),
+            decoration: InputDecoration(labelText: language.confirmPassword),
             keyboardType: TextInputType.visiblePassword,
             textInputAction: TextInputAction.done,
             obscureText: true,
@@ -150,14 +172,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Padding(
       padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
       child: RichText(
+        textAlign: TextAlign.center,
         text: TextSpan(
           text: language.agreeWithOur,
-          style: bodyStyle(fontSize: 14.sp),
+          style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: colorTextLight),
           children: [
+            TextSpan(
+              text: " ${language.privacyPolicy}",
+              recognizer: TapGestureRecognizer()..onTap = () {},
+              style: bodyTextStyle(fontSize: 14.sp, color: colorPrimary, fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: " ${language.and}",
+              recognizer: TapGestureRecognizer()..onTap = () {},
+              style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: colorTextLight),
+            ),
             TextSpan(
               text: " ${language.termsAndConditions}",
               recognizer: TapGestureRecognizer()..onTap = () {},
-              style: bodyStyle(fontSize: 14.sp, color: colorPrimary, fontWeight: FontWeight.w500),
+              style: bodyTextStyle(fontSize: 14.sp, color: colorPrimary, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -186,6 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           title: language.signUp,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
           isLoading: apiResponse.isLoading,
+          width: 1.sw,
           onPress: () {
             if (signupFormKey.currentState!.validate()) {
               ref.read(signUpProvider(context));

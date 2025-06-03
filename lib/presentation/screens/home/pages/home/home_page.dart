@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/colors.dart';
+import '../../../../../core/constants/theme.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../data/models/model_product.dart';
 import '../../../../provider/favorite_provider.dart';
@@ -87,8 +88,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
                   child: Row(
                     children: [
-                      Expanded(child: Text(language.newArrival, style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
-                      Text(language.seeAll, style: bodyStyle(fontSize: 14.sp)),
+                      Expanded(child: Text(language.newArrival, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                      Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
                     ],
                   ),
                 ),
@@ -138,8 +139,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
                   child: Row(
                     children: [
-                      Expanded(child: Text(language.popular, style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
-                      Text(language.seeAll, style: bodyStyle(fontSize: 14.sp)),
+                      Expanded(child: Text(language.popular, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                      Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
                     ],
                   ),
                 ),
@@ -186,7 +187,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
           children: [
             Padding(
               padding: EdgeInsetsDirectional.only(top: 20.h, bottom: 10.h, start: 20.w),
-              child: Text(language.exploreCategory, style: bodyStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+              child: Text(language.exploreCategory, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
             ),
             GridView.builder(
               itemCount: filters.length,
@@ -210,7 +211,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                           decoration: BoxDecoration(shape: BoxShape.circle),
                           child: Image.asset(item.categoryIcon),
                         ),
-                        Padding(padding: EdgeInsetsDirectional.only(start: 10.w), child: Text(item.categoryName, style: bodyStyle(fontSize: 12.sp))),
+                        Padding(padding: EdgeInsetsDirectional.only(start: 10.w), child: Text(item.categoryName, style: bodyTextStyle(fontSize: 12.sp))),
                       ],
                     ),
                   ),
@@ -236,8 +237,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
                   child: Row(
                     children: [
-                      Expanded(child: Text(language.allProducts, style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
-                      Text(language.seeAll, style: bodyStyle(fontSize: 14.sp)),
+                      Expanded(child: Text(language.allProducts, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500))),
+                      Text(language.seeAll, style: bodyTextStyle(fontSize: 14.sp)),
                     ],
                   ),
                 ),

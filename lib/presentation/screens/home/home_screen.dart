@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import '../../../core/constants/theme.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../data/dataSources/remote/api_constant.dart';
 import '../../../data/models/model_drawer.dart';
@@ -148,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           children: [
                             Padding(padding: EdgeInsetsDirectional.only(start: 20.w, end: 10.w), child: Icon(item.icon)),
-                            Expanded(child: Text(item.title, style: bodyStyle())),
+                            Expanded(child: Text(item.title, style: bodyTextStyle())),
                             Padding(
                               padding: EdgeInsetsDirectional.only(start: 10.w, end: 10.w),
                               child: Icon(Icons.arrow_forward_ios, size: 15.sp, color: colorTextLight),
@@ -192,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: EdgeInsetsDirectional.only(top: 10.h, start: 10.w, end: 10.w, bottom: 10.h),
-                child: Text(fullName, style: bodyStyle(fontWeight: FontWeight.w500)),
+                child: Text(fullName, style: bodyTextStyle(fontWeight: FontWeight.w500)),
               ),
             ],
           ),

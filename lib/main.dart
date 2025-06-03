@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/constants/colors.dart';
@@ -14,9 +15,11 @@ final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 final navigatorKey = GlobalKey<NavigatorState>();
 late AppLocalizations language;
 Locale selectedLocale = Locale(LanguageCodes.english);
+late PackageInfo packageInfo;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  packageInfo = await PackageInfo.fromPlatform();
   await Hive.initFlutter("Fashion");
   await initHiveBoxes();
   runApp(ProviderScope(child: const MyApp()));

@@ -21,13 +21,19 @@ final houseNoTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   return controller;
 });
 
-final addressLine1TECProvider = Provider.autoDispose<TextEditingController>((ref) {
+final landmarkTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
   ref.onDispose(() => controller.dispose());
   return controller;
 });
 
-final addressLine2TECProvider = Provider.autoDispose<TextEditingController>((ref) {
+final receiverNameTECProvider = Provider.autoDispose<TextEditingController>((ref) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
+
+final receiverNumberTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
   ref.onDispose(() => controller.dispose());
   return controller;
@@ -57,7 +63,16 @@ final pinCodeTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   return controller;
 });
 
-final addressTypeProvider = StateProvider.autoDispose<int>((ref) {
+final addressTypesProvider = Provider.autoDispose<List<AddressTypeEntity>>((ref) {
+  return [
+    AddressTypeEntity(addressType: AddressTypes.home, title: language.home),
+    AddressTypeEntity(addressType: AddressTypes.work, title: language.work),
+    AddressTypeEntity(addressType: AddressTypes.family, title: language.familyOrFriend),
+    AddressTypeEntity(addressType: AddressTypes.other, title: language.other),
+  ];
+});
+
+final addressTypeSelectProvider = StateProvider.autoDispose<int>((ref) {
   return AddressTypes.home;
 });
 
@@ -77,12 +92,12 @@ final addAddressProvider = Provider.autoDispose<void>((ref) {
   final houseName = ref.read(houseNameTECProvider).text;
   final houseNo = ref.read(houseNoTECProvider).text;
   final street = ref.read(streetTECProvider).text;
-  final addressLine1 = ref.read(addressLine1TECProvider).text;
-  final addressLine2 = ref.read(addressLine2TECProvider).text;
+  final addressLine1 = ref.read(landmarkTECProvider).text;
+  // final addressLine2 = ref.read(addressLine2TECProvider).text;
   final city = ref.read(cityTECProvider).text;
   final state = ref.read(stateTECProvider).text;
   final pinCode = ref.read(pinCodeTECProvider).text;
-  final addressType = ref.read(addressTypeProvider);
+  final addressType = ref.read(addressTypeSelectProvider);
 
   AddressEntity address = AddressEntity(
     addressType: addressType,
@@ -90,7 +105,7 @@ final addAddressProvider = Provider.autoDispose<void>((ref) {
     houseNo: houseNo,
     street: street,
     addressLine1: addressLine1,
-    addressLine2: addressLine2,
+    // addressLine2: addressLine2,
     city: city,
     state: state,
     pinCode: pinCode,
@@ -104,12 +119,12 @@ final editAddressProvider = Provider.autoDispose.family<void, int>((ref, address
   final houseName = ref.read(houseNameTECProvider).text;
   final houseNo = ref.read(houseNoTECProvider).text;
   final street = ref.read(streetTECProvider).text;
-  final addressLine1 = ref.read(addressLine1TECProvider).text;
-  final addressLine2 = ref.read(addressLine2TECProvider).text;
+  final addressLine1 = ref.read(landmarkTECProvider).text;
+  // final addressLine2 = ref.read(addressLine2TECProvider).text;
   final city = ref.read(cityTECProvider).text;
   final state = ref.read(stateTECProvider).text;
   final pinCode = ref.read(pinCodeTECProvider).text;
-  final addressType = ref.read(addressTypeProvider);
+  final addressType = ref.read(addressTypeSelectProvider);
 
   AddressEntity address = AddressEntity(
     addressId: addressId,
@@ -118,7 +133,7 @@ final editAddressProvider = Provider.autoDispose.family<void, int>((ref, address
     houseNo: houseNo,
     street: street,
     addressLine1: addressLine1,
-    addressLine2: addressLine2,
+    // addressLine2: addressLine2,
     city: city,
     state: state,
     pinCode: pinCode,

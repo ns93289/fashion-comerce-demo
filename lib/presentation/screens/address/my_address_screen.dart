@@ -64,7 +64,7 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
                         openScreenWithResult(
                           context,
                           AddAddressScreen(modelAddress: modelAddress),
-                          overrides: [addressTypeProvider.overrideWith((ref) => (modelAddress.addressType))],
+                          overrides: [addressTypeSelectProvider.overrideWith((ref) => (modelAddress.addressType))],
                         ).then((value) {
                           if (value ?? false) {
                             ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
@@ -94,7 +94,8 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
       builder: (context, ref, child) {
         return CustomButton(
           title: language.add,
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h),
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 30.h),
+          width: 1.sw,
           onPress: () {
             openScreenWithResult(context, AddAddressScreen()).then((value) {
               if (value ?? false) {

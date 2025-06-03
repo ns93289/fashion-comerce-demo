@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/theme.dart';
-import '../../core/utils/tools.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -58,8 +57,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
     final InputDecoration decoration = InputDecoration(
       hintText: widget.decoration?.hintText,
       labelText: widget.decoration?.labelText,
-      hintStyle: widget.decoration?.hintStyle ?? bodyStyle(fontSize: 14.sp, color: colorTextLight),
-      labelStyle: widget.decoration?.hintStyle ?? bodyStyle(fontSize: 14.sp, color: colorTextLight),
+      hintStyle: widget.decoration?.hintStyle ?? bodyTextStyle(fontSize: 14.sp, color: colorTextLight, fontWeight: FontWeight.bold),
+      labelStyle: widget.decoration?.hintStyle ?? bodyTextStyle(fontSize: 14.sp, color: colorTextLight, fontWeight: FontWeight.bold),
       border: normalBorder,
       fillColor: widget.backgroundColor ?? colorWhite,
       filled: true,
@@ -68,10 +67,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
       focusedBorder: focusBorder,
       errorBorder: errorBorder,
       focusedErrorBorder: errorBorder,
-      contentPadding: EdgeInsets.symmetric(vertical: 11.h),
+      contentPadding: EdgeInsets.symmetric(vertical: 5.h),
       isDense: true,
       prefixIcon: widget.decoration?.icon,
-      errorStyle: widget.decoration?.errorStyle ?? bodyStyle(fontSize: 10.sp, color: colorRed),
+      errorStyle: widget.decoration?.errorStyle ?? bodyTextStyle(fontSize: 10.sp, color: colorRed),
       suffixIcon:
           widget.obscureText
               ? GestureDetector(onTap: _toggleObscured, child: Icon(!_obscured ? Icons.visibility_rounded : Icons.visibility_off_rounded, size: 20.sp))
@@ -82,7 +81,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
-      style: widget.style ?? bodyTextStyle(),
+      style: widget.style ?? bodyTextStyle(fontWeight: FontWeight.w500),
       maxLength: widget.maxLength,
       inputFormatters: widget.inputFormatters,
       cursorColor: colorPrimary,

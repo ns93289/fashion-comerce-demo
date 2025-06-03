@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/colors.dart';
-import '../../core/utils/tools.dart';
+import '../../core/constants/theme.dart';
 
 class CustomPinCodeField extends StatefulWidget {
   final TextStyle? style;
@@ -65,7 +65,7 @@ class CustomPinCodeFieldState extends State<CustomPinCodeField> {
             maxLength: 1,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
-            style: widget.style ?? bodyStyle(fontWeight: FontWeight.bold),
+            style: widget.style ?? bodyTextStyle(fontWeight: FontWeight.bold),
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               counterText: "",
@@ -74,7 +74,7 @@ class CustomPinCodeFieldState extends State<CustomPinCodeField> {
               disabledBorder: normalBorder,
               enabledBorder: normalBorder,
               focusedBorder: focusBorder,
-              contentPadding: EdgeInsets.all(10.sp),
+              contentPadding: EdgeInsetsDirectional.only(start: 3.sp, top: 10.sp, bottom: 10.sp),
               filled: true,
               fillColor: _values[index].isNotEmpty ? colorPrimary : colorBorder,
             ),

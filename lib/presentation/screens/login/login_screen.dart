@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/theme.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../core/constants/colors.dart';
 import '../../provider/forgot_password_provider.dart';
@@ -42,11 +43,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _appLogoAndName() {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Image.asset("assets/images/splash_image.webp", height: 150.h, fit: BoxFit.cover, width: 1.sw),
+        Align(
+          alignment: AlignmentDirectional.topEnd,
+          child: Padding(
+            padding: EdgeInsetsDirectional.only(end: 20.w, top: 10.h, bottom: 10.h),
+            child: Text(language.skip, style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold)),
+          ),
         ),
-        Text(language.appName, style: bodyStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: colorPrimary)),
+        Image.asset("assets/images/app_logo.png", height: 100.h, width: 1.sw),
+        SizedBox(height: 50.h),
+        Text(language.welcomeBack, style: bodyTextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -56,10 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context, ref, _) {
         final phoneNoTEC = ref.watch(phoneNoTECProvider);
         return Padding(
-          padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+          padding: EdgeInsetsDirectional.only(top: 30.h, start: 20.w, end: 20.w),
           child: CustomTextField(
             controller: phoneNoTEC,
-            decoration: InputDecoration(labelText: language.emailAddress),
+            decoration: InputDecoration(labelText: language.emailOrMobile),
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             validator: (value) {
@@ -98,12 +104,12 @@ class _LoginScreenState extends State<LoginScreen> {
         return Align(
           alignment: AlignmentDirectional.topEnd,
           child: Padding(
-            padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-            child: TextButton(
-              onPressed: () {
+            padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+            child: GestureDetector(
+              onTap: () {
                 ref.read(forgotPasswordProvider(context));
               },
-              child: Text(language.forgotPassword, style: bodyStyle(fontSize: 12.sp)),
+              child: Text(language.forgotPassword, style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold)),
             ),
           ),
         );
@@ -117,12 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RichText(
         text: TextSpan(
           text: language.dontHaveAccount,
-          style: bodyStyle(fontSize: 14.sp),
+          style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: colorTextLight),
           children: [
             TextSpan(
-              text: " ${language.registerHere}",
+              text: " ${language.signUp}",
               recognizer: TapGestureRecognizer()..onTap = () => openScreen(context, SignUpScreen()),
-              style: bodyStyle(fontSize: 14.sp, color: colorPrimary, fontWeight: FontWeight.w500),
+              style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -149,8 +155,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
         return CustomButton(
           title: language.login,
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 10.h),
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
           isLoading: apiResponse.isLoading,
+          width: 1.sw,
           onPress: () {
             if (loginFormKey.currentState!.validate()) {
               FocusManager.instance.primaryFocus?.unfocus();

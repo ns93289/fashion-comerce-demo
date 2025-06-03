@@ -38,7 +38,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       builder: (context, ref, _) {
         final passwordTEC = ref.watch(passwordTECProvider);
         return Padding(
-          padding: EdgeInsetsDirectional.only(top: 30.h, start: 20.w, end: 20.w),
+          padding: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
           child: CustomTextField(
             controller: passwordTEC,
             decoration: InputDecoration(labelText: language.oldPassword),
@@ -113,8 +113,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
         return CustomButton(
           title: language.change,
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 30.h),
           isLoading: apiResponse.isLoading,
+          width: 1.sw,
           onPress: () {
             if (changePasswordFormKey.currentState!.validate()) {
               ref.read(changePasswordProvider);

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../../domain/entities/category_entity.dart';
 import '../../components/common_circle_progress_bar.dart';
@@ -67,7 +68,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
           padding: EdgeInsets.symmetric(vertical: 5.h),
           child: TabBar(
             tabs: subCategories.map((e) => Tab(text: e.subCategoryName, height: 25.h)).toList(),
-            labelStyle: bodyStyle(fontWeight: FontWeight.w500),
+            labelStyle: bodyTextStyle(fontWeight: FontWeight.w500),
             unselectedLabelColor: colorTextLight,
             labelColor: colorPrimary,
             indicatorColor: colorPrimary,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
@@ -87,9 +88,9 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
     return RichText(
       text: TextSpan(
         children: [
-          TextSpan(text: beforeMatch, style: bodyStyle()),
-          TextSpan(text: matchText, style: bodyStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: afterMatch, style: bodyStyle()),
+          TextSpan(text: beforeMatch, style: bodyTextStyle()),
+          TextSpan(text: matchText, style: bodyTextStyle(fontWeight: FontWeight.bold)),
+          TextSpan(text: afterMatch, style: bodyTextStyle()),
         ],
       ),
     );

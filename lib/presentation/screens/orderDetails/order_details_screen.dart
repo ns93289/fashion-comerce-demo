@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/remote/api_reponse.dart';
 import '../../../data/models/model_order_details.dart';
@@ -82,7 +83,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   Widget _orderId(String orderNo) {
     return Padding(
       padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w),
-      child: Text("${language.orderId}: $orderNo", style: bodyStyle(fontWeight: FontWeight.w500)),
+      child: Text("${language.orderId}: $orderNo", style: bodyTextStyle(fontWeight: FontWeight.w500)),
     );
   }
 
@@ -107,9 +108,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(language.deliverTo, style: bodyStyle(fontSize: 14.sp)),
+          Text(language.deliverTo, style: bodyTextStyle(fontSize: 14.sp)),
           SizedBox(height: 5.h),
-          Text(deliveryAddress, style: bodyStyle(fontSize: 14.sp, color: colorTextLight)),
+          Text(deliveryAddress, style: bodyTextStyle(fontSize: 14.sp, color: colorTextLight)),
         ],
       ),
     );

@@ -13,6 +13,7 @@ sealed class AddressTypes {
   static const int home = 1;
   static const int work = 2;
   static const int other = 3;
+  static const int family = 4;
 }
 
 sealed class GenderTypes {
@@ -24,4 +25,5 @@ sealed class GenderTypes {
 
 sealed class DefaultData {
   static const String countryCodeName = "US";
+  static const int pageSize = 10;
 }

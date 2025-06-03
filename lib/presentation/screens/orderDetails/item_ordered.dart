@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../main.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/models/model_product.dart';
@@ -31,10 +32,10 @@ class ItemOrdered extends StatelessWidget {
                       "$productName, $selectedSize'' x $selectedQuantity",
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: bodyStyle(fontWeight: FontWeight.w500),
+                      style: bodyTextStyle(fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 5.h),
-                    Text(selectedColor, style: bodyStyle(fontSize: 14.sp)),
+                    Text(selectedColor, style: bodyTextStyle(fontSize: 14.sp)),
                   ],
                 ),
               ),
@@ -47,7 +48,7 @@ class ItemOrdered extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsetsDirectional.only(top: 5.h),
-            child: Text("${language.seller}: $sellerName", style: bodyStyle(fontSize: 14.sp, color: colorTextLight)),
+            child: Text("${language.seller}: $sellerName", style: bodyTextStyle(fontSize: 14.sp, color: colorTextLight)),
           ),
         ],
       ),

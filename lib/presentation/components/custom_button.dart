@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/colors.dart';
+import '../../core/constants/theme.dart';
 import '../../core/utils/tools.dart';
 import 'common_circle_progress_bar.dart';
 
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
   final bool borderedButton;
   final bool enabled;
   final Widget? icon;
+  final FontWeight? fontWeight;
 
   const CustomButton({
     super.key,
@@ -35,6 +37,7 @@ class CustomButton extends StatelessWidget {
     this.padding,
     this.textColor,
     this.enabled = true,
+    this.fontWeight,
   });
 
   @override
@@ -49,7 +52,7 @@ class CustomButton extends StatelessWidget {
         ),
         constraints: BoxConstraints(minWidth: width ?? 50.w),
         width: width,
-        height: height ?? 36.h,
+        height: height ?? 40.h,
         margin: margin,
         padding: padding ?? EdgeInsetsDirectional.symmetric(horizontal: 20.w),
         child:
@@ -62,7 +65,7 @@ class CustomButton extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (icon != null) Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: icon),
-                        Text(title, style: bodyStyle(fontWeight: FontWeight.w500, fontSize: fontSize, color: textColor)),
+                        Text(title, style: bodyTextStyle(fontWeight: fontWeight ?? FontWeight.bold, fontSize: fontSize ?? 18.sp, color: textColor)),
                       ],
                     ),
                   ],

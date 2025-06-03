@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../provider/support_pages_provider.dart';
 import '../../../main.dart';
@@ -19,7 +20,7 @@ class HelpAndSupportScreen extends StatefulWidget {
 class _HelpAndSupportScreenState extends State<HelpAndSupportScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.helpAndSupport, style: bodyStyle())), body: SafeArea(child: _buildHelpAndSupport()));
+    return Scaffold(appBar: CommonAppBar(title: Text(language.helpAndSupport)), body: SafeArea(child: _buildHelpAndSupport()));
   }
 
   Widget _buildHelpAndSupport() {
@@ -42,7 +43,7 @@ class _HelpAndSupportScreenState extends State<HelpAndSupportScreen> {
                 color: colorWhite,
                 padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 20.w),
                 child: Row(
-                  children: [Expanded(child: Text(supportPage.pageTitle, style: bodyStyle())), Icon(Icons.arrow_forward_ios, color: colorTextLight)],
+                  children: [Expanded(child: Text(supportPage.pageTitle, style: bodyTextStyle())), Icon(Icons.arrow_forward_ios, color: colorTextLight)],
                 ),
               ),
             );

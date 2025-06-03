@@ -7,10 +7,7 @@ import 'package:intl/intl.dart';
 import '../../main.dart';
 import '../constants/app_constants.dart';
 import '../constants/colors.dart';
-
-TextStyle bodyStyle({Color? color, double? fontSize, FontWeight? fontWeight}) {
-  return GoogleFonts.roboto(color: color ?? colorText, fontSize: fontSize ?? 16.sp, fontWeight: fontWeight ?? FontWeight.normal, height: 0);
-}
+import '../constants/theme.dart';
 
 openScreen(BuildContext context, Widget screen) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
@@ -29,7 +26,7 @@ openScreenWithClearStack(BuildContext context, Widget screen) {
 }
 
 openSimpleSnackBar(String message) {
-  SnackBar snackBar = SnackBar(content: Text(message, style: bodyStyle(color: colorWhite)));
+  SnackBar snackBar = SnackBar(content: Text(message, style: bodyTextStyle(color: colorWhite)));
   scaffoldKey.currentState?.showSnackBar(snackBar);
 }
 
@@ -66,6 +63,8 @@ String getAddressTitle(int addressType) {
     return language.home;
   } else if (addressType == AddressTypes.work) {
     return language.work;
+  } else if (addressType == AddressTypes.family) {
+    return language.familyOrFriend;
   } else {
     return language.other;
   }

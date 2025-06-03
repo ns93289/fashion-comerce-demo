@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/utils/tools.dart';
+import '../../core/constants/theme.dart';
 import '../../main.dart';
 import '../components/custom_button.dart';
 
@@ -40,7 +40,7 @@ class _CommonDialogState extends State<CommonDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(widget.title, style: bodyStyle()),
+            Text(widget.title, style: bodyTextStyle()),
             if (widget.widget != null) widget.widget!,
             Padding(
               padding: EdgeInsetsDirectional.only(top: 20.h),

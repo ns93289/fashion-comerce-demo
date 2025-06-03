@@ -41,9 +41,9 @@ class ItemOrderHistory extends StatelessWidget {
               children: [
                 Text(productName.replaceAll(RegExp(r'[\[\]]'), ""), maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontSize: 12.sp)),
                 SizedBox(height: 10.h),
-                Text("${language.orderId}: $orderNo", style: bodyStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
+                Text("${language.orderId}: $orderNo", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10.h),
-                Text(orderedTime, style: bodyStyle(fontSize: 14.sp)),
+                Text(orderedTime, style: bodyTextStyle(fontSize: 14.sp)),
                 CustomButton(
                   title: language.review,
                   borderedButton: true,

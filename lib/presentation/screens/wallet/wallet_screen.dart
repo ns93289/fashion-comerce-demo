@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/theme.dart';
 import '../../components/empty_record_view.dart';
 import '../../../core/constants/extensions.dart';
 import '../../../domain/entities/wallet_entity.dart';
@@ -52,12 +53,12 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
       width: 1.sw,
       child: Column(
         children: [
-          Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Text(language.walletBalance, style: bodyStyle(fontWeight: FontWeight.w500))),
+          Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Text(language.walletBalance, style: bodyTextStyle(fontWeight: FontWeight.w500))),
           result.isLoading
               ? CommonCircleProgressBar(color: colorBlack, size: 25.sp, stroke: 2.sp)
               : Text(
                 (result.asData?.value as WalletEntity?)?.walletBalance.withCurrency ?? "0",
-                style: bodyStyle(fontWeight: FontWeight.bold, fontSize: 21.sp),
+                style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 21.sp),
               ),
         ],
       ),
@@ -123,7 +124,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
           padding: EdgeInsetsDirectional.only(start: 20.w, top: 20.h),
           child: Row(
             children: [
-              Text(language.transactions, style: bodyStyle(fontWeight: FontWeight.bold)),
+              Text(language.transactions, style: bodyTextStyle(fontWeight: FontWeight.bold)),
               Expanded(
                 child: Padding(
                   padding: EdgeInsetsDirectional.only(end: 10.w),
@@ -141,7 +142,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
                           margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: Text(language.all, style: bodyStyle(fontSize: 14.sp)),
+                          child: Text(language.all, style: bodyTextStyle(fontSize: 14.sp)),
                         ),
                       ),
                       GestureDetector(
@@ -155,7 +156,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
                           margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: Text(language.credit, style: bodyStyle(fontSize: 14.sp)),
+                          child: Text(language.credit, style: bodyTextStyle(fontSize: 14.sp)),
                         ),
                       ),
                       GestureDetector(
@@ -169,7 +170,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
                           margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: Text(language.debit, style: bodyStyle(fontSize: 14.sp)),
+                          child: Text(language.debit, style: bodyTextStyle(fontSize: 14.sp)),
                         ),
                       ),
                     ],

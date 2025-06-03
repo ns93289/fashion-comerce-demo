@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/colors.dart';
+import '../../../../../core/constants/theme.dart';
 import '../../../../../core/utils/tools.dart';
 import '../../../../../data/dataSources/remote/api_constant.dart';
 import '../../../../../domain/entities/category_entity.dart';
@@ -27,8 +28,8 @@ class ItemSubCategory extends StatelessWidget {
           ),
         ),
         SizedBox(height: 5.h),
-        Text(subCategoryName, style: bodyStyle(fontSize: 14.sp), maxLines: 1, overflow: TextOverflow.ellipsis),
-        if (tagLine.isNotEmpty) Text(tagLine, style: bodyStyle(fontSize: 10.sp, color: colorRed)),
+        Text(subCategoryName, style: bodyTextStyle(fontSize: 14.sp), maxLines: 1, overflow: TextOverflow.ellipsis),
+        if (tagLine.isNotEmpty) Text(tagLine, style: bodyTextStyle(fontSize: 10.sp, color: colorRed)),
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/constants/theme.dart';
 import '../../../../components/common_circle_progress_bar.dart';
 import '../../../../components/empty_record_view.dart';
 import '../../../../../core/constants/colors.dart';
@@ -55,7 +56,7 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
                     child: Container(
                       decoration: BoxDecoration(color: selectedCategoryId == category.categoryId ? colorPrimary.withAlpha(50) : colorMainBackground),
                       padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 10.w),
-                      child: Text(category.categoryName, style: bodyStyle()),
+                      child: Text(category.categoryName, style: bodyTextStyle()),
                     ),
                   );
                 },

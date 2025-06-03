@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
+import '../../../core/utils/text_utils.dart';
 import '../../../core/utils/tools.dart';
 import '../../provider/otp_verify_provider.dart';
 import '../../../main.dart';
@@ -36,16 +37,18 @@ class _OtpScreenState extends State<OtpScreen> {
             padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
             child: Text(
               "${language.verifyYour}\n${widget.isPhone ? language.mobileNumber : language.emailAddress}",
-              style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+              style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
+              textAlign: TextAlign.center,
             ),
           ),
           Padding(
             padding: EdgeInsetsDirectional.only(top: 35.h, start: 20.w, end: 20.w),
             child: Text(
               widget.isPhone
-                  ? language.mobileVerifyMsg(getStringDataFromUserBox(key: hivePhoneNumber))
-                  : language.emailVerifyMsg(getStringDataFromUserBox(key: hiveEmailAddress)),
+                  ? language.mobileVerifyMsg(TextUtils.maskMobileNumber(getStringDataFromUserBox(key: hivePhoneNumber)))
+                  : language.emailVerifyMsg(TextUtils.maskEmailUsername(getStringDataFromUserBox(key: hiveEmailAddress))),
               style: bodyTextStyle(fontSize: 14.sp),
+              textAlign: TextAlign.center,
             ),
           ),
           _otpField(),
@@ -84,6 +87,7 @@ class _OtpScreenState extends State<OtpScreen> {
           title: language.txtContinue,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 30.h),
           isLoading: apiResponse.isLoading,
+          width: 1.sw,
           onPress: () {
             ref.read(otpVerifyProvider((context: context, isPhone: widget.isPhone)));
           },
@@ -111,7 +115,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       },
               child: Padding(
                 padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
-                child: Text(language.dontReceiveCode, style: bodyTextStyle(fontWeight: FontWeight.bold)),
+                child: Text(language.resendNewCode, style: bodyTextStyle(fontWeight: FontWeight.bold, color: colorPrimary)),
               ),
             ),
             if (remainingSeconds > 0)

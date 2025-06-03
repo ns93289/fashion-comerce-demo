@@ -1,5 +1,5 @@
 class BaseUrl {
-  static const String url = "http://192.168.1.5:8055/";
+  static const String url = "http://192.168.1.6:8055/";
   static const String apiUrl = "$url/api";
 }
 
@@ -22,9 +22,9 @@ class EndPoint {
   static const String getSubCategories = "/sub-category/get";
 
   ///Product list apis
-  static const String productList = "/product-list";
-  static const String popularProductList = "/popular-product-list";
-  static const String newProductList = "/new-product-list";
+  static const String productList = "home/products";
+  static const String popularProductList = "home/popular-products";
+  static const String newProductList = "home/new-arrivals";
 
   ///Address Apis...
   static const String addAddress = "/address/add";
@@ -68,4 +68,5 @@ class ApiParams {
   static const String otp = "otp";
   static const String amount = "amount";
   static const String type = "type";
+  static const String size = "size";
 }

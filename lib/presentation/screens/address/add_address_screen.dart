@@ -1,3 +1,4 @@
+import 'package:fashion_comerce_demo/core/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,110 +43,26 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     return Stack(
       children: [
         SingleChildScrollView(
-          padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w, bottom: 80.h),
+          padding: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
           child: Form(
             key: addressFormKey,
             child: Column(
               children: [
-                _addressTypeView(),
                 _houseNameField(houseName),
                 _houseNoField(houseNo),
                 _streetField(street),
-                _addressLine1Field(addressLine1),
-                _addressLine2Field(addressLine2),
+                _landmarkField(addressLine1),
                 _cityField(city),
                 _stateField(state),
                 _pinCodeField(pinCode.toString()),
+                _addressTypeView(),
+                _receiverDetails(),
+                _addOrUpdateButton(),
               ],
             ),
           ),
         ),
-        Align(alignment: Alignment.bottomCenter, child: _addOrUpdateButton()),
       ],
-    );
-  }
-
-  Widget _addressTypeView() {
-    return Consumer(
-      builder: (context, ref, _) {
-        final addressType = ref.watch(addressTypeProvider);
-
-        return Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  ref.read(addressTypeProvider.notifier).state = AddressTypes.home;
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colorWhite,
-                    border: Border.all(color: addressType == AddressTypes.home ? colorPrimary : colorTextLight),
-                    borderRadius: BorderRadius.circular(5.r),
-                  ),
-                  height: 60.h,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(getAddressIcon(AddressTypes.home), color: addressType == AddressTypes.home ? colorPrimary : colorTextLight),
-                      SizedBox(height: 5.h),
-                      Text(getAddressTitle(AddressTypes.home), style: bodyStyle(color: addressType == AddressTypes.home ? colorPrimary : colorTextLight)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 20.w),
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  ref.read(addressTypeProvider.notifier).state = AddressTypes.work;
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colorWhite,
-                    border: Border.all(color: addressType == AddressTypes.work ? colorPrimary : colorTextLight),
-                    borderRadius: BorderRadius.circular(5.r),
-                  ),
-                  height: 60.h,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(getAddressIcon(AddressTypes.work), color: addressType == AddressTypes.work ? colorPrimary : colorTextLight),
-                      SizedBox(height: 5.h),
-                      Text(getAddressTitle(AddressTypes.work), style: bodyStyle(color: addressType == AddressTypes.work ? colorPrimary : colorTextLight)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 20.w),
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  ref.read(addressTypeProvider.notifier).state = AddressTypes.other;
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colorWhite,
-                    border: Border.all(color: addressType == AddressTypes.other ? colorPrimary : colorTextLight),
-                    borderRadius: BorderRadius.circular(5.r),
-                  ),
-                  height: 60.h,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(getAddressIcon(AddressTypes.other), color: addressType == AddressTypes.other ? colorPrimary : colorTextLight),
-                      SizedBox(height: 5.h),
-                      Text(getAddressTitle(AddressTypes.other), style: bodyStyle(color: addressType == AddressTypes.other ? colorPrimary : colorTextLight)),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -156,10 +73,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         houseNameTEC.text = houseName;
 
         return Padding(
-          padding: EdgeInsetsDirectional.only(bottom: 20.h, top: 20.h),
+          padding: EdgeInsetsDirectional.only(bottom: 20.h),
           child: CustomTextField(
             controller: houseNameTEC,
-            decoration: InputDecoration(labelText: "${language.houseOrPlace}*"),
+            decoration: InputDecoration(labelText: language.houseOrPlace),
+            textInputAction: TextInputAction.next,
             validator: (value) {
               return TextFieldValidator.emptyValidator(value, message: language.enterHouseOrPlace);
             },
@@ -190,26 +108,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
         return Padding(
           padding: EdgeInsetsDirectional.only(bottom: 20.h),
-          child: CustomTextField(controller: streetTEC, decoration: InputDecoration(labelText: language.street), textInputAction: TextInputAction.next),
-        );
-      },
-    );
-  }
-
-  Widget _addressLine1Field(String addressLine1) {
-    return Consumer(
-      builder: (context, ref, _) {
-        final addressLine1TEC = ref.watch(addressLine1TECProvider);
-        addressLine1TEC.text = addressLine1;
-
-        return Padding(
-          padding: EdgeInsetsDirectional.only(bottom: 20.h),
           child: CustomTextField(
-            controller: addressLine1TEC,
-            decoration: InputDecoration(labelText: "${language.addressLine1}*"),
+            controller: streetTEC,
+            decoration: InputDecoration(labelText: language.street),
             textInputAction: TextInputAction.next,
             validator: (value) {
-              return TextFieldValidator.emptyValidator(value, message: language.enterAddress);
+              return TextFieldValidator.emptyValidator(value, message: language.enterStreet);
             },
           ),
         );
@@ -217,16 +121,17 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     );
   }
 
-  Widget _addressLine2Field(String addressLine2) {
+  Widget _landmarkField(String addressLine1) {
     return Consumer(
       builder: (context, ref, _) {
-        final addressLine2TEC = ref.watch(addressLine2TECProvider);
-        addressLine2TEC.text = addressLine2;
+        final addressLine1TEC = ref.watch(landmarkTECProvider);
+        addressLine1TEC.text = addressLine1;
+
         return Padding(
           padding: EdgeInsetsDirectional.only(bottom: 20.h),
           child: CustomTextField(
-            controller: addressLine2TEC,
-            decoration: InputDecoration(labelText: language.addressLine2),
+            controller: addressLine1TEC,
+            decoration: InputDecoration(labelText: language.landmarkArea),
             textInputAction: TextInputAction.next,
           ),
         );
@@ -243,7 +148,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           padding: EdgeInsetsDirectional.only(bottom: 20.h),
           child: CustomTextField(
             controller: cityTEC,
-            decoration: InputDecoration(labelText: "${language.city}*"),
+            decoration: InputDecoration(labelText: language.city),
             validator: (value) {
               return TextFieldValidator.emptyValidator(value, message: language.enterCity);
             },
@@ -263,7 +168,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           padding: EdgeInsetsDirectional.only(bottom: 20.h),
           child: CustomTextField(
             controller: stateTEC,
-            decoration: InputDecoration(labelText: "${language.state}*"),
+            decoration: InputDecoration(labelText: language.state),
             validator: (value) {
               return TextFieldValidator.emptyValidator(value, message: language.enterState);
             },
@@ -286,8 +191,94 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             decoration: InputDecoration(labelText: language.pinCode),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            validator: (value) {
+              return TextFieldValidator.emptyValidator(value, message: language.enterPinCode);
+            },
           ),
         );
+      },
+    );
+  }
+
+  Widget _addressTypeView() {
+    return Consumer(
+      builder: (context, ref, _) {
+        final addressType = ref.watch(addressTypeSelectProvider);
+        final List<AddressTypeEntity> addressTypes = ref.watch(addressTypesProvider);
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(language.saveAs, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: colorTextLight)),
+            SizedBox(height: 20.h),
+            SizedBox(
+              width: 1.sw,
+              child: Wrap(
+                spacing: 10.w,
+                runSpacing: 15.h,
+                children:
+                    addressTypes.map((e) {
+                      return GestureDetector(
+                        onTap: () {
+                          ref.read(addressTypeSelectProvider.notifier).state = e.addressType;
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: addressType == e.addressType ? colorPrimary.withAlpha(10) : colorWhite,
+                            border: Border.all(color: addressType == e.addressType ? colorPrimary : colorTextLight),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
+                          child: Text(
+                            getAddressTitle(e.addressType),
+                            style: bodyTextStyle(color: addressType == e.addressType ? colorPrimary : colorText, fontSize: 14.sp, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _receiverDetails() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final receiverNameTEC = ref.watch(receiverNameTECProvider);
+        final receiverNumberTEC = ref.watch(receiverNumberTECProvider);
+        final addressType = ref.watch(addressTypeSelectProvider);
+
+        return addressType == AddressTypes.family
+            ? Column(
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.only(top: 20.h),
+                  child: CustomTextField(
+                    controller: receiverNameTEC,
+                    decoration: InputDecoration(labelText: language.receiverName),
+                    textInputAction: TextInputAction.next,
+                    validator: (value) {
+                      return TextFieldValidator.emptyValidator(value, message: language.enterReceiverName);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.only(top: 20.h),
+                  child: CustomTextField(
+                    controller: receiverNumberTEC,
+                    decoration: InputDecoration(labelText: language.receiverMobileNumber, suffixIcon: Icon(Icons.contact_page_outlined, color: colorTextLight)),
+                    textInputAction: TextInputAction.next,
+                    validator: (value) {
+                      return TextFieldValidator.emptyValidator(value, message: language.enterReceiverMobileNumber);
+                    },
+                  ),
+                ),
+              ],
+            )
+            : SizedBox();
       },
     );
   }
@@ -304,8 +295,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
         return CustomButton(
           title: widget.modelAddress == null ? language.add : language.update,
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h),
+          margin: EdgeInsetsDirectional.only(bottom: 20.h, top: 20.h),
           isLoading: apiResponse.isLoading,
+          width: 1.sw,
           onPress: () {
             if (addressFormKey.currentState?.validate() ?? false) {
               FocusManager.instance.primaryFocus?.unfocus();

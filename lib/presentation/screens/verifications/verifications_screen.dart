@@ -4,6 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/custom_icons.dart';
+import '../../../core/utils/text_utils.dart';
 import '../../../data/dataSources/local/hive_constants.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../core/constants/theme.dart';
@@ -67,7 +68,10 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
               Divider(color: colorBorder, height: 0, thickness: 1.sp),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-                child: Text(language.byClickEmailVerify(getStringDataFromUserBox(key: hiveEmailAddress)), style: bodyTextStyle(fontSize: 12.sp)),
+                child: Text(
+                  language.byClickEmailVerify(TextUtils.maskEmailUsername(getStringDataFromUserBox(key: hiveEmailAddress))),
+                  style: bodyTextStyle(fontSize: 12.sp),
+                ),
               ),
               if (!isEmailVerified)
                 Row(
@@ -79,6 +83,7 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
                       fontSize: 12.sp,
                       height: 25.h,
                       borderedButton: true,
+                      fontWeight: FontWeight.w500,
                       margin: EdgeInsetsDirectional.only(end: 10.w),
                     ),
                     CustomButton(
@@ -86,11 +91,13 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 10.w),
                       fontSize: 12.sp,
                       height: 25.h,
+                      fontWeight: FontWeight.w500,
                       margin: EdgeInsetsDirectional.only(end: 15.w),
                       onPress: () {
                         openScreenWithResult(context, OtpScreen()).then((value) {
+                          bool isEmailVerified = getBoolDataFromUserBox(key: hiveEmailVerified);
                           bool isPhoneVerified = getBoolDataFromUserBox(key: hivePhoneNumberVerified);
-                          if (isPhoneVerified) {
+                          if (isPhoneVerified && isEmailVerified) {
                             Future.delayed(Duration(seconds: 1), () {
                               if (!context.mounted) return;
                               openScreenWithClearStack(context, HomeScreen());
@@ -132,7 +139,10 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
               Divider(color: colorBorder, height: 0, thickness: 1.sp),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-                child: Text(language.byClickMobileVerify(getStringDataFromUserBox(key: hivePhoneNumber)), style: bodyTextStyle(fontSize: 12.sp)),
+                child: Text(
+                  language.byClickMobileVerify(TextUtils.maskMobileNumber(getStringDataFromUserBox(key: hivePhoneNumber))),
+                  style: bodyTextStyle(fontSize: 12.sp),
+                ),
               ),
               if (!isPhoneVerified)
                 Row(
@@ -143,6 +153,7 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 10.w),
                       fontSize: 12.sp,
                       height: 25.h,
+                      fontWeight: FontWeight.w500,
                       borderedButton: true,
                       margin: EdgeInsetsDirectional.only(end: 10.w),
                     ),
@@ -151,11 +162,13 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 10.w),
                       fontSize: 12.sp,
                       height: 25.h,
+                      fontWeight: FontWeight.w500,
                       margin: EdgeInsetsDirectional.only(end: 15.w),
                       onPress: () {
                         openScreenWithResult(context, OtpScreen(isPhone: true)).then((value) {
+                          bool isPhoneVerified = getBoolDataFromUserBox(key: hivePhoneNumberVerified);
                           bool isEmailVerified = getBoolDataFromUserBox(key: hiveEmailVerified);
-                          if (isEmailVerified) {
+                          if (isEmailVerified && isPhoneVerified) {
                             Future.delayed(Duration(seconds: 1), () {
                               if (!context.mounted) return;
                               openScreenWithClearStack(context, HomeScreen());
