@@ -11,6 +11,7 @@ const colorGreen = Color(0xff00a200);
 ///Widget colors
 const colorText = Color(0xff080808);
 const colorTextLight = Color(0xff828282);
+const colorCategoryBackground = Color(0xffD9D9D9);
 const colorMainBackground = Color(0xffEEEEEE);
 const colorDivider = Color(0xffEEEEEE);
 const colorOrderStatusProgress = Color(0xffDDDDDD);

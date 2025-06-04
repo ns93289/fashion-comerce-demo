@@ -5,6 +5,8 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../../domain/entities/address_entity.dart';
+import '../../../main.dart';
+import '../../components/custom_button.dart';
 
 class ItemAddressList extends StatelessWidget {
   final AddressEntity modelAddress;
@@ -17,27 +19,57 @@ class ItemAddressList extends StatelessWidget {
   Widget build(BuildContext context) {
     final AddressEntity(:houseName, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :addressType) = modelAddress;
     return Container(
-      color: colorWhite,
-      padding: EdgeInsetsDirectional.symmetric(vertical: 5.h),
-      child: Row(
+      decoration: BoxDecoration(border: Border.all(color: colorBorder), borderRadius: BorderRadius.circular(20.r)),
+      margin: EdgeInsetsDirectional.only(top: 15.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: Icon(getAddressIcon(addressType))),
-          Expanded(
-            child: Text(
-              "$houseNo, $houseName, $street, $addressLine1, $addressLine2, $city, $state",
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: bodyTextStyle(fontSize: 14.sp),
-            ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+            child: Text(getAddressTitle(addressType), style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
           ),
-          GestureDetector(
-            onTap: () => onDelete?.call(),
-            child: Padding(padding: EdgeInsetsDirectional.only(start: 5.w), child: Icon(Icons.delete_outline, color: colorTextLight)),
+          Divider(color: colorBorder, height: 0, thickness: 1.sp),
+          SizedBox(height: 10.h),
+          Row(
+            children: [
+              Padding(padding: EdgeInsets.symmetric(horizontal: 15.w), child: Icon(Icons.location_on)),
+              Expanded(
+                child: Text(
+                  "$houseNo, $houseName, $street, $addressLine1, $addressLine2, $city, $state",
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: bodyTextStyle(fontSize: 12.sp),
+                ),
+              ),
+              SizedBox(height: 15.w),
+            ],
           ),
-          GestureDetector(
-            onTap: () => onEdit?.call(),
-            child: Padding(padding: EdgeInsetsDirectional.only(start: 5.w), child: Icon(Icons.edit_outlined, color: colorTextLight)),
+          SizedBox(height: 10.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              CustomButton(
+                title: language.delete,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                fontSize: 12.sp,
+                height: 25.h,
+                borderedButton: true,
+                fontWeight: FontWeight.w500,
+                margin: EdgeInsetsDirectional.only(end: 10.w),
+                onPress: () => onDelete?.call(),
+              ),
+              CustomButton(
+                title: language.edit,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                fontSize: 12.sp,
+                height: 25.h,
+                fontWeight: FontWeight.w500,
+                margin: EdgeInsetsDirectional.only(end: 15.w),
+                onPress: () => onEdit?.call(),
+              ),
+            ],
           ),
+          SizedBox(height: 10.h),
         ],
       ),
     );

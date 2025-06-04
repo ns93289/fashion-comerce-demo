@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../components/common_circle_progress_bar.dart';
-import '../../../core/constants/colors.dart';
 import '../../../domain/entities/address_entity.dart';
 import '../../components/empty_record_view.dart';
 import '../../../core/utils/tools.dart';
@@ -52,10 +51,10 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
             final List<AddressEntity> addressList = data as List<AddressEntity>;
 
             return addressList.isNotEmpty
-                ? ListView.separated(
+                ? ListView.builder(
                   itemCount: addressList.length,
                   shrinkWrap: true,
-                  padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+                  padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
                   itemBuilder: (context, index) {
                     final modelAddress = addressList[index];
                     return ItemAddressList(
@@ -76,9 +75,6 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
                       },
                     );
                   },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h), child: Divider(color: colorDivider));
-                  },
                 )
                 : EmptyRecordView(message: language.emptyAddressMsg);
           },
@@ -93,7 +89,7 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
     return Consumer(
       builder: (context, ref, child) {
         return CustomButton(
-          title: language.add,
+          title: language.addAddress,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 30.h),
           width: 1.sw,
           onPress: () {

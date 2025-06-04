@@ -143,7 +143,7 @@ final editAddressProvider = Provider.autoDispose.family<void, int>((ref, address
   });
 });
 
-final deleteAddressProvider = Provider.family<void, ({BuildContext context, int addressId})>((ref, args) {
+final deleteAddressProvider = Provider.autoDispose.family<void, ({BuildContext context, int addressId})>((ref, args) {
   showDialog(
     context: args.context,
     builder: (context) {

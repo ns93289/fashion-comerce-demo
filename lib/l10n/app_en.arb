@@ -211,6 +211,10 @@
   "resendNewCode": "Resend New Code",
   "txtContinue": "Continue",
   "signUpText": "Tap “Sign up” and treat yourself \nto the latest looks",
+  "categories": "Categories",
+  "save": "Save",
+  "left": "left",
+  "viewAll": "View All",
   "@byClickEmailVerify": {
     "placeholders": {
       "email": {

@@ -124,7 +124,7 @@ class _VerificationsScreenState extends State<VerificationsScreen> {
 
         return Container(
           decoration: BoxDecoration(border: Border.all(color: colorBorder), borderRadius: BorderRadius.circular(20.r)),
-          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 25.h),
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 15.h),
           child: Column(
             children: [
               Padding(
