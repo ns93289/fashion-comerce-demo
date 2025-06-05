@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/custom_icons.dart';
 import '../../../core/constants/theme.dart';
 import '../../components/custom_button.dart';
 import '../home/home_screen.dart';
@@ -8,7 +9,6 @@ import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
-import '../orderDetails/order_details_screen.dart';
 
 class OrderPlacedScreen extends StatefulWidget {
   final int orderId;
@@ -29,7 +29,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
         if (didPop) return;
         openScreenWithClearStack(context, HomeScreen());
       },
-      child: Scaffold(appBar: CommonAppBar(leading: BackButton(), title: Text(language.orderPlaced)), body: _buildOrderPlaced()),
+      child: Scaffold(appBar: CommonAppBar(toolbarHeight: 0), body: _buildOrderPlaced()),
     );
   }
 
@@ -37,36 +37,37 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _orderSuccessCard(),
+        Icon(CustomIcons.checkCircle, color: colorGreen, size: 140.sp),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
-          child: Text("${language.orderPlacedMsg} ${widget.orderNo}", style: bodyTextStyle()),
+          padding: EdgeInsetsDirectional.only(top: 15.h, start: 20.w, end: 20.w),
+          child: Text(language.orderPlacedSuccess, textAlign: TextAlign.center, style: bodyTextStyle(fontSize: 36.sp, fontWeight: FontWeight.bold)),
         ),
         CustomButton(
-          title: language.viewOrder,
+          title: language.gotoOrderHistory,
+          width: 1.sw,
+          fontWeight: FontWeight.w500,
+          height: 30.h,
+          fontSize: 14.sp,
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 25.h),
           onPress: () {
-            openScreenWithClearStack(context, OrderDetailsScreen(orderId: widget.orderId));
+            // openScreen(context, screen),
+          },
+        ),
+        CustomButton(
+          title: language.continueShopping,
+          width: 1.sw,
+          borderedButton: true,
+          fontWeight: FontWeight.w500,
+          height: 30.h,
+          fontSize: 14.sp,
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 15.h),
+          onPress: () {
+            openScreen(context, HomeScreen());
           },
         ),
       ],
-    );
-  }
-
-  Widget _orderSuccessCard() {
-    return Container(
-      decoration: BoxDecoration(color: colorPrimary, borderRadius: BorderRadius.circular(10.r)),
-      margin: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
-      padding: EdgeInsets.only(top: 20.h),
-      child: Column(
-        children: [
-          Icon(Icons.check_circle, color: colorGreen, size: 30.sp),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-            child: Text(language.orderPlacedSuccess, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)),
-          ),
-        ],
-      ),
     );
   }
 }

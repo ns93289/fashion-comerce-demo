@@ -65,7 +65,7 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
           },
           error: (error, stackTrace) {
             debugPrintStack(stackTrace: stackTrace);
-            return EmptyRecordView(message: error.toString());
+            return Container();
           },
           loading: () => CommonCircleProgressBar(),
         );

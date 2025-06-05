@@ -47,18 +47,21 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     final result = ref.watch(walletServiceProvider);
 
     return Container(
-      decoration: BoxDecoration(color: colorPrimary, borderRadius: BorderRadius.circular(10.r)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), border: Border.all(width: 1.sp, color: colorBorder)),
       margin: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
       padding: EdgeInsetsDirectional.only(bottom: 15.h),
       width: 1.sw,
       child: Column(
         children: [
-          Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Text(language.walletBalance, style: bodyTextStyle(fontWeight: FontWeight.w500))),
+          Padding(
+            padding: EdgeInsetsDirectional.only(top: 20.h, bottom: 15.h),
+            child: Text(language.totalBalance, style: bodyTextStyle(fontWeight: FontWeight.w600, color: colorTextLight)),
+          ),
           result.isLoading
               ? CommonCircleProgressBar(color: colorBlack, size: 25.sp, stroke: 2.sp)
               : Text(
                 (result.asData?.value as WalletEntity?)?.walletBalance.withCurrency ?? "0",
-                style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 21.sp),
+                style: bodyTextStyle(fontWeight: FontWeight.w600, fontSize: 36.sp, color: colorPrimary),
               ),
         ],
       ),
@@ -71,7 +74,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     return Form(
       key: walletFormKey,
       child: Padding(
-        padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+        padding: EdgeInsetsDirectional.only(top: 15.h, start: 20.w, end: 20.w),
         child: CustomTextField(
           controller: walletAmountTect,
           keyboardType: TextInputType.number,
@@ -95,8 +98,9 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     });
 
     return CustomButton(
-      title: language.addAmount,
-      margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+      title: language.addMoney,
+      width: 1.sw,
+      margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 15.h),
       isLoading: result.isLoading,
       onPress: () {
         if (walletAmountTect.text.isNotEmpty) {
@@ -115,70 +119,13 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
 
   Widget _transactionList() {
     final result = ref.watch(walletTransactionServiceProvider);
-    final transactionType = ref.watch(transactionTypeProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsetsDirectional.only(start: 20.w, top: 20.h),
-          child: Row(
-            children: [
-              Text(language.transactions, style: bodyTextStyle(fontWeight: FontWeight.bold)),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsetsDirectional.only(end: 10.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          ref.read(changeTransactionTypeProvider(0));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: transactionType == 0 ? colorPrimary : colorTextLight, width: 1.sp),
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
-                          margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: Text(language.all, style: bodyTextStyle(fontSize: 14.sp)),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          ref.read(changeTransactionTypeProvider(1));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: transactionType == 1 ? colorPrimary : colorTextLight, width: 1.sp),
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
-                          margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: Text(language.credit, style: bodyTextStyle(fontSize: 14.sp)),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          ref.read(changeTransactionTypeProvider(2));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: transactionType == 2 ? colorPrimary : colorTextLight, width: 1.sp),
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
-                          margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: Text(language.debit, style: bodyTextStyle(fontSize: 14.sp)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          child: Text(language.transactions, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
         ),
         result.when(
           data: (data) {

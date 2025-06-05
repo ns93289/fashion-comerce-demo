@@ -55,6 +55,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     return CustomButton(
       title: language.update,
       margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h),
+      width: 1.sw,
       onPress: () {
         ref.read(localeProvider.notifier).state = selectedLanguage;
         openScreenWithClearStack(context, HomeScreen());

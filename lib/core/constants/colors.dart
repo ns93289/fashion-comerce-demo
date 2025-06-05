@@ -7,7 +7,7 @@ const colorWhite = Color(0xffffffff);
 const colorBlack = Color(0xff000000);
 const colorRed = Color(0xffff0000);
 const colorBlue = Color(0xff0000ff);
-const colorGreen = Color(0xff00a200);
+const colorGreen = Color(0xff00BA00);
 ///Widget colors
 const colorText = Color(0xff080808);
 const colorTextLight = Color(0xff828282);

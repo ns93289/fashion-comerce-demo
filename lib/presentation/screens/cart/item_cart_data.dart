@@ -4,17 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
+import '../../../domain/entities/product_entity.dart';
 import '../../../main.dart';
-import '../../../data/models/model_product.dart';
 
 class ItemCartData extends StatelessWidget {
-  final ModelProduct item;
+  final ProductEntity item;
+  final bool allowEdit;
 
-  const ItemCartData({super.key, required this.item});
+  const ItemCartData({super.key, required this.item, this.allowEdit = true});
 
   @override
   Widget build(BuildContext context) {
-    final ModelProduct(
+    final ProductEntity(
       :productName,
       :productImage,
       :productId,
@@ -87,12 +88,17 @@ class ItemCartData extends StatelessWidget {
                   SizedBox(width: 10.w),
                   Text(productDiscount.withCurrency, style: bodyTextStyle(fontSize: 12.sp, decoration: TextDecoration.lineThrough, color: colorTextLight)),
                   Spacer(),
-                  Icon(Icons.remove, size: 15.sp),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    child: Text(selectedQuantity.toString(), style: bodyTextStyle(fontSize: 14.sp)),
-                  ),
-                  Icon(Icons.add, size: 15.sp),
+                  if (allowEdit)
+                    Row(
+                      children: [
+                        Icon(Icons.remove, size: 15.sp),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          child: Text(selectedQuantity.toString(), style: bodyTextStyle(fontSize: 14.sp)),
+                        ),
+                        Icon(Icons.add, size: 15.sp),
+                      ],
+                    ),
                 ],
               ),
             ],

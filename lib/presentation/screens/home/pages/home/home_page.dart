@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                     ),
                   );
                 },
-                itemCount: 8,
+                itemCount: brandsList.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
               ),

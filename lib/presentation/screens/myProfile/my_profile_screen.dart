@@ -66,7 +66,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             child: Stack(
               children: [
                 Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: colorMainBackground),
+                  decoration: BoxDecoration(color: colorBorder, borderRadius: BorderRadius.circular(10.r)),
                   height: 80.sp,
                   width: 80.sp,
                   clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -86,7 +86,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: colorWhite,
-                        shape: BoxShape.circle,
+                        borderRadius: BorderRadius.circular(5.r),
                         boxShadow: [BoxShadow(blurRadius: 2, spreadRadius: 2, color: colorShadow)],
                       ),
                       padding: EdgeInsets.all(4.sp),
@@ -181,8 +181,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         });
 
         return CustomButton(
-          title: language.update,
-          margin: EdgeInsetsDirectional.only(bottom: 20.h),
+          title: language.updateProfile,
+          margin: EdgeInsetsDirectional.only(bottom: 20.h, start: 20.w, end: 20.w),
+          width: 1.sw,
           isLoading: apiResponse.isLoading,
           onPress: () {
             if (profileFormKey.currentState?.validate() ?? false) {

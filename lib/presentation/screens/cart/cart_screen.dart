@@ -6,6 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
+import '../../../domain/entities/product_entity.dart';
 import '../../provider/cart_data_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../core/constants/colors.dart';
@@ -30,14 +31,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.yourCart)), body: SafeArea(child: _buildCartScreen()));
+    return Scaffold(appBar: CommonAppBar(title: Text(language.cart)), body: SafeArea(child: _buildCartScreen()));
   }
 
   Widget _buildCartScreen() {
     return ValueListenableBuilder(
       valueListenable: cartBox.listenable(),
       builder: (context, box, _) {
-        List<ModelProduct> cartData = getCartDataFromCartBox();
+        List<ProductEntity> cartData = getCartDataFromCartBox();
         return cartData.isEmpty
             ? EmptyRecordView(message: language.emptyCartMsg)
             : Stack(
@@ -55,7 +56,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     );
   }
 
-  Widget _cartData(List<ModelProduct> cartData) {
+  Widget _cartData(List<ProductEntity> cartData) {
     return ListView.separated(
       itemCount: cartData.length,
       shrinkWrap: true,

@@ -9,7 +9,7 @@ TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight,
     color: color ?? colorText,
     fontSize: fontSize ?? 16.sp,
     fontWeight: fontWeight ?? FontWeight.normal,
-    height: 0,
+    height: 1,
     decoration: decoration,
   );
 }

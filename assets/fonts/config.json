@@ -17,6 +17,18 @@
       "css": "check_circle",
       "code": 61528,
       "src": "fontawesome5"
+    },
+    {
+      "uid": "ba9ae3250633c7b1fe249587358c8383",
+      "css": "contacts",
+      "code": 59392,
+      "src": "typicons"
+    },
+    {
+      "uid": "57f0dcdd68da5dcbfabcf2c572c01d44",
+      "css": "clock",
+      "code": 61463,
+      "src": "fontawesome5"
     }
   ]
 }

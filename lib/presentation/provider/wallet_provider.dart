@@ -5,15 +5,6 @@ import '../../application/wallet_service.dart';
 import '../../data/repositories/wallet_repo_impl.dart';
 import '../../domain/repositories/wallet_repo.dart';
 
-final transactionTypeProvider = StateProvider<int>((ref) {
-  return 0;
-});
-final changeTransactionTypeProvider = Provider.autoDispose.family<void, int>((ref, type) {
-  Future.microtask(() {
-    ref.read(transactionTypeProvider.notifier).state = type;
-    ref.read(walletTransactionServiceProvider.notifier).callWalletTransactionsApi(transactionType: type);
-  });
-});
 final walletAmountTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
   ref.onDispose(() => controller.dispose());
