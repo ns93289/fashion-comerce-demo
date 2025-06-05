@@ -2,7 +2,8 @@ class ProductEntity {
   int? _productId;
   int? _sellerId;
   int? _selectedQuantity;
-  int? _discountPercentage;
+  int? _discountType;
+  int? _productStoke;
   String? _productName;
   String? _productImage;
   String? _categoryName;
@@ -31,7 +32,8 @@ class ProductEntity {
     int? productId,
     int? sellerId,
     int? selectedQuantity,
-    int? discountPercentage,
+    int? discountType,
+    int? productStoke,
     String? productName,
     String? productImage,
     String? categoryName,
@@ -59,7 +61,8 @@ class ProductEntity {
     _productId = productId;
     _sellerId = sellerId;
     _selectedQuantity = selectedQuantity;
-    _discountPercentage = discountPercentage;
+    _discountType = discountType;
+    _productStoke = productStoke;
     _productName = productName;
     _productImage = productImage;
     _categoryName = categoryName;
@@ -91,7 +94,9 @@ class ProductEntity {
 
   int get selectedQuantity => _selectedQuantity ?? 0;
 
-  int get discountPercentage => _discountPercentage ?? 0;
+  int get discountType => _discountType ?? 0;
+
+  int get productStoke => _productStoke ?? 0;
 
   String get productName => _productName ?? "";
 
@@ -155,3 +160,5 @@ class ProductEntity {
     _selectedColor = value;
   }
 }
+
+enum ProductTypeEnum { newArrival, popular, all, categoryWise, genderWise }

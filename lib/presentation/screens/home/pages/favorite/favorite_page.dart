@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../domain/entities/product_entity.dart';
 import '../../../../components/empty_record_view.dart';
-import '../../../../../data/models/model_product.dart';
 import '../../../../provider/favorite_provider.dart';
 import 'item_favorite_product.dart';
 
@@ -25,7 +25,7 @@ class _FavoritePageState extends State<FavoritePage> with AutomaticKeepAliveClie
 
         return data.when(
           data: (data) {
-            List<ModelProduct> productList = data;
+            List<ProductEntity> productList = data;
             return productList.isNotEmpty
                 ? ListView.builder(
                   itemCount: productList.length,

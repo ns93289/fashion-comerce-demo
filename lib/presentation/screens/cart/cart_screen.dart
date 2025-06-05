@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
-import '../../../core/constants/extensions.dart';
+import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../provider/cart_data_provider.dart';
@@ -26,6 +26,8 @@ class CartScreen extends ConsumerStatefulWidget {
 }
 
 class _CartScreenState extends ConsumerState<CartScreen> {
+  final _titleStyle = bodyTextStyle(fontWeight: FontWeight.w600);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: CommonAppBar(title: Text(language.yourCart)), body: SafeArea(child: _buildCartScreen()));
@@ -43,13 +45,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 SingleChildScrollView(
                   padding: EdgeInsetsDirectional.only(bottom: 50.h),
                   child: Column(
-                    children: [
-                      _deliveryAddress(),
-                      _commonDiver(),
-                      _cartData(cartData),
-                      Padding(padding: EdgeInsets.only(top: 10.h), child: _commonDiver()),
-                      _invoiceDetails(),
-                    ],
+                    children: [_cartData(cartData), _commonDiver(), _deliveryAddress(), _commonDiver(), _deliveryOptions(), _commonDiver(), _invoiceDetails()],
                   ),
                 ),
                 _placeOrderButton(),
@@ -59,40 +55,107 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     );
   }
 
+  Widget _cartData(List<ModelProduct> cartData) {
+    return ListView.separated(
+      itemCount: cartData.length,
+      shrinkWrap: true,
+      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 10.h),
+      itemBuilder: (context, index) {
+        return ItemCartData(item: cartData[index]);
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h));
+      },
+    );
+  }
+
   Widget _deliveryAddress() {
     return Padding(
-      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       child: Row(
         children: [
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Padding(padding: EdgeInsetsDirectional.only(end: 5.w), child: Text("${language.deliverTo}:", style: bodyTextStyle(fontSize: 14.sp))),
-                    Expanded(child: Text(language.home, style: bodyTextStyle(fontSize: 14.sp))),
+                    Expanded(child: Text(language.deliverTo, style: _titleStyle)),
+                    CustomButton(
+                      title: language.change,
+                      height: 25.h,
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      onPress: () {},
+                    ),
                   ],
                 ),
-                Text("101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India", style: bodyTextStyle(fontSize: 14.sp, color: colorTextLight)),
+                SizedBox(height: 10.h),
+                Text(language.home, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                SizedBox(height: 10.h),
+                Text("101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India", style: bodyTextStyle(fontSize: 14.sp)),
               ],
             ),
           ),
-          Icon(Icons.edit_outlined, color: colorTextLight, size: 20.sp),
         ],
       ),
     );
   }
 
-  Widget _cartData(List<ModelProduct> cartData) {
-    return ListView.separated(
-      itemCount: cartData.length,
-      shrinkWrap: true,
-      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-      itemBuilder: (context, index) {
-        return ItemCartData(item: cartData[index]);
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.sp, color: colorMainBackground));
+  Widget _deliveryOptions() {
+    return Consumer(
+      builder: (context, ref, child) {
+        final deliveryType = ref.watch(deliveryTypeProvider);
+
+        return Padding(
+          padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(language.deliveryType, style: _titleStyle),
+              SizedBox(height: 10.h),
+              GestureDetector(
+                onTap: () {
+                  ref.read(deliveryTypeProvider.notifier).state = DeliveryTypes.fast;
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.circle, size: 12.sp, color: deliveryType == DeliveryTypes.fast ? colorPrimary : colorCategoryBackground),
+                    SizedBox(width: 10.w),
+                    Expanded(child: Text(language.fastDelivery, style: bodyTextStyle(fontSize: 14.sp))),
+                  ],
+                ),
+              ),
+              SizedBox(height: 5.h),
+              GestureDetector(
+                onTap: () {
+                  ref.read(deliveryTypeProvider.notifier).state = DeliveryTypes.express;
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.circle, size: 12.sp, color: deliveryType == DeliveryTypes.express ? colorPrimary : colorCategoryBackground),
+                    SizedBox(width: 10.w),
+                    Expanded(child: Text(language.expressDelivery, style: bodyTextStyle(fontSize: 14.sp))),
+                  ],
+                ),
+              ),
+              SizedBox(height: 5.h),
+              GestureDetector(
+                onTap: () {
+                  ref.read(deliveryTypeProvider.notifier).state = DeliveryTypes.standard;
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.circle, size: 12.sp, color: deliveryType == DeliveryTypes.standard ? colorPrimary : colorCategoryBackground),
+                    SizedBox(width: 10.w),
+                    Expanded(child: Text(language.freeDelivery, style: bodyTextStyle(fontSize: 14.sp))),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
   }
@@ -100,11 +163,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   Widget _invoiceDetails() {
     final data = ref.watch(checkoutInvoiceProvider);
     return Padding(
-      padding: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
+      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(language.invoice, style: bodyTextStyle(fontWeight: FontWeight.w500)),
+          Text(language.cartDetails, style: _titleStyle),
           ListView.builder(
             itemCount: data.length,
             shrinkWrap: true,
@@ -122,27 +185,21 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     final data = ref.watch(checkoutDataProvider);
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 5, offset: Offset(0, 5))]),
-        child: Row(
-          children: [
-            Expanded(child: Text(data.withCurrency, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp))),
-            CustomButton(
-              title: language.placeOrder,
-              height: 30.h,
-              fontSize: 14.sp,
-              onPress: () {
-                openScreen(context, PaymentScreen(orderAmount: data));
-              },
-            ),
-          ],
-        ),
+      child: CustomButton(
+        title: language.proceedToPay,
+        margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h),
+        width: 1.sw,
+        onPress: () {
+          openScreen(context, PaymentScreen(orderAmount: data));
+        },
       ),
     );
   }
 
   Widget _commonDiver() {
-    return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.sp, color: colorMainBackground));
+    return Padding(
+      padding: EdgeInsetsDirectional.symmetric(vertical: 15.h, horizontal: 20.w),
+      child: Divider(height: 0, thickness: 1.sp, color: colorMainBackground),
+    );
   }
 }

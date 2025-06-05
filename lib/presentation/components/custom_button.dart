@@ -16,6 +16,7 @@ class CustomButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
   final Color? textColor;
+  final Color? borderColor;
   final bool isLoading;
   final bool borderedButton;
   final bool enabled;
@@ -38,6 +39,7 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     this.enabled = true,
     this.fontWeight,
+    this.borderColor,
   });
 
   @override
@@ -48,7 +50,7 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: backgroundColor ?? (borderedButton ? Colors.transparent : colorPrimary),
           borderRadius: BorderRadius.circular(10.r),
-          border: borderedButton ? Border.all(color: colorBorder, width: 1.sp) : null,
+          border: borderedButton ? Border.all(color: borderColor ?? colorBorder, width: 1.sp) : null,
         ),
         constraints: BoxConstraints(minWidth: width ?? 50.w),
         width: width,

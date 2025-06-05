@@ -105,7 +105,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     margin: EdgeInsetsDirectional.only(start: 5.w),
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 5.w, vertical: 1.h),
                     decoration: BoxDecoration(color: colorDiscount, borderRadius: BorderRadius.circular(5.r)),
-                    child: Text("-${data.discountPercentage}%", style: bodyTextStyle(color: colorWhite, fontWeight: FontWeight.bold, fontSize: 14.sp)),
+                    child: Text("-${data.discountType}%", style: bodyTextStyle(color: colorWhite, fontWeight: FontWeight.bold, fontSize: 14.sp)),
                   ),
                 ],
               ),

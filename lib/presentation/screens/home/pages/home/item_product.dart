@@ -4,17 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/theme.dart';
-import '../../../../../data/models/model_product.dart';
+import '../../../../../domain/entities/product_entity.dart';
 
 class ItemProduct extends StatelessWidget {
-  final ModelProduct item;
+  final ProductEntity item;
   final Function()? onFavorite;
 
   const ItemProduct({super.key, required this.item, this.onFavorite});
 
   @override
   Widget build(BuildContext context) {
-    final ModelProduct(
+    final ProductEntity(
       :productId,
       :favorite,
       :categoryName,
@@ -23,7 +23,7 @@ class ItemProduct extends StatelessWidget {
       :productPrice,
       :productDiscount,
       :averageRatings,
-      :discountPercentage,
+      discountType: discountPercentage,
     ) = item;
     return Container(
       margin: EdgeInsetsDirectional.only(end: 15.w),
@@ -42,7 +42,7 @@ class ItemProduct extends StatelessWidget {
                       color: colorDiscount,
                       margin: EdgeInsetsDirectional.only(start: 5.w, top: 5.h),
                       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                      child: Text("${language.save} $discountPercentage%", style: bodyTextStyle(fontSize: 12.sp, color: colorWhite)),
+                      child: Text("${language.save} $discountPercentage%", style: bodyTextStyle(fontSize: 10.sp, color: colorWhite)),
                     ),
                     Align(
                       alignment: AlignmentDirectional.bottomStart,
@@ -50,7 +50,7 @@ class ItemProduct extends StatelessWidget {
                         color: colorDiscount,
                         margin: EdgeInsetsDirectional.only(start: 5.w, bottom: 5.h),
                         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                        child: Text("5 ${language.left}", style: bodyTextStyle(fontSize: 12.sp, color: colorWhite)),
+                        child: Text("5 ${language.left}", style: bodyTextStyle(fontSize: 10.sp, color: colorWhite)),
                       ),
                     ),
                     Align(
@@ -89,7 +89,7 @@ class ItemProduct extends StatelessWidget {
                   Flexible(
                     child: Container(
                       padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w, vertical: 1.h),
-                      margin: EdgeInsetsDirectional.only(start: 2.w, end: 10.w),
+                      margin: EdgeInsetsDirectional.only(end: 10.w),
                       decoration: BoxDecoration(color: colorCategoryBackground, borderRadius: BorderRadius.circular(5.r)),
                       child: Text(categoryName, style: bodyTextStyle(fontSize: 12.sp), maxLines: 1),
                     ),

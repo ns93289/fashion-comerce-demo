@@ -18,47 +18,54 @@ class ItemOrderHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     final OrderHistoryItem(:productName, :orderNo, :orderedTime, :orderQuantity) = orderHistoryItem;
 
-    return Row(
-      children: [
-        SizedBox(
-          width: 121.w,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: colorProductStart,
-                borderRadius: BorderRadius.circular(10.r),
-                boxShadow: [BoxShadow(blurRadius: 10, offset: Offset(0, 5), color: colorShadow)],
+    return SizedBox(
+      height: 100.h,
+      child: Row(
+        children: [
+          SizedBox(width: 100.w, child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/classic_slip_on.png", fit: BoxFit.cover))),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(start: 10.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(productName.replaceAll(RegExp(r'[\[\]]'), ""), maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontSize: 12.sp)),
+                  Spacer(),
+                  Text("${language.orderId}: $orderNo", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: colorMainBackground),
+                          alignment: Alignment.center,
+                          height: 30.h,
+                          child: Text(getFormatedDate(orderedTime, returnFormat: "dd MMM,yyyy"), style: bodyTextStyle(fontSize: 14.sp), maxLines: 1),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: CustomButton(
+                          title: language.review,
+                          borderedButton: true,
+                          width: 1.sw,
+                          textColor: colorPrimary,
+                          borderColor: colorPrimary,
+                          fontSize: 14.sp,
+                          height: 30.h,
+                          onPress: () {
+                            onReviewPress?.call();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsetsDirectional.only(start: 15.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(productName.replaceAll(RegExp(r'[\[\]]'), ""), maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontSize: 12.sp)),
-                SizedBox(height: 10.h),
-                Text("${language.orderId}: $orderNo", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10.h),
-                Text(orderedTime, style: bodyTextStyle(fontSize: 14.sp)),
-                CustomButton(
-                  title: language.review,
-                  borderedButton: true,
-                  width: 1.sw,
-                  textColor: colorPrimary,
-                  margin: EdgeInsetsDirectional.only(top: 10.h),
-                  onPress: () {
-                    onReviewPress?.call();
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

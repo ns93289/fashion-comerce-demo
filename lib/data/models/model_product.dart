@@ -77,15 +77,21 @@ class ModelProduct extends ProductEntity {
     super.sellerId,
     super.selectedQuantity,
     super.selectedSize,
+    super.productDiscount,
+    super.discountType,
+    super.productStoke,
   });
 
   factory ModelProduct.fromJson(Map<String, dynamic> json) {
     return ModelProduct(
       productId: json['id'],
       productName: json['name'],
-      productImage: json['image'],
-      categoryName: json['category_name'],
+      productImage: json['image_url'],
+      categoryName: json['sub_category'],
       productPrice: json['price'],
+      discountType: json['discount_type'],
+      productDiscount: json['discount_value'],
+      productStoke: json['stoke'],
       favorite: json['favorite'] == 1 ? true : false,
       productDescription: json['description'],
       noOfReview: json['no_of_review'],
@@ -111,9 +117,12 @@ class ModelProduct extends ProductEntity {
     final map = <String, dynamic>{};
     map['id'] = productId;
     map['name'] = productName;
-    map['image'] = productImage;
-    map['category_name'] = categoryName;
+    map['image_url'] = productImage;
+    map['sub_category'] = categoryName;
     map['price'] = productPrice;
+    map['discount_type'] = discountType;
+    map['discount_value'] = productDiscount;
+    map['stoke'] = productStoke;
     map['favorite'] = favorite;
     map['description'] = productDescription;
     map['no_of_review'] = noOfReview;

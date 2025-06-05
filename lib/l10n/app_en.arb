@@ -215,6 +215,23 @@
   "save": "Save",
   "left": "left",
   "viewAll": "View All",
+  "cartDetails": "Cart Details",
+  "shipping": "Shipping",
+  "shippingCharge": "Shipping Charge",
+  "subTotal": "Sub Total",
+  "proceedToPay": "Proceed To Pay",
+  "deliveryType": "Delivery Type",
+  "fastDelivery": "Fast Delivery(1-2 days)",
+  "expressDelivery": "Express Delivery(3-4 days)",
+  "freeDelivery": "Free Delivery(Within a week)",
+  "totalBill": "Total Bill",
+  "payByWallet": "Pay By Wallet",
+  "payByUPI": "Pay By UPI",
+  "payByCard": "Pay By Card",
+  "payByCash": "Pay By Cash",
+  "googlePay": "Google Pay",
+  "amazonPay": "Amazon Pay",
+  "paypal": "PayPal",
   "@byClickEmailVerify": {
     "placeholders": {
       "email": {

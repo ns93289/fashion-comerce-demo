@@ -32,7 +32,7 @@ openSimpleSnackBar(String message) {
 
 String getFormatedDate(String dateTime, {String format = "yyyy-MM-dd HH:mm:ss", String returnFormat = "EEEE dd MMM yyyy hh:mm aa"}) {
   try {
-    return DateFormat(returnFormat).format(DateFormat(format).parse(dateTime));
+    return DateFormat(returnFormat, selectedLocale.languageCode).format(DateFormat(format).parse(dateTime));
   } catch (e) {
     logD("getFormatedDate>>>", "${e.toString()} $dateTime");
     return "0000-00-00";

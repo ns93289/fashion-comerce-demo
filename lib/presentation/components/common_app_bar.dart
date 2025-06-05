@@ -98,7 +98,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: iconTheme,
       actionsIconTheme: actionsIconTheme,
       centerTitle: centerTitle,
-      titleSpacing: titleSpacing,
+      titleSpacing: titleSpacing ?? 5.w,
       toolbarHeight: toolbarHeight,
       leadingWidth: leadingWidth,
       toolbarTextStyle: toolbarTextStyle ?? bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),

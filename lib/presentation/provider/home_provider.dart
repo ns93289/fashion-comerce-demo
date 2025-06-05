@@ -1,9 +1,11 @@
+import 'package:fashion_comerce_demo/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/authentication_service.dart';
 import '../../core/utils/tools.dart';
 import '../../data/repositories/auth_repo_impl.dart';
+import '../../domain/entities/brands_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repo.dart';
 import '../../main.dart';
@@ -17,9 +19,9 @@ import '../../presentation/screens/myProfile/my_profile_screen.dart';
 import '../dialogs/logout_dialog.dart';
 import '../screens/changePassword/change_password_screen.dart';
 
-class DataNotifier extends AsyncNotifier<List<ModelProduct>> {
+class DataNotifier extends AsyncNotifier<List<ProductEntity>> {
   @override
-  Future<List<ModelProduct>> build() async {
+  Future<List<ProductEntity>> build() async {
     return await fetchDataFromApi();
   }
 
@@ -29,7 +31,7 @@ class DataNotifier extends AsyncNotifier<List<ModelProduct>> {
   }
 }
 
-final dataProvider = AsyncNotifierProvider<DataNotifier, List<ModelProduct>>(DataNotifier.new);
+final dataProvider = AsyncNotifierProvider<DataNotifier, List<ProductEntity>>(DataNotifier.new);
 
 Future<List<ModelProduct>> fetchDataFromApi() async {
   List<ModelProduct> productList = globalProductList;
@@ -200,14 +202,25 @@ final categoryListProvider = Provider<List<ModelProductFilter>>((ref) {
   return filters;
 });
 
-final newProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((ref) {
+final newProductProvider = FutureProvider.autoDispose<List<ProductEntity>>((ref) {
   return [globalProductList[1], globalProductList[2], globalProductList[3], globalProductList[4]];
 });
 
-final allProductProvider = AsyncNotifierProvider<DataNotifier, List<ModelProduct>>(DataNotifier.new);
+final allProductProvider = AsyncNotifierProvider<DataNotifier, List<ProductEntity>>(DataNotifier.new);
 
-final popularProductProvider = FutureProvider.autoDispose<List<ModelProduct>>((ref) {
+final popularProductProvider = FutureProvider.autoDispose<List<ProductEntity>>((ref) {
   return [globalProductList[5], globalProductList[3], globalProductList[2], globalProductList[1]];
+});
+
+final productBrandsProvider = FutureProvider.autoDispose<List<BrandsEntity>>((ref) {
+  return [
+    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
+    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
+    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
+    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
+    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
+    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
+  ];
 });
 
 final openDrawerItemProvider = Provider.family<void, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {

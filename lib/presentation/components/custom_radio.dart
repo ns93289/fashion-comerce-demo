@@ -11,15 +11,8 @@ class CustomRadio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sizeFinal = size ?? 20.sp;
+    final sizeFinal = size ?? 12.sp;
 
-    return selected
-        ? Container(
-          decoration: BoxDecoration(border: Border.all(color: colorGreen), shape: BoxShape.circle),
-          height: sizeFinal,
-          width: sizeFinal,
-          child: Icon(Icons.circle, size: sizeFinal / 1.25, color: colorGreen),
-        )
-        : Icon(Icons.circle_outlined, size: sizeFinal, color: colorTextLight);
+    return Icon(Icons.circle, size: sizeFinal, color: selected ? colorPrimary : colorBorder);
   }
 }

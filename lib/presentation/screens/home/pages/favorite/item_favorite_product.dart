@@ -4,19 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/constants/extensions.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/theme.dart';
-import '../../../../../core/utils/tools.dart';
-import '../../../../../data/models/model_product.dart';
+import '../../../../../domain/entities/product_entity.dart';
 import '../../../../../main.dart';
 
 class ItemFavoriteProduct extends StatelessWidget {
-  final ModelProduct item;
+  final ProductEntity item;
   final Function()? onUnfavorite;
 
   const ItemFavoriteProduct({super.key, required this.item, this.onUnfavorite});
 
   @override
   Widget build(BuildContext context) {
-    final ModelProduct(:productId, :favorite, :productImage, :categoryName, :productName, :productPrice) = item;
+    final ProductEntity(:productId, :favorite, :productImage, :categoryName, :productName, :productPrice) = item;
 
     return Container(
       margin: EdgeInsetsDirectional.only(bottom: 20.h),
