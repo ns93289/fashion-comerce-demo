@@ -13,6 +13,10 @@ class OrderStatusView extends StatelessWidget {
   final String packedTime;
   final String orderTime;
   final String cancelledBy;
+  final Function()? onViewStatusClick;
+  final Function()? onCancelClick;
+  final Function()? onExchangeClick;
+  final Function()? onReturnClick;
 
   const OrderStatusView({
     super.key,
@@ -22,6 +26,10 @@ class OrderStatusView extends StatelessWidget {
     required this.packedTime,
     required this.orderTime,
     this.cancelledBy = "",
+    this.onViewStatusClick,
+    this.onCancelClick,
+    this.onExchangeClick,
+    this.onReturnClick,
   });
 
   @override
@@ -57,6 +65,7 @@ class OrderStatusView extends StatelessWidget {
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           margin: EdgeInsetsDirectional.only(top: 15.h),
+          onPress: () => onViewStatusClick?.call(),
         ),
         CustomButton(
           title: language.cancel,

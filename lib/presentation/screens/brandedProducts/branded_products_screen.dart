@@ -13,6 +13,7 @@ import '../../provider/favorite_provider.dart';
 import '../../provider/home_provider.dart';
 import '../home/pages/home/item_home_category.dart';
 import '../home/pages/home/item_product.dart';
+import '../home/pages/home/offer_slider.dart';
 import '../productDetails/product_details_screen.dart';
 import '../productList/product_list_screen.dart';
 
@@ -36,8 +37,12 @@ class _BrandedProductsScreenState extends State<BrandedProductsScreen> {
   Widget _buildBrandedProducts() {
     return SingleChildScrollView(
       padding: EdgeInsetsDirectional.only(bottom: 20.h),
-      child: Column(children: [_categoriesView(), _newProducts(), _popularProducts(), _allProducts()]),
+      child: Column(children: [_offerSlider(), _categoriesView(), _newProducts(), _popularProducts(), _allProducts()]),
     );
+  }
+
+  Widget _offerSlider() {
+    return OfferSlider();
   }
 
   Widget _categoriesView() {

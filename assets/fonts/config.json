@@ -29,6 +29,12 @@
       "css": "clock",
       "code": 61463,
       "src": "fontawesome5"
+    },
+    {
+      "uid": "c709da589c923ba3c2ad48d9fc563e93",
+      "css": "cancel",
+      "code": 59393,
+      "src": "entypo"
     }
   ]
 }

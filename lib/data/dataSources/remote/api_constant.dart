@@ -1,5 +1,5 @@
 class BaseUrl {
-  static const String url = "http://192.168.1.5:8055/";
+  static const String url = "http://192.168.1.4:8055/";
   static const String apiUrl = "$url/api";
 }
 

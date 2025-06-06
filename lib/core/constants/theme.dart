@@ -4,11 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
-TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight, TextDecoration? decoration}) {
+TextStyle bodyTextStyle({Color? color, double? fontSize, FontWeight? fontWeight, TextDecoration? decoration, FontStyle? fontStyle}) {
   return GoogleFonts.raleway(
     color: color ?? colorText,
     fontSize: fontSize ?? 16.sp,
     fontWeight: fontWeight ?? FontWeight.normal,
+    fontStyle: fontStyle ?? FontStyle.normal,
     height: 1,
     decoration: decoration,
   );

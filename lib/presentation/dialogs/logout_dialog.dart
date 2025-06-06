@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/utils/tools.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../main.dart';
-import '../provider/home_provider.dart';
+import '../provider/account_provider.dart';
 import '../screens/splash/splash_screen.dart';
 import 'common_dialog.dart';
 

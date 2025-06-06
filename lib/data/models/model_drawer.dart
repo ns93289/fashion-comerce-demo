@@ -9,4 +9,4 @@ class ModelDrawer {
   ModelDrawer({required this.title, required this.screen, this.icon, this.drawerType = DrawerType.screen});
 }
 
-enum DrawerType { screen, logout }
+enum DrawerType { screen, logout, deleteAccount }

@@ -92,7 +92,7 @@
   "okay": "Okay",
   "delete": "Delete",
   "searchProducts": "Search Products",
-  "searchHint": "Search for products, brands and more",
+  "searchHint": "Search products, brands and more",
   "userName": "User Name",
   "myAddress": "My Address",
   "addAddress": "Add Address",
@@ -246,6 +246,11 @@
   "continueShopping": "Continue Shopping",
   "totalBalance": "Total Balance",
   "addMoney": "Add Money",
+  "profile": "Profile",
+  "myOrders": "My Orders",
+  "deleteMyAccount": "Delete My Account",
+  "recentSearches": "Recent Searches",
+  "shippedWith": "Shipped With",
   "@byClickEmailVerify": {
     "placeholders": {
       "email": {

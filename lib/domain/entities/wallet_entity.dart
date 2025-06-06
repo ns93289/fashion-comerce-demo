@@ -11,12 +11,12 @@ class WalletEntity {
 class WalletTransactionEntity {
   int? _transactionId;
   String? _amount;
-  String? _transactionType;
+  int? _transactionType;
   String? _transactionDate;
   String? _title;
   String? _description;
 
-  WalletTransactionEntity({int? transactionId, String? amount, String? transactionType, String? transactionDate, String? title, String? description}) {
+  WalletTransactionEntity({int? transactionId, String? amount, int? transactionType, String? transactionDate, String? title, String? description}) {
     _transactionId = transactionId;
     _amount = amount;
     _transactionType = transactionType;
@@ -29,7 +29,7 @@ class WalletTransactionEntity {
 
   String get amount => _amount ?? "";
 
-  String get transactionType => _transactionType ?? "";
+  int get transactionType => _transactionType ?? 0;
 
   String get transactionDate => _transactionDate ?? "";
 

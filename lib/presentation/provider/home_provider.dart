@@ -1,23 +1,8 @@
-import 'package:fashion_comerce_demo/domain/entities/product_entity.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/authentication_service.dart';
-import '../../core/utils/tools.dart';
-import '../../data/repositories/auth_repo_impl.dart';
+import '../../domain/entities/product_entity.dart';
 import '../../domain/entities/brands_entity.dart';
-import '../../domain/entities/user_entity.dart';
-import '../../domain/repositories/auth_repo.dart';
-import '../../main.dart';
-import '../../presentation/screens/address/my_address_screen.dart';
-import '../../presentation/screens/helpAndSupprt/help_and_support_screen.dart';
-import '../../presentation/screens/preferences/preferences_screen.dart';
-import '../../presentation/screens/wallet/wallet_screen.dart';
-import '../../data/models/model_drawer.dart';
 import '../../data/models/model_product.dart';
-import '../../presentation/screens/myProfile/my_profile_screen.dart';
-import '../dialogs/logout_dialog.dart';
-import '../screens/changePassword/change_password_screen.dart';
 
 class DataNotifier extends AsyncNotifier<List<ProductEntity>> {
   @override
@@ -177,20 +162,6 @@ final List<ModelProduct> globalProductList = [
   ),
 ];
 
-final drawerListProvider = StateProvider.autoDispose<List<ModelDrawer>>((ref) {
-  return [
-    ModelDrawer(screen: MyProfileScreen(), title: language.myProfile, icon: Icons.person_outline),
-    ModelDrawer(screen: ChangePasswordScreen(), title: language.changePassword, icon: Icons.password_outlined),
-    ModelDrawer(screen: MyAddressScreen(), title: language.myAddress, icon: Icons.location_city_outlined),
-    ModelDrawer(screen: PreferencesScreen(), title: language.preferences, icon: Icons.settings_outlined),
-    ModelDrawer(screen: WalletScreen(), title: language.wallet, icon: Icons.wallet_outlined),
-    ModelDrawer(screen: HelpAndSupportScreen(), title: language.helpAndSupport, icon: Icons.help_outline),
-    ModelDrawer(screen: Container(), drawerType: DrawerType.logout, title: language.logout, icon: Icons.logout_outlined),
-  ];
-});
-
-final homeScaffoldKey = GlobalKey<ScaffoldState>();
-
 final categoryListProvider = Provider<List<ModelProductFilter>>((ref) {
   List<ModelProductFilter> filters = [
     ModelProductFilter(id: 1, categoryIcon: "assets/images/air_max_90.png", categoryName: "Sneakers"),
@@ -221,28 +192,4 @@ final productBrandsProvider = FutureProvider.autoDispose<List<BrandsEntity>>((re
     BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
     BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
   ];
-});
-
-final openDrawerItemProvider = Provider.family<void, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {
-  homeScaffoldKey.currentState?.closeDrawer();
-  if (args.drawerItem.screen is! Container) {
-    openScreen(args.context, args.drawerItem.screen);
-  } else if (args.drawerItem.drawerType == DrawerType.logout) {
-    ref.read(logoutProvider(args.context));
-  }
-});
-
-final authRepoProvider = Provider.autoDispose<AuthRepo>((ref) {
-  return AuthRepoImpl();
-});
-final authenticationServiceProvider = StateNotifierProvider<AuthenticationService, AsyncValue<UserEntity?>>((ref) {
-  return AuthenticationService(ref.watch(authRepoProvider));
-});
-final logoutProvider = Provider.autoDispose.family<void, BuildContext>((ref, context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return LogoutDialog();
-    },
-  );
 });

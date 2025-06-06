@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/colors.dart';
+import '../../core/constants/custom_icons.dart';
 import '../../core/constants/theme.dart';
 import '../../main.dart';
 import '../components/custom_button.dart';
@@ -32,13 +33,16 @@ class _GiveReviewBottomSheetState extends State<GiveReviewBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              padding: EdgeInsets.all(5.sp),
-              margin: EdgeInsetsDirectional.only(bottom: 5.h),
-              decoration: BoxDecoration(color: colorWhite, borderRadius: BorderRadius.circular(20.r)),
-              child: Icon(Icons.cancel_outlined),
+          Align(
+            alignment: AlignmentDirectional.bottomEnd,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: EdgeInsets.all(5.sp),
+                margin: EdgeInsetsDirectional.only(bottom: 5.h, end: 10.w),
+                decoration: BoxDecoration(color: colorWhite, borderRadius: BorderRadius.circular(5.r)),
+                child: Icon(CustomIcons.cancel),
+              ),
             ),
           ),
           Container(

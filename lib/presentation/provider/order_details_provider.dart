@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/utils/tools.dart';
@@ -5,6 +6,7 @@ import '../../data/dataSources/local/hive_helper.dart';
 import '../../data/dataSources/remote/api_reponse.dart';
 import '../../data/models/model_order_details.dart';
 import '../../data/models/order_history_model.dart';
+import '../bottomSheets/product_status_bottom_sheet.dart';
 import 'home_provider.dart';
 
 final orderDetailsFP = FutureProvider.autoDispose.family<ApiResponse<ModelOrderDetails>, int>((ref, orderId) {
@@ -27,4 +29,15 @@ final orderDetailsFP = FutureProvider.autoDispose.family<ApiResponse<ModelOrderD
   );
 
   return ApiSuccess(modelOrderDetails);
+});
+
+final openProductStatusBSProvider = Provider.autoDispose.family<void, ({ModelOrderDetails orderDetails, BuildContext context})>((ref, args) {
+  showModalBottomSheet(
+    context: args.context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (context) {
+      return ProductStatusBottomSheet(orderNo: args.orderDetails.orderNo, orderTime: args.orderDetails.orderTime);
+    },
+  );
 });

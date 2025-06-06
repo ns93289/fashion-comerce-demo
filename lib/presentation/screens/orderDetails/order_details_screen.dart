@@ -168,16 +168,23 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   Widget _statusView(ModelOrderDetails data) {
     final ModelOrderDetails(:orderStatus, :deliveryTime, :packedTime, :shippedTime, :cancelledBy, :orderTime) = data;
 
-    return Padding(
-      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-      child: OrderStatusView(
-        orderStatus: orderStatus,
-        deliveryTime: deliveryTime,
-        orderTime: orderTime,
-        packedTime: packedTime,
-        shippedTime: shippedTime,
-        cancelledBy: cancelledBy,
-      ),
+    return Consumer(
+      builder: (context, ref, _) {
+        return Padding(
+          padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+          child: OrderStatusView(
+            orderStatus: orderStatus,
+            deliveryTime: deliveryTime,
+            orderTime: orderTime,
+            packedTime: packedTime,
+            shippedTime: shippedTime,
+            cancelledBy: cancelledBy,
+            onViewStatusClick: () {
+              ref.read(openProductStatusBSProvider((orderDetails: data, context: context)));
+            },
+          ),
+        );
+      },
     );
   }
 

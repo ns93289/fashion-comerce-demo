@@ -2,28 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/constants/colors.dart';
-import '../../../../../core/utils/tools.dart';
-import '../../../../../main.dart';
-import '../../../../components/empty_record_view.dart';
-import '../../../../provider/order_history_provider.dart';
-import '../../../orderDetails/order_details_screen.dart';
+import '../../../core/constants/colors.dart';
+import '../../../core/utils/tools.dart';
+import '../../../main.dart';
+import '../../components/common_app_bar.dart';
+import '../../components/empty_record_view.dart';
+import '../../provider/order_history_provider.dart';
+import '../orderDetails/order_details_screen.dart';
 import 'item_order_history.dart';
 
-class OrdersPage extends StatefulWidget {
-  const OrdersPage({super.key});
+class OrderHistoryScreen extends StatefulWidget {
+  const OrderHistoryScreen({super.key});
 
   @override
-  State<OrdersPage> createState() => _OrdersPageState();
+  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
 }
 
-class _OrdersPageState extends State<OrdersPage> with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    return Scaffold(appBar: CommonAppBar(title: Text(language.myOrders)), body: SafeArea(child: _buildOrderHistory()));
+  }
+
+  Widget _buildOrderHistory() {
     return Consumer(
       builder: (context, ref, child) {
         final data = ref.watch(orderHistoryProvider);
@@ -47,7 +48,7 @@ class _OrdersPageState extends State<OrdersPage> with AutomaticKeepAliveClientMi
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
-                return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(thickness: 1.sp, color: colorMainBackground, height: 0));
+                return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(thickness: 1.sp, color: colorDivider, height: 0));
               },
             );
           },

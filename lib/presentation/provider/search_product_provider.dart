@@ -1,7 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/model_product.dart';
 import 'home_provider.dart';
+
+final searchTECProvider = Provider.autoDispose<TextEditingController>((ref) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose());
+  return controller;
+});
 
 final itemsProvider = Provider<List<ModelProduct>>((ref) {
   return globalProductList;

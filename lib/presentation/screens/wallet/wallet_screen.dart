@@ -118,7 +118,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
   }
 
   Widget _transactionList() {
-    final result = ref.watch(walletTransactionServiceProvider);
+    /*final result = ref.watch(walletTransactionServiceProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,6 +146,34 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
           },
           error: (error, stackTrace) => Padding(padding: EdgeInsetsDirectional.only(top: 20.h), child: EmptyRecordView(message: error.toString())),
           loading: () => CommonCircleProgressBar(),
+        ),
+      ],
+    );*/
+    final List<WalletTransactionEntity> transactionList = [
+      WalletTransactionEntity(title: "Credited for order complete", transactionDate: "25 May 2025, 11:20 pm", amount: "10.00", transactionType: 1),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+          child: Row(
+            children: [
+              Expanded(child: Text(language.transactions, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp))),
+              Text(language.viewAll, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp, color: colorPrimary)),
+            ],
+          ),
+        ),
+        ListView.builder(
+          itemCount: transactionList.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+          itemBuilder: (context, index) {
+            final transaction = transactionList[index];
+            return ItemTransaction(transaction: transaction);
+          },
         ),
       ],
     );

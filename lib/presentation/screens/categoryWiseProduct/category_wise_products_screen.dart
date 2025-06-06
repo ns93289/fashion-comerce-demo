@@ -2,70 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../domain/entities/brands_entity.dart';
-import '../../../../../domain/entities/product_entity.dart';
-import '../../../../../main.dart';
-import '../../../../components/custom_button.dart';
-import '../../../../../core/constants/colors.dart';
-import '../../../../../core/constants/theme.dart';
-import '../../../../../core/utils/tools.dart';
-import '../../../../provider/favorite_provider.dart';
-import '../../../../provider/home_provider.dart';
-import '../../../brandedProducts/branded_products_screen.dart';
-import '../../../categoryWiseProduct/category_wise_products_screen.dart';
-import '../../../productDetails/product_details_screen.dart';
-import '../../../productList/product_list_screen.dart';
-import 'item_home_category.dart';
-import 'item_product.dart';
-import 'offer_slider.dart';
+import '../../../core/constants/theme.dart';
+import '../../../core/utils/tools.dart';
+import '../../../domain/entities/product_entity.dart';
+import '../../../main.dart';
+import '../../components/common_app_bar.dart';
+import '../../components/custom_button.dart';
+import '../../provider/favorite_provider.dart';
+import '../../provider/home_provider.dart';
+import '../home/pages/home/item_product.dart';
+import '../home/pages/home/offer_slider.dart';
+import '../productDetails/product_details_screen.dart';
+import '../productList/product_list_screen.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class CategoryWiseProductsScreen extends StatefulWidget {
+  final int categoryId;
+  final String categoryName;
+
+  const CategoryWiseProductsScreen({super.key, required this.categoryId, required this.categoryName});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<CategoryWiseProductsScreen> createState() => _CategoryWiseProductsScreenState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
+class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen> {
   final _titleStyle = bodyTextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+    return Scaffold(appBar: CommonAppBar(title: Text(widget.categoryName)), body: SafeArea(child: _buildCategoryWiseProducts()));
+  }
+
+  Widget _buildCategoryWiseProducts() {
     return SingleChildScrollView(
       padding: EdgeInsetsDirectional.only(bottom: 20.h),
-      child: Column(children: [_offerSlider(), _categoriesView(), _newProducts(), _popularProducts(), _productBrands(), _allProducts()]),
+      child: Column(children: [_offerSlider(), _newProducts(), _popularProducts(), _allProducts()]),
     );
   }
 
   Widget _offerSlider() {
     return OfferSlider();
-  }
-
-  Widget _categoriesView() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(padding: EdgeInsetsDirectional.only(start: 20.w, bottom: 15.h, top: 15.h), child: Text(language.categories, style: _titleStyle)),
-        SizedBox(
-          height: 83.h,
-          child: ListView.builder(
-            itemCount: 8,
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsetsDirectional.only(start: 20.w, end: 5.w),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  openScreen(context, CategoryWiseProductsScreen(categoryId: 0, categoryName: "Men"));
-                },
-                child: ItemHomeCategory(),
-              );
-            },
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _newProducts() {
@@ -170,55 +146,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
     );
   }
 
-  Widget _productBrands() {
-    return Consumer(
-      builder: (context, ref, _) {
-        final result = ref.watch(productBrandsProvider);
-
-        return result.when(
-          data: (brandsList) {
-            return Container(
-              height: 40.sp,
-              margin: EdgeInsetsDirectional.only(top: 20.h),
-              child: ListView.builder(
-                padding: EdgeInsetsDirectional.only(start: 20.w, end: 5.w),
-                itemBuilder: (context, index) {
-                  BrandsEntity brand = brandsList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      openScreen(context, BrandedProductsScreen(brandsEntity: brand));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(color: colorBorder, borderRadius: BorderRadius.circular(10.r)),
-                      margin: EdgeInsetsDirectional.only(end: 15.w),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(color: colorBlack, borderRadius: BorderRadius.circular(10.r)),
-                            height: 40.sp,
-                            width: 40.sp,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: Image.asset(brand.image),
-                          ),
-                          Padding(padding: EdgeInsets.symmetric(horizontal: 5.w), child: Text(brand.name, style: bodyTextStyle(fontSize: 14.sp))),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                itemCount: brandsList.length,
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-              ),
-            );
-          },
-          error: (error, stackTrace) => Container(),
-          loading: () => Container(),
-        );
-      },
-    );
-  }
-
   Widget _allProducts() {
     return Consumer(
       builder: (context, ref, child) {
@@ -272,7 +199,4 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
       },
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
