@@ -10,7 +10,7 @@ extension IndexedIterable<T> on Iterable<T> {
 }
 
 extension CurrencyExtension on dynamic {
-  String get withCurrency => "\$ $this";
+  String get withCurrency => "\$ ${num.parse(this.toString()).toStringAsFixed(2)}";
 }
 
 extension StringExtension on String {

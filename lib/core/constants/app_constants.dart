@@ -35,4 +35,5 @@ sealed class DeliveryTypes {
 sealed class DefaultData {
   static const String countryCodeName = "US";
   static const int pageSize = 10;
+  static const bool localMode = false;
 }

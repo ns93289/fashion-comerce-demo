@@ -6,7 +6,6 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
-import '../../../domain/entities/product_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../cart/cart_screen.dart';
@@ -42,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ValueListenableBuilder(
               valueListenable: cartBox.listenable(),
               builder: (context, value, child) {
-                final cartData = getCartDataFromCartBox();
-                return cartData.isEmpty ? Container() : _cartView(cartData);
+                final cartData = getCartCountFromCartBox();
+                return cartData == 0 ? Container() : _cartView(cartData);
               },
             ),
           ],
@@ -86,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _cartView(List<ProductEntity> cartData) {
+  Widget _cartView(int cartData) {
     return GestureDetector(
       onTap: () {
         openScreen(context, CartScreen());
@@ -100,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
               margin: EdgeInsetsDirectional.only(start: 11.w),
               decoration: BoxDecoration(shape: BoxShape.circle, color: colorPrimary),
               padding: EdgeInsets.all(4.sp),
-              child: Text(cartData.length.toString(), style: bodyTextStyle(fontSize: 10.sp)),
+              child: Text(cartData.toString(), style: bodyTextStyle(fontSize: 10.sp)),
             ),
           ],
         ),

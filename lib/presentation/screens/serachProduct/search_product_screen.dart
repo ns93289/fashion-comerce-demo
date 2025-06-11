@@ -68,11 +68,11 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
           shrinkWrap: true,
           padding: EdgeInsetsDirectional.only(top: 10.h),
           itemBuilder: (context, index) {
-            final ModelProduct(:productId, :productName) = searchList[index];
+            final ModelProduct(:productId, :productName, :selectedSize, :selectedColor) = searchList[index];
             return GestureDetector(
               onTap: () {
                 putDataIntoRecentSearchBox(SearchModel(id: productId, searchString: productName));
-                openScreen(context, ProductDetailsScreen(productId: productId, productName: productName));
+                openScreen(context, ProductDetailsScreen(productId: productId, productName: productName, size: selectedSize, color: selectedColor));
               },
               child: Container(
                 color: colorWhite,
@@ -112,7 +112,7 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                     SearchModel modelProduct = recentList[index];
                     return GestureDetector(
                       onTap: () {
-                        openScreen(context, ProductDetailsScreen(productId: modelProduct.id, productName: modelProduct.searchString));
+                        openScreen(context, ProductDetailsScreen(productId: modelProduct.id, productName: modelProduct.searchString, size: "", color: ""));
                       },
                       child: Container(
                         color: colorWhite,

@@ -13,6 +13,7 @@ import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_pin_code_field.dart';
+import '../home/home_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   final bool isPhone;
@@ -77,7 +78,13 @@ class _OtpScreenState extends State<OtpScreen> {
         final apiResponse = ref.watch(authenticationServiceProvider);
         ref.listen(authenticationServiceProvider, (previous, next) {
           if (next.value != null) {
-            Navigator.pop(context, true);
+            bool isEmailVerified = getBoolDataFromUserBox(key: hiveEmailVerified);
+            bool isPhoneVerified = getBoolDataFromUserBox(key: hivePhoneNumberVerified);
+            if (isPhoneVerified && isEmailVerified) {
+              openScreenWithClearStack(context, HomeScreen());
+            } else {
+              Navigator.pop(context, true);
+            }
           } else if (next.hasError) {
             openSimpleSnackBar(next.error.toString());
           }

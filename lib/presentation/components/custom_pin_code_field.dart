@@ -74,7 +74,7 @@ class CustomPinCodeFieldState extends State<CustomPinCodeField> {
               disabledBorder: normalBorder,
               enabledBorder: normalBorder,
               focusedBorder: focusBorder,
-              contentPadding: EdgeInsetsDirectional.only(start: 3.sp, top: 10.sp, bottom: 10.sp),
+              contentPadding: EdgeInsetsDirectional.only(top: 12.sp, bottom: 12.sp),
               filled: true,
               fillColor: _values[index].isNotEmpty ? colorPrimary : colorBorder,
             ),

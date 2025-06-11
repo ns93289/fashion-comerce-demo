@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../components/custom_button.dart';
 import '../../../core/provider/locale_provider.dart';
@@ -33,7 +34,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     final List<ModelLanguage> languages = ref.watch(languagesProvider);
     final selectedLanguage = ref.watch(selectedLanguageProvider);
 
-    return ListView.builder(
+    return ListView.separated(
       itemCount: languages.length,
       shrinkWrap: true,
       padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w, bottom: 80.h),
@@ -45,6 +46,9 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
           },
           child: ItemLanguage(modelLanguage: item, selected: item.locale == selectedLanguage),
         );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.h, color: colorDivider));
       },
     );
   }

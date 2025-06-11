@@ -21,10 +21,18 @@ class EndPoint {
   static const String getCategories = "/category/get";
   static const String getSubCategories = "/sub-category/get";
 
-  ///Product list apis
-  static const String productList = "home/products";
-  static const String popularProductList = "home/popular-products";
-  static const String newProductList = "home/new-arrivals";
+  ///Home apis
+  static const String productList = "/home/products";
+  static const String popularProductList = "/home/popular-products";
+  static const String newProductList = "/home/new-arrivals";
+  static const String brandsList = "/home/brands";
+  static const String homeSlider = "/home/slider";
+
+  ///Product details...
+  static const String productDetails = "/product-detail/product";
+
+  ///Favourite Apis...
+  static const String addFavourite = "/favourite/add-remove";
 
   ///Address Apis...
   static const String addAddress = "/address/add";
@@ -36,6 +44,14 @@ class EndPoint {
   static const String getWalletBalance = "/wallet/balance";
   static const String addMoneyToWallet = "/wallet/add-money";
   static const String getWalletTransactions = "/wallet/transactions";
+
+  ///Cart Apis...
+  static const String addToCart = "/cart/add";
+  static const String getCart = "/cart/get";
+  static const String removeCartProduct = "/cart/remove";
+
+  ///Order place Apis...
+  static const String placeOrder = "/order/place";
 }
 
 class ApiParams {
@@ -69,4 +85,10 @@ class ApiParams {
   static const String amount = "amount";
   static const String type = "type";
   static const String size = "size";
+  static const String productId = "product_id";
+  static const String color = "color";
+  static const String productVariantId = "product_variant_id";
+  static const String quantity = "quantity";
+  static const String paymentMethod = "payment_method";
+  static const String addressId = "address_id";
 }

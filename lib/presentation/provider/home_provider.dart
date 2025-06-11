@@ -1,8 +1,19 @@
+import 'package:fashion_comerce_demo/core/constants/app_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/brands_service.dart';
+import '../../application/product_service.dart';
+import '../../application/slider_service.dart';
+import '../../data/repositories/brands_repo_impl.dart';
+import '../../data/repositories/product_repository_impl.dart';
+import '../../data/repositories/slider_repo_impl.dart';
 import '../../domain/entities/product_entity.dart';
 import '../../domain/entities/brands_entity.dart';
 import '../../data/models/model_product.dart';
+import '../../domain/entities/slider_entity.dart';
+import '../../domain/repositories/brands_repo.dart';
+import '../../domain/repositories/product_repository.dart';
+import '../../domain/repositories/slider_repo.dart';
 
 class DataNotifier extends AsyncNotifier<List<ProductEntity>> {
   @override
@@ -34,6 +45,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 40.10,
     averageRatings: 4.1,
     noOfReview: 6,
+    genderType: GenderTypes.male,
     productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
@@ -53,6 +65,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 77.65,
     averageRatings: 4.3,
     noOfReview: 6,
+    genderType: GenderTypes.female,
     productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
@@ -72,6 +85,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 50,
     averageRatings: 4.0,
     noOfReview: 6,
+    genderType: GenderTypes.female,
     productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
@@ -91,6 +105,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 66.35,
     averageRatings: 4.5,
     noOfReview: 6,
+    genderType: GenderTypes.female,
     productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
@@ -113,6 +128,7 @@ final List<ModelProduct> globalProductList = [
     productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
+    genderType: GenderTypes.male,
     sellerName: "Shop Maxx",
     productCare: "Only apply dry cleaning",
     productCountry: "USA",
@@ -129,6 +145,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 55.50,
     averageRatings: 4.2,
     noOfReview: 6,
+    genderType: GenderTypes.male,
     productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
@@ -148,6 +165,7 @@ final List<ModelProduct> globalProductList = [
     productPrice: 35,
     averageRatings: 4.2,
     noOfReview: 6,
+    genderType: GenderTypes.male,
     productDescription: temDesc,
     productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
@@ -171,6 +189,44 @@ final categoryListProvider = Provider<List<ModelProductFilter>>((ref) {
     ModelProductFilter(id: 5, categoryIcon: "assets/images/grandpro_tennis_sneaker.png", categoryName: "Casual"),
   ];
   return filters;
+});
+
+final sliderRepoProvider = Provider.autoDispose<SliderRepo>((ref) {
+  return SliderRepoImpl();
+});
+final sliderServiceProvider = StateNotifierProvider<SliderService, AsyncValue<List<SliderEntity>>?>((ref) {
+  final service = SliderService(ref.watch(sliderRepoProvider));
+  service.callSliderApi();
+  return service;
+});
+
+final brandsRepoProvider = Provider.autoDispose<BrandsRepo>((ref) {
+  return BrandsRepoImpl();
+});
+final brandsServiceProvider = StateNotifierProvider<BrandsService, AsyncValue<List<BrandsEntity>>?>((ref) {
+  final service = BrandsService(ref.watch(brandsRepoProvider));
+  service.callBrandsApi();
+  return service;
+});
+
+final productRepoProvider = Provider.autoDispose<ProductRepository>((ref) {
+  return ProductRepositoryImpl();
+});
+
+final newProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
+  final service = ProductService(ref.watch(productRepoProvider));
+  service.callNewArrivalProductsApi();
+  return service;
+});
+final popularProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
+  final service = ProductService(ref.watch(productRepoProvider));
+  service.callPopularProductsApi();
+  return service;
+});
+final allProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
+  final service = ProductService(ref.watch(productRepoProvider));
+  service.callProductsApi();
+  return service;
 });
 
 final newProductProvider = FutureProvider.autoDispose<List<ProductEntity>>((ref) {

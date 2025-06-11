@@ -41,7 +41,7 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
   }
 
   Widget _offerSlider() {
-    return OfferSlider();
+    return OfferSlider(sliderData: []);
   }
 
   Widget _newProducts() {
@@ -65,7 +65,15 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                       ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(context, ProductDetailsScreen(productId: product.productId, productName: product.productName));
+                          openScreen(
+                            context,
+                            ProductDetailsScreen(
+                              productId: product.productId,
+                              productName: product.productName,
+                              size: product.selectedSize,
+                              color: product.selectedColor,
+                            ),
+                          );
                         },
                         child: ItemProduct(
                           item: productList[index],
@@ -116,7 +124,15 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                       ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(context, ProductDetailsScreen(productId: product.productId, productName: product.productName));
+                          openScreen(
+                            context,
+                            ProductDetailsScreen(
+                              productId: product.productId,
+                              productName: product.productName,
+                              size: product.selectedSize,
+                              color: product.selectedColor,
+                            ),
+                          );
                         },
                         child: ItemProduct(
                           item: productList[index],
@@ -170,7 +186,15 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                       ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(context, ProductDetailsScreen(productId: product.productId, productName: product.productName));
+                          openScreen(
+                            context,
+                            ProductDetailsScreen(
+                              productId: product.productId,
+                              productName: product.productName,
+                              size: product.selectedSize,
+                              color: product.selectedColor,
+                            ),
+                          );
                         },
                         child: ItemProduct(
                           item: productList[index],

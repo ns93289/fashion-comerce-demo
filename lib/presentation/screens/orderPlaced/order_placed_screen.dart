@@ -11,10 +11,7 @@ import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 
 class OrderPlacedScreen extends StatefulWidget {
-  final int orderId;
-  final String orderNo;
-
-  const OrderPlacedScreen({super.key, required this.orderId, required this.orderNo});
+  const OrderPlacedScreen({super.key});
 
   @override
   State<OrderPlacedScreen> createState() => _OrderPlacedScreenState();

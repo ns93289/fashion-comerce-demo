@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../main.dart';
-import '../constants/app_constants.dart';
 import '../constants/colors.dart';
 import '../constants/theme.dart';
 
@@ -45,28 +42,6 @@ DateTime getDateTimeObjFromString(String dateTime, {String format = "yyyy-MM-dd 
   } catch (e) {
     logD("getFormatedDate>>>", e.toString());
     return DateTime.now();
-  }
-}
-
-IconData getAddressIcon(int addressType) {
-  if (addressType == AddressTypes.home) {
-    return Icons.home_outlined;
-  } else if (addressType == AddressTypes.work) {
-    return Icons.work_outline;
-  } else {
-    return Icons.location_on_outlined;
-  }
-}
-
-String getAddressTitle(int addressType) {
-  if (addressType == AddressTypes.home) {
-    return language.home;
-  } else if (addressType == AddressTypes.work) {
-    return language.work;
-  } else if (addressType == AddressTypes.family) {
-    return language.familyOrFriend;
-  } else {
-    return language.other;
   }
 }
 

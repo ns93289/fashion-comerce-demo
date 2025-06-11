@@ -118,7 +118,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
   }
 
   Widget _transactionList() {
-    /*final result = ref.watch(walletTransactionServiceProvider);
+    final result = ref.watch(walletTransactionServiceProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,8 +148,8 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
           loading: () => CommonCircleProgressBar(),
         ),
       ],
-    );*/
-    final List<WalletTransactionEntity> transactionList = [
+    );
+    /*final List<WalletTransactionEntity> transactionList = [
       WalletTransactionEntity(title: "Credited for order complete", transactionDate: "25 May 2025, 11:20 pm", amount: "10.00", transactionType: 1),
     ];
 
@@ -176,6 +176,6 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
           },
         ),
       ],
-    );
+    );*/
   }
 }

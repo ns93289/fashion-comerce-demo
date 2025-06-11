@@ -1,31 +1,25 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
-import '../../../domain/entities/product_entity.dart';
+import '../../../data/dataSources/remote/api_constant.dart';
+import '../../../domain/entities/cart_preview_entity.dart';
 import '../../../main.dart';
 
 class ItemCartData extends StatelessWidget {
-  final ProductEntity item;
+  final CartProductEntity item;
   final bool allowEdit;
+  final Function()? onAdd;
+  final Function()? onRemove;
 
-  const ItemCartData({super.key, required this.item, this.allowEdit = true});
+  const ItemCartData({super.key, required this.item, this.allowEdit = true, this.onAdd, this.onRemove});
 
   @override
   Widget build(BuildContext context) {
-    final ProductEntity(
-      :productName,
-      :productImage,
-      :productId,
-      :productPrice,
-      :selectedSize,
-      :selectedQuantity,
-      :categoryName,
-      :selectedColor,
-      :productDiscount,
-    ) = item;
+    final CartProductEntity(:productName, :imageUrl, :productId, :finalPrice, :size, :quantity, :subCategory, :color, :price, :discountType) = item;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,7 +27,17 @@ class ItemCartData extends StatelessWidget {
           color: colorProductEnd,
           width: 80.sp,
           margin: EdgeInsetsDirectional.only(end: 15.w),
-          child: AspectRatio(aspectRatio: 1, child: Image.asset(productImage, fit: BoxFit.cover)),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: CachedNetworkImage(
+              imageUrl: "${BaseUrl.url}$imageUrl",
+              width: double.maxFinite,
+              height: double.maxFinite,
+              fit: BoxFit.cover,
+              fadeInDuration: Duration.zero,
+              placeholderFadeInDuration: Duration.zero,
+            ),
+          ),
         ),
         Expanded(
           child: Column(
@@ -54,7 +58,7 @@ class ItemCartData extends StatelessWidget {
                       padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w, vertical: 1.h),
                       margin: EdgeInsetsDirectional.only(end: 10.w),
                       decoration: BoxDecoration(color: colorCategoryBackground, borderRadius: BorderRadius.circular(5.r)),
-                      child: Text(categoryName, style: bodyTextStyle(fontSize: 12.sp), maxLines: 1),
+                      child: Text(subCategory, style: bodyTextStyle(fontSize: 12.sp), maxLines: 1),
                     ),
                   ),
                 ],
@@ -66,7 +70,7 @@ class ItemCartData extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(text: "${language.size}: ", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-                        TextSpan(text: selectedSize.toString(), style: bodyTextStyle(fontSize: 12.sp)),
+                        TextSpan(text: size, style: bodyTextStyle(fontSize: 12.sp)),
                       ],
                     ),
                   ),
@@ -75,7 +79,7 @@ class ItemCartData extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(text: "${language.colors}: ", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-                        TextSpan(text: selectedColor.toString(), style: bodyTextStyle(fontSize: 12.sp)),
+                        TextSpan(text: color, style: bodyTextStyle(fontSize: 12.sp)),
                       ],
                     ),
                   ),
@@ -84,19 +88,17 @@ class ItemCartData extends StatelessWidget {
               SizedBox(height: 5.h),
               Row(
                 children: [
-                  Text(productPrice.withCurrency, style: bodyTextStyle(fontSize: 14.sp)),
+                  Text(finalPrice.withCurrency, style: bodyTextStyle(fontSize: 14.sp)),
                   SizedBox(width: 10.w),
-                  Text(productDiscount.withCurrency, style: bodyTextStyle(fontSize: 12.sp, decoration: TextDecoration.lineThrough, color: colorTextLight)),
+                  if (discountType > 0)
+                    Text(price.withCurrency, style: bodyTextStyle(fontSize: 12.sp, decoration: TextDecoration.lineThrough, color: colorTextLight)),
                   Spacer(),
                   if (allowEdit)
                     Row(
                       children: [
-                        Icon(Icons.remove, size: 15.sp),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          child: Text(selectedQuantity.toString(), style: bodyTextStyle(fontSize: 14.sp)),
-                        ),
-                        Icon(Icons.add, size: 15.sp),
+                        GestureDetector(onTap: () => onRemove?.call(), child: Icon(Icons.remove, size: 15.sp)),
+                        Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Text(quantity.toString(), style: bodyTextStyle(fontSize: 14.sp))),
+                        GestureDetector(onTap: () => onAdd?.call(), child: Icon(Icons.add, size: 15.sp)),
                       ],
                     ),
                 ],

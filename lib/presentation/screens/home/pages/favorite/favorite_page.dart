@@ -1,12 +1,14 @@
-import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../main.dart';
+import '../../../../../core/utils/tools.dart';
 import '../../../../../domain/entities/product_entity.dart';
 import '../../../../components/empty_record_view.dart';
 import '../../../../provider/favorite_provider.dart';
-import 'item_favorite_product.dart';
+import '../../../productDetails/product_details_screen.dart';
+import '../home/item_product.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -27,16 +29,36 @@ class _FavoritePageState extends State<FavoritePage> with AutomaticKeepAliveClie
           data: (data) {
             List<ProductEntity> productList = data;
             return productList.isNotEmpty
-                ? ListView.builder(
+                ? GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 5.w,
+                    mainAxisExtent: 225.h,
+                    mainAxisSpacing: 20.h,
+                  ),
+                  padding: EdgeInsetsDirectional.only(bottom: 20.h, start: 20.w, end: 5.w),
                   itemCount: productList.length,
                   shrinkWrap: true,
-                  padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
                   itemBuilder: (context, index) {
-                    return ItemFavoriteProduct(
-                      item: productList[index],
-                      onUnfavorite: () {
-                        ref.read(favoriteUnFavorite(productList[index]));
+                    ProductEntity product = productList[index];
+                    return GestureDetector(
+                      onTap: () {
+                        openScreen(
+                          context,
+                          ProductDetailsScreen(
+                            productId: product.productId,
+                            productName: product.productName,
+                            size: product.selectedSize,
+                            color: product.selectedColor,
+                          ),
+                        );
                       },
+                      child: ItemProduct(
+                        item: productList[index],
+                        onFavorite: () {
+                          ref.read(favoriteUnFavorite(productList[index]));
+                        },
+                      ),
                     );
                   },
                 )

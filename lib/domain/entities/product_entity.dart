@@ -4,6 +4,7 @@ class ProductEntity {
   int? _selectedQuantity;
   int? _discountType;
   int? _productStoke;
+  int? _genderType;
   String? _productName;
   String? _productImage;
   String? _categoryName;
@@ -14,11 +15,12 @@ class ProductEntity {
   String? _productMaterial;
   String? _sellerName;
   String? _selectedColor;
+  String? _selectedSize;
   num? _productPrice;
   num? _noOfReview;
   num? _averageRatings;
-  num? _selectedSize;
   num? _productDiscount;
+  num? _productDiscountPrice;
   num? _deliveryCharge;
   num? _expressCharge;
   List<num>? _productSizes;
@@ -26,7 +28,6 @@ class ProductEntity {
   List<String>? _productColors;
   List<int>? _productQuantities;
   bool? _favorite;
-  bool? _isBestSeller;
 
   ProductEntity({
     int? productId,
@@ -34,6 +35,7 @@ class ProductEntity {
     int? selectedQuantity,
     int? discountType,
     int? productStoke,
+    int? genderType,
     String? productName,
     String? productImage,
     String? categoryName,
@@ -44,13 +46,14 @@ class ProductEntity {
     String? productMaterial,
     String? selectedColor,
     String? productDescription,
+    String? selectedSize,
     num? productPrice,
     num? noOfReview,
     num? averageRatings,
-    num? selectedSize,
     num? productDiscount,
     num? deliveryCharge,
     num? expressCharge,
+    num? productDiscountPrice,
     List<num>? productSizes,
     List<String>? reviewerList,
     List<String>? productColors,
@@ -63,6 +66,7 @@ class ProductEntity {
     _selectedQuantity = selectedQuantity;
     _discountType = discountType;
     _productStoke = productStoke;
+    _genderType = genderType;
     _productName = productName;
     _productImage = productImage;
     _categoryName = categoryName;
@@ -76,6 +80,7 @@ class ProductEntity {
     _productDiscount = productDiscount;
     _deliveryCharge = deliveryCharge;
     _expressCharge = expressCharge;
+    _productDiscountPrice = productDiscountPrice;
     _reviewerList = reviewerList;
     _isBestSeller = isBestSeller;
     _sellerName = sellerName;
@@ -88,6 +93,8 @@ class ProductEntity {
     _selectedColor = selectedColor;
   }
 
+  bool? _isBestSeller;
+
   int get productId => _productId ?? 0;
 
   int get sellerId => _sellerId ?? 0;
@@ -97,6 +104,8 @@ class ProductEntity {
   int get discountType => _discountType ?? 0;
 
   int get productStoke => _productStoke ?? 0;
+
+  int get genderType => _genderType ?? 0;
 
   String get productName => _productName ?? "";
 
@@ -118,19 +127,21 @@ class ProductEntity {
 
   String get selectedColor => _selectedColor ?? "";
 
+  String get selectedSize => _selectedSize ?? "";
+
   num get productPrice => _productPrice ?? 0;
 
   num get averageRatings => _averageRatings ?? 0;
 
   num get noOfReview => _noOfReview ?? 0;
 
-  num get selectedSize => _selectedSize ?? 0;
-
   num get productDiscount => _productDiscount ?? 0;
 
   num get deliveryCharge => _deliveryCharge ?? 0;
 
   num get expressCharge => _expressCharge ?? 0;
+
+  num get productDiscountPrice => _productDiscountPrice ?? 0;
 
   List<num> get productSizes => _productSizes ?? [];
 
@@ -144,7 +155,7 @@ class ProductEntity {
 
   bool get isBestSeller => _isBestSeller ?? false;
 
-  set selectedSize(num value) {
+  set selectedSize(String value) {
     _selectedSize = value;
   }
 

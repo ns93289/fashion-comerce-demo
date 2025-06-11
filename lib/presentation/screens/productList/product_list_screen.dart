@@ -50,7 +50,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ProductEntity product = productList[index];
                 return GestureDetector(
                   onTap: () {
-                    openScreen(context, ProductDetailsScreen(productId: product.productId, productName: product.productName));
+                    openScreen(
+                      context,
+                      ProductDetailsScreen(
+                        productId: product.productId,
+                        productName: product.productName,
+                        size: product.selectedSize,
+                        color: product.selectedColor,
+                      ),
+                    );
                   },
                   child: ItemProduct(
                     item: productList[index],

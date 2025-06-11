@@ -14,7 +14,7 @@ class ModelAddress extends AddressEntity {
     super.street,
   });
 
-  factory ModelAddress.fromJson(Map<String, dynamic> json) {
+  factory ModelAddress.fromJson(dynamic json) {
     return ModelAddress(
       addressId: json['id'],
       addressType: json['address_type_id'],

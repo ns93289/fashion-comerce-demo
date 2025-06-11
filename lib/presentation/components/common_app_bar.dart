@@ -105,7 +105,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleTextStyle: titleTextStyle ?? bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
       systemOverlayStyle:
           systemOverlayStyle ??
-          SystemUiOverlayStyle(statusBarColor: colorPrimary, statusBarBrightness: Brightness.light, statusBarIconBrightness: Brightness.dark),
+          SystemUiOverlayStyle(statusBarColor: colorWhite, statusBarBrightness: Brightness.light, statusBarIconBrightness: Brightness.dark),
       clipBehavior: clipBehavior,
       actionsPadding: actionsPadding,
     );

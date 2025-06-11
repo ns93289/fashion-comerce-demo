@@ -123,7 +123,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       itemBuilder: (context, index) {
-        return ItemCartData(item: productList[index], allowEdit: false);
+        // return ItemCartData(item: productList[index], allowEdit: false);
       },
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.sp, color: colorMainBackground));

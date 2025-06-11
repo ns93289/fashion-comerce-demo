@@ -1,29 +1,20 @@
 class CartModel {
-  num? _itemTotal;
-  num? _tax;
-  num? _discount;
-  num? _deliveryCharge;
-  num? _total;
-  List<int>? _productList;
+  int? _quantity;
+  String? _message;
 
-  CartModel({num? itemTotal, num? tax, num? deliveryCharge, num? total, num? discount, List<int>? productList}) {
-    _itemTotal = itemTotal;
-    _tax = tax;
-    _deliveryCharge = deliveryCharge;
-    _total = total;
-    _discount = discount;
-    _productList = productList;
+  CartModel.fromJson(dynamic json) {
+    _quantity = json['quantity'];
+    _message = json['message'];
   }
 
-  num get total => _total ?? 0;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['quantity'] = _quantity;
+    data['message'] = _message;
+    return data;
+  }
 
-  num get deliveryCharge => _deliveryCharge ?? 0;
+  int get quantity => _quantity ?? 0;
 
-  num get tax => _tax ?? 0;
-
-  num get itemTotal => _itemTotal ?? 0;
-
-  num get discount => _discount ?? 0;
-
-  List<int> get productList => _productList ?? [];
+  String get message => _message ?? '';
 }

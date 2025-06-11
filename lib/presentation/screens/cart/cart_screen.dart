@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import '../../components/common_circle_progress_bar.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/theme.dart';
+import '../../../core/utils/text_utils.dart';
 import '../../../core/utils/tools.dart';
-import '../../../domain/entities/product_entity.dart';
+import '../../../domain/entities/cart_preview_entity.dart';
 import '../../provider/cart_data_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../core/constants/colors.dart';
@@ -15,7 +17,7 @@ import '../../components/common_app_bar.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
 import '../../components/item_key_value.dart';
-import '../../../data/models/model_product.dart';
+import '../address/my_address_screen.dart';
 import '../payment/payment_screen.dart';
 import 'item_cart_data.dart';
 
@@ -35,34 +37,64 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 
   Widget _buildCartScreen() {
-    return ValueListenableBuilder(
-      valueListenable: cartBox.listenable(),
-      builder: (context, box, _) {
-        List<ProductEntity> cartData = getCartDataFromCartBox();
-        return cartData.isEmpty
-            ? EmptyRecordView(message: language.emptyCartMsg)
-            : Stack(
-              children: [
-                SingleChildScrollView(
-                  padding: EdgeInsetsDirectional.only(bottom: 50.h),
-                  child: Column(
-                    children: [_cartData(cartData), _commonDiver(), _deliveryAddress(), _commonDiver(), _deliveryOptions(), _commonDiver(), _invoiceDetails()],
-                  ),
-                ),
-                _placeOrderButton(),
-              ],
-            );
+    return Consumer(
+      builder: (context, ref, child) {
+        final response = ref.watch(cartDetailsServiceProvider);
+
+        return response.when(
+              data: (data) {
+                CartPreviewEntity? cartData = data;
+                if (cartData == null) {
+                  ref.read(cartDetailsProvider);
+                  return Container();
+                } else {
+                  return Stack(
+                    children: [
+                      SingleChildScrollView(
+                        padding: EdgeInsetsDirectional.only(bottom: 80.h),
+                        child: Column(
+                          children: [
+                            _cartData(cartData.products),
+                            _commonDiver(),
+                            _deliveryAddress(),
+                            _commonDiver(),
+                            _deliveryOptions(),
+                            _commonDiver(),
+                            _invoiceDetails(),
+                          ],
+                        ),
+                      ),
+                      Align(alignment: Alignment.bottomCenter, child: _placeOrderButton()),
+                    ],
+                  );
+                }
+              },
+              error: (error, stackTrace) => EmptyRecordView(message: error.toString()),
+              loading: () => CommonCircleProgressBar(),
+            ) ??
+            Container();
       },
     );
   }
 
-  Widget _cartData(List<ProductEntity> cartData) {
+  Widget _cartData(List<CartProductEntity> cartData) {
     return ListView.separated(
       itemCount: cartData.length,
       shrinkWrap: true,
       padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 10.h),
       itemBuilder: (context, index) {
-        return ItemCartData(item: cartData[index]);
+        final CartProductEntity(:productId, :color, :size, :variantId) = cartData[index];
+        return ItemCartData(
+          item: cartData[index],
+          onRemove: () {
+            addDataIntoCartBox(-1);
+            ref.read(removeProductCartProvider((productId: productId, productVariantId: variantId, size: size, color: color)));
+          },
+          onAdd: () {
+            addDataIntoCartBox(1);
+            ref.read(addToCartProvider((productId: productId, productVariantId: variantId, size: size, color: color)));
+          },
+        );
       },
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsetsDirectional.symmetric(vertical: 10.h));
@@ -71,36 +103,51 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 
   Widget _deliveryAddress() {
-    return Padding(
-      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+    return ValueListenableBuilder(
+      valueListenable: addressBox.listenable(),
+      builder: (context, box, _) {
+        final address = getAddressFromAddressBox();
+
+        return Padding(
+          padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: Text(language.deliverTo, style: _titleStyle)),
-                    CustomButton(
-                      title: language.change,
-                      height: 25.h,
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      onPress: () {},
+                    Row(
+                      children: [
+                        Expanded(child: Text(language.deliverTo, style: _titleStyle)),
+                        CustomButton(
+                          title: address == null ? language.selectAddress : language.change,
+                          height: 25.h,
+                          padding: EdgeInsets.symmetric(horizontal: 8.w),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          onPress: () {
+                            openScreen(context, MyAddressScreen(selectable: true));
+                          },
+                        ),
+                      ],
                     ),
+                    if (address != null)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 10.h),
+                          Text(language.home, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+                          SizedBox(height: 10.h),
+                          Text(TextUtils.getFullAddress(address), style: bodyTextStyle(fontSize: 14.sp)),
+                        ],
+                      ),
                   ],
                 ),
-                SizedBox(height: 10.h),
-                Text(language.home, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-                SizedBox(height: 10.h),
-                Text("101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India", style: bodyTextStyle(fontSize: 14.sp)),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -184,16 +231,24 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   Widget _placeOrderButton() {
     final data = ref.watch(checkoutDataProvider);
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: CustomButton(
-        title: language.proceedToPay,
-        margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h),
-        width: 1.sw,
-        onPress: () {
-          openScreen(context, PaymentScreen(orderAmount: data));
-        },
-      ),
+    return ValueListenableBuilder(
+      valueListenable: addressBox.listenable(),
+      builder: (context, _, _) {
+        final address = getAddressFromAddressBox();
+
+        return CustomButton(
+          title: language.proceedToPay,
+          margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 20.h),
+          width: 1.sw,
+          onPress: () {
+            if (address != null) {
+              openScreen(context, PaymentScreen(orderAmount: data));
+            } else {
+              openSimpleSnackBar(language.selectAddressMsg);
+            }
+          },
+        );
+      },
     );
   }
 

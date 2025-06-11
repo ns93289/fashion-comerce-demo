@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -36,6 +37,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     selectedLocale = ref.watch(localeProvider);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: colorWhite, statusBarBrightness: Brightness.light, statusBarIconBrightness: Brightness.dark),
+    );
 
     return ScreenUtilInit(
       designSize: Size(375, 812),
@@ -48,7 +53,17 @@ class _MyAppState extends ConsumerState<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: colorWhite),
           scaffoldBackgroundColor: colorWhite,
           dialogTheme: DialogTheme(backgroundColor: colorWhite, surfaceTintColor: colorWhite),
-          appBarTheme: AppBarTheme(backgroundColor: colorWhite, surfaceTintColor: colorWhite, elevation: 5, shadowColor: colorShadow),
+          appBarTheme: AppBarTheme(
+            backgroundColor: colorWhite,
+            surfaceTintColor: colorWhite,
+            elevation: 5,
+            shadowColor: colorShadow,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: colorWhite,
+              statusBarBrightness: Brightness.light,
+              statusBarIconBrightness: Brightness.dark,
+            ),
+          ),
         ),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: AppLocalizations.localizationsDelegates,

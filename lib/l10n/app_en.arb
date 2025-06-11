@@ -154,7 +154,7 @@
   "enterVerificationCodeEmail": "Enter verification code sent to your email address",
   "agreeWithOur": "By signing up, you agree to our",
   "signUp": "Sign Up",
-  "enterNumberToContinue": "Enter your mobile number to continue",
+  "enterNumberToContinue": "Enter your email or mobile number to continue",
   "change": "Change",
   "sendOTP": "Send OTP",
   "otpVerification": "OTP Verification",
@@ -251,6 +251,8 @@
   "deleteMyAccount": "Delete My Account",
   "recentSearches": "Recent Searches",
   "shippedWith": "Shipped With",
+  "selectAddress": "Select Address",
+  "selectAddressMsg": "Please select address to place order",
   "@byClickEmailVerify": {
     "placeholders": {
       "email": {

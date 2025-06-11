@@ -55,6 +55,7 @@ class ModelProductItem {
 class ModelProduct extends ProductEntity {
   ModelProduct({
     super.productId,
+    super.genderType,
     super.productName,
     super.productImage,
     super.categoryName,
@@ -80,17 +81,22 @@ class ModelProduct extends ProductEntity {
     super.productDiscount,
     super.discountType,
     super.productStoke,
+    super.deliveryCharge,
+    super.expressCharge,
+    super.productDiscountPrice,
   });
 
   factory ModelProduct.fromJson(Map<String, dynamic> json) {
     return ModelProduct(
       productId: json['id'],
+      genderType: json['gender_type'],
       productName: json['name'],
       productImage: json['image_url'],
       categoryName: json['sub_category'],
-      productPrice: json['price'],
+      productPrice: json['final_price'],
       discountType: json['discount_type'],
       productDiscount: json['discount_value'],
+      productDiscountPrice: json['price'],
       productStoke: json['stoke'],
       favorite: json['favorite'] == 1 ? true : false,
       productDescription: json['description'],
@@ -103,9 +109,8 @@ class ModelProduct extends ProductEntity {
       productDesign: json['design'],
       productCountry: json['country'],
       productMaterial: json['material'],
-      selectedColor: json['selected_color'],
-      selectedQuantity: json['selected_quantity'],
-      selectedSize: json['selected_size'],
+      selectedColor: json['color'],
+      selectedSize: json['size'],
       productSizes: (json['sizes'] as List?)?.map((e) => e as num).toList(),
       reviewerList: (json['reviewer_list'] as List?)?.map((e) => e as String).toList(),
       productColors: (json['colors'] as List?)?.map((e) => e as String).toList(),
@@ -116,10 +121,12 @@ class ModelProduct extends ProductEntity {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = productId;
+    map['gender_type'] = genderType;
     map['name'] = productName;
     map['image_url'] = productImage;
     map['sub_category'] = categoryName;
-    map['price'] = productPrice;
+    map['final_price'] = productPrice;
+    map['price'] = productDiscountPrice;
     map['discount_type'] = discountType;
     map['discount_value'] = productDiscount;
     map['stoke'] = productStoke;
@@ -134,9 +141,9 @@ class ModelProduct extends ProductEntity {
     map['design'] = productDesign;
     map['country'] = productCountry;
     map['material'] = productMaterial;
-    map['selected_color'] = selectedColor;
+    map['color'] = selectedColor;
     map['selected_quantity'] = selectedQuantity;
-    map['selected_size'] = selectedSize;
+    map['size'] = selectedSize;
     map['sizes'] = productSizes;
     map['reviewer_list'] = reviewerList;
     map['colors'] = productColors;

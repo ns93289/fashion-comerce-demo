@@ -12,15 +12,18 @@ class ProductRepositoryImpl extends ProductRepository {
   final ApiBaseHelper _apiHelper = ApiBaseHelper();
 
   @override
-  Future<ApiResponse<List<ProductEntity>>> getNewProductList() async {
-    final response = await _apiHelper.get(api: EndPoint.newProductList, body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId)});
+  Future<ApiResponse<List<ProductEntity>>> getNewProductList({int page = 1}) async {
+    final response = await _apiHelper.get(api: EndPoint.newProductList, body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.page: page});
 
     return ResponseWrapper.fromJsonList<ProductEntity>(response, ModelProduct.fromJson);
   }
 
   @override
-  Future<ApiResponse<List<ProductEntity>>> getPopularProductList() async {
-    final response = await _apiHelper.get(api: EndPoint.popularProductList, body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId)});
+  Future<ApiResponse<List<ProductEntity>>> getPopularProductList({int page = 1}) async {
+    final response = await _apiHelper.get(
+      api: EndPoint.popularProductList,
+      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.page: page},
+    );
 
     return ResponseWrapper.fromJsonList<ProductEntity>(response, ModelProduct.fromJson);
   }

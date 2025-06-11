@@ -1,9 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/theme.dart';
+import '../../../../../core/utils/string_utils.dart';
+import '../../../../../core/utils/text_utils.dart';
+import '../../../../../data/dataSources/remote/api_constant.dart';
 import '../../../../../domain/entities/product_entity.dart';
 
 class ItemProduct extends StatelessWidget {
@@ -15,15 +20,18 @@ class ItemProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductEntity(
-      :productId,
-      :favorite,
-      :categoryName,
-      :productImage,
-      :productName,
-      :productPrice,
-      :productDiscount,
-      :averageRatings,
-      discountType: discountPercentage,
+        :productId,
+        :favorite,
+        :categoryName,
+        :productImage,
+        :productName,
+        :productPrice,
+        :productDiscount,
+        :productDiscountPrice,
+        :averageRatings,
+        :genderType,
+        :discountType,
+        :productStoke,
     ) = item;
     return Container(
       margin: EdgeInsetsDirectional.only(end: 15.w),
@@ -37,20 +45,31 @@ class ItemProduct extends StatelessWidget {
                 aspectRatio: 1,
                 child: Stack(
                   children: [
-                    Image.asset(productImage, width: double.maxFinite, height: double.maxFinite, fit: BoxFit.cover),
-                    Container(
-                      color: colorDiscount,
-                      margin: EdgeInsetsDirectional.only(start: 5.w, top: 5.h),
-                      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                      child: Text("${language.save} $discountPercentage%", style: bodyTextStyle(fontSize: 10.sp, color: colorWhite)),
+                    DefaultData.localMode
+                        ? Image.asset(productImage, width: double.maxFinite, height: double.maxFinite, fit: BoxFit.cover)
+                        : CachedNetworkImage(
+                      imageUrl: "${BaseUrl.url}$productImage",
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      fit: BoxFit.cover,
+                      fadeInDuration: Duration.zero,
+                      placeholderFadeInDuration: Duration.zero,
                     ),
+                    if (discountType != 0)
+                      Container(
+                        color: colorDiscount,
+                        margin: EdgeInsetsDirectional.only(start: 5.w, top: 5.h),
+                        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                        child: Text("${language.save} ${TextUtils.getDiscountString(discountType, productDiscount)}",
+                            style: bodyTextStyle(fontSize: 10.sp, color: colorWhite)),
+                      ),
                     Align(
                       alignment: AlignmentDirectional.bottomStart,
                       child: Container(
                         color: colorDiscount,
                         margin: EdgeInsetsDirectional.only(start: 5.w, bottom: 5.h),
                         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                        child: Text("5 ${language.left}", style: bodyTextStyle(fontSize: 10.sp, color: colorWhite)),
+                        child: Text("$productStoke ${language.left}", style: bodyTextStyle(fontSize: 10.sp, color: colorWhite)),
                       ),
                     ),
                     Align(
@@ -84,7 +103,7 @@ class ItemProduct extends StatelessWidget {
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w, vertical: 1.h),
                     margin: EdgeInsetsDirectional.only(start: 2.w, end: 10.w),
                     decoration: BoxDecoration(color: colorCategoryBackground, borderRadius: BorderRadius.circular(5.r)),
-                    child: Text("Men", style: bodyTextStyle(fontSize: 12.sp)),
+                    child: Text(StringUtils.getGenderTitle(genderType), style: bodyTextStyle(fontSize: 12.sp)),
                   ),
                   Flexible(
                     child: Container(
@@ -101,10 +120,14 @@ class ItemProduct extends StatelessWidget {
                 child: Row(
                   children: [
                     Padding(padding: EdgeInsetsDirectional.only(start: 2.w, end: 5.w), child: Text("\$$productPrice", style: bodyTextStyle(fontSize: 14.sp))),
-                    Padding(
-                      padding: EdgeInsetsDirectional.only(end: 5.w),
-                      child: Text("\$$productDiscount", style: bodyTextStyle(fontSize: 10.sp, decoration: TextDecoration.lineThrough, color: colorTextLight)),
-                    ),
+                    if (discountType > 0)
+                      Padding(
+                        padding: EdgeInsetsDirectional.only(end: 5.w),
+                        child: Text(
+                          "\$$productDiscountPrice",
+                          style: bodyTextStyle(fontSize: 10.sp, decoration: TextDecoration.lineThrough, color: colorTextLight),
+                        ),
+                      ),
                     Icon(Icons.star, color: Colors.amber, size: 12.sp),
                     Text(averageRatings.toString(), style: bodyTextStyle(fontSize: 10.sp)),
                   ],

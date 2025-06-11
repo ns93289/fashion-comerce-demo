@@ -1,3 +1,4 @@
+import 'package:fashion_comerce_demo/presentation/components/common_circle_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
+import '../../../core/utils/tools.dart';
+import '../../../domain/entities/wallet_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../../core/constants/app_constants.dart';
@@ -32,7 +35,6 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
 
   Widget _buildPaymentScreen() {
     final paymentType = ref.watch(paymentTypePro);
-    final walletAmount = ref.watch(walletAmountPro);
 
     return SingleChildScrollView(
       child: Column(
@@ -48,20 +50,22 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
               ],
             ),
           ),
-          _walletPayment(paymentType, walletAmount),
+          _walletPayment(paymentType),
           _commonDiver(),
-          _upiPayment(paymentType, walletAmount),
+          _upiPayment(paymentType),
           _commonDiver(),
           _cardPayment(paymentType),
           _commonDiver(),
           _cashPayment(paymentType),
-          _placeOrderButton(paymentType, walletAmount),
+          _placeOrderButton(paymentType),
         ],
       ),
     );
   }
 
-  Widget _walletPayment(int paymentType, num walletAmount) {
+  Widget _walletPayment(int paymentType) {
+    final response = ref.watch(walletServiceProvider);
+
     return GestureDetector(
       onTap: () => ref.read(paymentTypePro.notifier).state = PaymentType.wallet,
       child: Container(
@@ -69,7 +73,15 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
         margin: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
         child: Row(
           children: [
-            Expanded(child: Text("${language.payByWallet} {${walletAmount.withCurrency}}", style: _titleStyle)),
+            Text(language.payByWallet, style: _titleStyle),
+            response.when(
+              data: (data) {
+                WalletEntity walletEntity = data as WalletEntity;
+                return Expanded(child: Text(" {${walletEntity.walletBalance.withCurrency}}", style: _titleStyle));
+              },
+              error: (error, stackTrace) => Spacer(),
+              loading: () => Expanded(child: CommonCircleProgressBar(size: 15.sp)),
+            ),
             CustomRadio(selected: paymentType == PaymentType.wallet),
           ],
         ),
@@ -77,7 +89,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     );
   }
 
-  Widget _upiPayment(int paymentType, num walletAmount) {
+  Widget _upiPayment(int paymentType) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -138,13 +150,17 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     );
   }
 
-  Widget _placeOrderButton(int paymentType, num walletAmount) {
+  Widget _placeOrderButton(int paymentType) {
     return CustomButton(
       title: language.placeOrder,
       width: 1.sw,
       margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
-      onPress: () async {
-        ref.read(makePaymentPro((paymentType: paymentType, orderAmount: widget.orderAmount, walletAmount: walletAmount)));
+      onPress: () {
+        if (paymentType == 0) {
+          openSimpleSnackBar(language.selectPayment);
+        } else {
+          ref.read(placeOrderProvider(context));
+        }
       },
     );
   }

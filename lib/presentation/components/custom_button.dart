@@ -21,6 +21,7 @@ class CustomButton extends StatelessWidget {
   final bool borderedButton;
   final bool enabled;
   final Widget? icon;
+  final Widget? customWidget;
   final FontWeight? fontWeight;
 
   const CustomButton({
@@ -40,12 +41,13 @@ class CustomButton extends StatelessWidget {
     this.enabled = true,
     this.fontWeight,
     this.borderColor,
+    this.customWidget,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isLoading || !enabled ? null : onPress,
+      onTap: isLoading || !enabled || customWidget != null ? null : onPress,
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor ?? (borderedButton ? Colors.transparent : colorPrimary),
@@ -60,18 +62,19 @@ class CustomButton extends StatelessWidget {
         child:
             isLoading
                 ? CommonCircleProgressBar(color: colorWhite)
-                : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
+                : customWidget ??
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (icon != null) Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: icon),
-                        Text(title, style: bodyTextStyle(fontWeight: fontWeight ?? FontWeight.bold, fontSize: fontSize ?? 18.sp, color: textColor)),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (icon != null) Padding(padding: EdgeInsetsDirectional.only(end: 10.w), child: icon),
+                            Text(title, style: bodyTextStyle(fontWeight: fontWeight ?? FontWeight.bold, fontSize: fontSize ?? 18.sp, color: textColor)),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
       ),
     );
   }

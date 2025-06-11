@@ -1,4 +1,6 @@
 import 'package:expandable_richtext/expandable_rich_text.dart';
+import 'package:fashion_comerce_demo/presentation/components/common_circle_progress_bar.dart';
+import 'package:fashion_comerce_demo/presentation/components/empty_record_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,11 +9,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
+import '../../../core/utils/text_utils.dart';
 import '../../../core/utils/tools.dart';
-import '../../../domain/entities/product_entity.dart';
+import '../../../domain/entities/product_details_entity.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
-import '../../provider/cart_data_provider.dart';
 import '../../provider/product_details_provider.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
@@ -20,9 +22,11 @@ import 'views/product_images_view.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final int productId;
+  final String size;
   final String productName;
+  final String color;
 
-  const ProductDetailsScreen({super.key, required this.productId, required this.productName});
+  const ProductDetailsScreen({super.key, required this.productId, required this.productName, required this.size, required this.color});
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -43,8 +47,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ValueListenableBuilder(
             valueListenable: cartBox.listenable(),
             builder: (context, value, child) {
-              final cartData = getCartDataFromCartBox();
-              return cartData.isEmpty ? Container() : _cartView(cartData);
+              final cartData = getCartCountFromCartBox();
+              return cartData == 0 ? Container() : _cartView(cartData);
             },
           ),
         ],
@@ -56,38 +60,45 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget _buildProductDetails() {
     return Consumer(
       builder: (context, ref, child) {
-        final data = ref.watch(productDetailsProvider(widget.productId));
+        final response = ref.watch(productDetailsServiceProvider((id: widget.productId, size: widget.size, color: widget.color)));
 
-        return Stack(
-          children: [
-            SingleChildScrollView(
-              padding: EdgeInsetsDirectional.only(bottom: 80.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _productImagesView(data),
-                  _productPriceAndDiscount(data),
-                  _productDescription(data.productDescription),
-                  _productSizes(data.productSizes),
-                  _productColors(data.productColors),
-                  // _productQuantity(data.productQuantities),
-                  _productSpecifications(data),
-                  _deliveryOptions(data),
-                ],
-              ),
-            ),
-            Align(alignment: Alignment.bottomCenter, child: _actionButtons()),
-          ],
-        );
+        return response?.when(
+              data: (data) {
+                return Stack(
+                  children: [
+                    SingleChildScrollView(
+                      padding: EdgeInsetsDirectional.only(bottom: 80.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _productImagesView(data),
+                          _productPriceAndDiscount(data),
+                          _productDescription(data.description),
+                          _productSizes(data.uniqueSizes, data.uniqueColors),
+                          _productColors(data.uniqueColors, data.uniqueSizes),
+                          // _productQuantity(data.productQuantities),
+                          _productSpecifications(data),
+                          _deliveryOptions(data),
+                        ],
+                      ),
+                    ),
+                    Align(alignment: Alignment.bottomCenter, child: _actionButtons(data)),
+                  ],
+                );
+              },
+              error: (error, stackTrace) => EmptyRecordView(message: error.toString()),
+              loading: () => CommonCircleProgressBar(),
+            ) ??
+            Container();
       },
     );
   }
 
-  Widget _productImagesView(ProductEntity data) {
-    return ProductImagesView(imageList: [data.productImage, data.productImage, data.productImage]);
+  Widget _productImagesView(ProductDetailsEntity data) {
+    return ProductImagesView(imageList: data.images);
   }
 
-  Widget _productPriceAndDiscount(ProductEntity data) {
+  Widget _productPriceAndDiscount(ProductDetailsEntity data) {
     return Padding(
       padding: EdgeInsetsDirectional.only(start: 20.w, top: 20.h),
       child: Row(
@@ -96,52 +107,57 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(data.productPrice.withCurrency, style: bodyTextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
+              Text(data.price.withCurrency, style: bodyTextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold)),
               SizedBox(height: 5.h),
-              Row(
+              if (data.discountType > 0)
+                Row(
+                  children: [
+                    Text(data.discountPrice.withCurrency, style: bodyTextStyle(color: colorRed, fontSize: 14.sp, decoration: TextDecoration.lineThrough)),
+                    Container(
+                      margin: EdgeInsetsDirectional.only(start: 5.w),
+                      padding: EdgeInsetsDirectional.symmetric(horizontal: 5.w, vertical: 1.h),
+                      decoration: BoxDecoration(color: colorDiscount, borderRadius: BorderRadius.circular(5.r)),
+                      child: Text(
+                        "-${TextUtils.getDiscountString(data.discountType, data.discountValue)}",
+                        style: bodyTextStyle(color: colorWhite, fontWeight: FontWeight.bold, fontSize: 14.sp),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+          if (data.discountType > 0)
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(data.productDiscount.withCurrency, style: bodyTextStyle(color: colorRed, fontSize: 14.sp, decoration: TextDecoration.lineThrough)),
+                  Icon(Icons.timer_outlined, color: colorPrimary, size: 20.sp),
                   Container(
-                    margin: EdgeInsetsDirectional.only(start: 5.w),
-                    padding: EdgeInsetsDirectional.symmetric(horizontal: 5.w, vertical: 1.h),
-                    decoration: BoxDecoration(color: colorDiscount, borderRadius: BorderRadius.circular(5.r)),
-                    child: Text("-${data.discountType}%", style: bodyTextStyle(color: colorWhite, fontWeight: FontWeight.bold, fontSize: 14.sp)),
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                    margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
+                    decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
+                    child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                    decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
+                    child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                    margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
+                    decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
+                    child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5.sp),
+                    margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+                    decoration: BoxDecoration(color: colorDivider, shape: BoxShape.circle),
+                    child: Icon(Icons.share, size: 15.sp, color: colorTextLight),
                   ),
                 ],
               ),
-            ],
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(Icons.timer_outlined, color: colorPrimary, size: 20.sp),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                  margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
-                  decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
-                  child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                  decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
-                  child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                  margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
-                  decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
-                  child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
-                ),
-                Container(
-                  padding: EdgeInsets.all(5.sp),
-                  margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-                  decoration: BoxDecoration(color: colorDivider, shape: BoxShape.circle),
-                  child: Icon(Icons.share, size: 15.sp, color: colorTextLight),
-                ),
-              ],
             ),
-          ),
         ],
       ),
     );
@@ -161,10 +177,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _productSizes(List<num> productSizes) {
+  Widget _productSizes(List<String> productSizes, List<String> productColors) {
     return Consumer(
       builder: (context, ref, child) {
         final selectedSize = ref.watch(productSizeProvider);
+        final selectedColor = productColors[ref.watch(productColorProvider)];
 
         return Padding(
           padding: EdgeInsetsDirectional.only(start: 15.w, top: 20.h),
@@ -192,26 +209,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 padding: EdgeInsetsDirectional.only(start: 5.w, bottom: 5.h, top: 5.h),
                 child: Text(language.size, style: bodyTextStyle(fontWeight: FontWeight.w500)),
               ),
-              Row(
-                children:
-                    productSizes.map((e) {
-                      return GestureDetector(
-                        onTap: () {
-                          ref.read(productSizeProvider.notifier).state = e;
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: selectedSize == e ? colorPrimary.withAlpha(10) : colorDivider,
-                            borderRadius: BorderRadius.circular(5.r),
-                            border: Border.all(color: selectedSize == e ? colorPrimary : Colors.transparent, width: 1.sp),
-                          ),
-                          margin: EdgeInsets.symmetric(horizontal: 5.w),
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          height: 25.h,
-                          child: Center(child: Text(e.toString(), style: _specValueStyle)),
+              SizedBox(
+                height: 25.h,
+                child: ListView.builder(
+                  itemCount: productSizes.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        ref.read(productSizeProvider.notifier).state = index;
+                        ref.read(productDetailsServiceProvider((id: widget.productId, size: productSizes[index], color: selectedColor)));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: selectedSize == index ? colorPrimary.withAlpha(10) : colorDivider,
+                          borderRadius: BorderRadius.circular(5.r),
+                          border: Border.all(color: selectedSize == index ? colorPrimary : Colors.transparent, width: 1.sp),
                         ),
-                      );
-                    }).toList(),
+                        margin: EdgeInsets.symmetric(horizontal: 5.w),
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        height: 25.h,
+                        child: Center(child: Text(productSizes[index].toString(), style: _specValueStyle)),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -220,65 +243,49 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _productColors(List<String> productColors) {
+  Widget _productColors(List<String> productColors, List<String> productSizes) {
     return Consumer(
       builder: (context, ref, _) {
         final selectedColor = ref.watch(productColorProvider);
+        final selectedSize = productSizes[ref.watch(productSizeProvider)];
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsetsDirectional.only(start: 20.w, top: 20.h),
+              padding: EdgeInsetsDirectional.only(start: 20.w, top: 20.h, bottom: 10.h),
               child: Text(language.colors, style: bodyTextStyle(fontWeight: FontWeight.w500)),
             ),
             SizedBox(
-              height: 60.sp,
+              height: 80.sp,
               child: ListView.builder(
                 itemCount: productColors.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsetsDirectional.only(start: 20.w, top: 10.h),
+                padding: EdgeInsetsDirectional.only(start: 20.w),
                 itemBuilder: (context, index) {
                   bool selected = index == selectedColor;
                   String color = productColors[index];
                   return GestureDetector(
                     onTap: () {
                       ref.read(productColorProvider.notifier).state = index;
+                      ref.read(productDetailsServiceProvider((id: widget.productId, size: selectedSize, color: productColors[index])));
                     },
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: colorWhite,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: selected ? colorPrimary : colorWhite),
-                            boxShadow: [BoxShadow(color: colorShadow, blurRadius: 10, spreadRadius: 0, offset: Offset(0, 5))],
-                          ),
-                          margin: EdgeInsetsDirectional.only(end: 20.w),
-                          padding: EdgeInsets.all(5.sp),
-                          height: 40.sp,
-                          width: 40.sp,
-                          child: Container(decoration: BoxDecoration(color: color.hexToColor, shape: BoxShape.circle)),
-                        ),
-                        if (selected)
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(end: 15.w),
+                      child: Column(
+                        children: [
                           Container(
-                            decoration: BoxDecoration(
-                              color: colorWhite,
-                              shape: BoxShape.circle,
-                              boxShadow: [BoxShadow(color: colorShadow, blurRadius: 10, spreadRadius: 0, offset: Offset(0, 5))],
-                            ),
-                            margin: EdgeInsetsDirectional.only(start: 25.sp, top: 2.h),
-                            padding: EdgeInsets.all(2.sp),
-                            height: 22.sp,
-                            width: 22.sp,
-                            child: Container(
-                              decoration: BoxDecoration(shape: BoxShape.circle, color: colorPrimary),
-                              padding: EdgeInsets.all(1.sp),
-                              child: Icon(Icons.check_sharp, size: 10.sp),
-                            ),
+                            decoration: BoxDecoration(color: colorWhite, border: Border.all(color: selected ? colorPrimary : colorWhite)),
+                            padding: EdgeInsets.all(5.sp),
+                            height: 60.sp,
+                            width: 60.sp,
+                            child: Container(decoration: BoxDecoration(color: colorBorder, borderRadius: BorderRadius.circular(5.r))),
                           ),
-                      ],
+                          SizedBox(height: 5.h),
+                          Text(color, style: bodyTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500)),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -323,7 +330,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   //   );
   // }
 
-  Widget _productSpecifications(ProductEntity data) {
+  Widget _productSpecifications(ProductDetailsEntity data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -336,21 +343,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
           margin: EdgeInsetsDirectional.only(start: 20.w, top: 5.h),
-          child: Text(data.productDesign, style: _specValueStyle),
+          child: Text(data.design, style: _specValueStyle),
         ),
         Padding(padding: EdgeInsetsDirectional.only(start: 20.w, top: 10.h), child: Text(language.material, style: _specStyle)),
         Container(
           decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
           margin: EdgeInsetsDirectional.only(start: 20.w, top: 5.h),
-          child: Text(data.productMaterial, style: _specValueStyle),
+          child: Text(data.material, style: _specValueStyle),
         ),
         Padding(padding: EdgeInsetsDirectional.only(start: 20.w, top: 10.h), child: Text(language.origin, style: _specStyle)),
         Container(
           decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
           margin: EdgeInsetsDirectional.only(start: 20.w, top: 5.h, bottom: 10.h),
-          child: Text(data.productCountry, style: _specValueStyle),
+          child: Text(data.country, style: _specValueStyle),
         ),
         Row(
           children: [
@@ -373,7 +380,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _deliveryOptions(ProductEntity data) {
+  Widget _deliveryOptions(ProductDetailsEntity data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -409,36 +416,113 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _actionButtons() {
+  Widget _actionButtons(ProductDetailsEntity data) {
     return Consumer(
-      builder: (context,ref,_) {
-        final data = ref.watch(productDetailsProvider(widget.productId));
-
-        final selectedSize = ref.watch(productSizeProvider);
-        final selectedQuantity = ref.watch(productQuantityProvider);
+      builder: (context, ref, _) {
+        var addedQuantity = ref.watch(cartProductQuantityProvider);
+        if (addedQuantity == 0) {
+          addedQuantity = data.quantity;
+        }
 
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
           decoration: BoxDecoration(color: colorWhite, boxShadow: [BoxShadow(color: colorShadow, blurRadius: 5, spreadRadius: 0, offset: Offset(0, -5))]),
           child: Row(
             children: [
-              Expanded(child: CustomButton(onPress: () async {
-                data.selectedSize = selectedSize;
-                data.selectedQuantity = selectedQuantity;
-                await putDataIntoCartBox(data);
-                ref.read(checkoutInvoiceProvider);
-                ref.read(checkoutDataProvider);
-              },title: language.addToCart, backgroundColor: colorBlack, textColor: colorPrimary)),
+              Expanded(
+                child: CustomButton(
+                  onPress: () {
+                    addDataIntoCartBox(1);
+                    ref.read(
+                      addToCartProvider((
+                        context: context,
+                        productId: data.id,
+                        productVariantId: data.productVariantId,
+                        size: data.uniqueSizes[ref.watch(productSizeProvider)],
+                        color: data.uniqueColors[ref.watch(productColorProvider)],
+                        isAddToCart: true,
+                      )),
+                    );
+                  },
+                  title: language.addToCart,
+                  backgroundColor: addedQuantity > 0 ? colorWhite : colorBlack,
+                  textColor: colorPrimary,
+                  borderedButton: addedQuantity > 0,
+                  customWidget:
+                      addedQuantity > 0
+                          ? Row(
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    addDataIntoCartBox(-1);
+                                    ref.read(
+                                      removeProductCartProvider((
+                                        productId: data.id,
+                                        productVariantId: data.productVariantId,
+                                        size: data.uniqueSizes[ref.watch(productSizeProvider)],
+                                        color: data.uniqueColors[ref.watch(productColorProvider)],
+                                      )),
+                                    );
+                                  },
+                                  child: Icon(Icons.remove, size: 25.sp),
+                                ),
+                              ),
+                              Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Text(addedQuantity.toString(), style: bodyTextStyle())),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    addDataIntoCartBox(1);
+                                    ref.read(
+                                      addToCartProvider((
+                                        context: context,
+                                        productId: data.id,
+                                        productVariantId: data.productVariantId,
+                                        size: data.uniqueSizes[ref.watch(productSizeProvider)],
+                                        color: data.uniqueColors[ref.watch(productColorProvider)],
+                                        isAddToCart: true,
+                                      )),
+                                    );
+                                  },
+                                  child: Icon(Icons.add, size: 25.sp),
+                                ),
+                              ),
+                            ],
+                          )
+                          : null,
+                ),
+              ),
               SizedBox(width: 20.w),
-              Expanded(child: CustomButton(title: language.buyNow)),
+              Expanded(
+                child: CustomButton(
+                  title: language.buyNow,
+                  onPress: () {
+                    if (addedQuantity == 0) {
+                      addDataIntoCartBox(1);
+                      ref.read(
+                        addToCartProvider((
+                          context: context,
+                          productId: data.id,
+                          productVariantId: data.productVariantId,
+                          size: data.uniqueSizes[ref.watch(productSizeProvider)],
+                          color: data.uniqueColors[ref.watch(productColorProvider)],
+                          isAddToCart: false,
+                        )),
+                      );
+                    } else {
+                      openScreen(context, CartScreen());
+                    }
+                  },
+                ),
+              ),
             ],
           ),
         );
-      }
+      },
     );
   }
 
-  Widget _cartView(List<ProductEntity> cartData) {
+  Widget _cartView(int totalQuantity) {
     return GestureDetector(
       onTap: () {
         openScreen(context, CartScreen());
@@ -452,7 +536,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               margin: EdgeInsetsDirectional.only(start: 11.w),
               decoration: BoxDecoration(shape: BoxShape.circle, color: colorPrimary),
               padding: EdgeInsets.all(4.sp),
-              child: Text(cartData.length.toString(), style: bodyTextStyle(fontSize: 10.sp)),
+              child: Text(totalQuantity.toString(), style: bodyTextStyle(fontSize: 10.sp)),
             ),
           ],
         ),

@@ -1,12 +1,12 @@
-import 'package:fashion_comerce_demo/core/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/theme.dart';
 import '../../../core/constants/colors.dart';
+import '../../../core/utils/string_utils.dart';
 import '../../../core/utils/text_field_validators.dart';
-import '../../../core/utils/tools.dart';
 import '../../../domain/entities/address_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
@@ -230,7 +230,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
                           child: Text(
-                            getAddressTitle(e.addressType),
+                            StringUtils.getAddressTitle(e.addressType),
                             style: bodyTextStyle(color: addressType == e.addressType ? colorPrimary : colorText, fontSize: 14.sp, fontWeight: FontWeight.w500),
                           ),
                         ),

@@ -53,7 +53,9 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
     try {
       final res = await authRepo.emailVerify(otp: otp);
       if (res is ApiSuccess) {
-        putDataInUserBox(key: hiveEmailVerified, value: true);
+        final UserEntity user = res.data;
+        putDataInUserBox(key: hivePhoneNumberVerified, value: user.mobileVerified);
+        putDataInUserBox(key: hiveEmailVerified, value: user.emailVerified);
         state = AsyncValue.data(res.data);
       } else {
         openSimpleSnackBar((res as ApiError).errorData.message);
@@ -71,7 +73,9 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
     try {
       final res = await authRepo.phoneNumberVerify(otp: otp);
       if (res is ApiSuccess) {
-        putDataInUserBox(key: hivePhoneNumberVerified, value: true);
+        final UserEntity user = res.data;
+        putDataInUserBox(key: hivePhoneNumberVerified, value: user.mobileVerified);
+        putDataInUserBox(key: hiveEmailVerified, value: user.emailVerified);
         state = AsyncValue.data(res.data);
       } else {
         openSimpleSnackBar((res as ApiError).errorData.message);
