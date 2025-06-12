@@ -1,9 +1,13 @@
+import 'package:fashion_comerce_demo/presentation/components/common_circle_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
+import '../../../domain/entities/order_history_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
@@ -11,14 +15,14 @@ import '../../provider/order_history_provider.dart';
 import '../orderDetails/order_details_screen.dart';
 import 'item_order_history.dart';
 
-class OrderHistoryScreen extends StatefulWidget {
+class OrderHistoryScreen extends ConsumerStatefulWidget {
   const OrderHistoryScreen({super.key});
 
   @override
-  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
+  ConsumerState<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
+class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: CommonAppBar(title: Text(language.myOrders)), body: SafeArea(child: _buildOrderHistory()));
@@ -27,33 +31,35 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   Widget _buildOrderHistory() {
     return Consumer(
       builder: (context, ref, child) {
-        final data = ref.watch(orderHistoryProvider);
+        final pagingController = ref.watch(orderHistoryPagingStateProvider);
 
-        return data.when(
-          data: (orderHistoryList) {
-            if (orderHistoryList.isEmpty) {
-              return EmptyRecordView(message: language.emptyOrdersMsg);
-            }
-            return ListView.separated(
-              itemCount: orderHistoryList.length,
+        return PagingListener<int, OrderHistoryEntity>(
+          controller: pagingController,
+          builder: (context, state, fetchNextPage) {
+            return PagedListView.separated(
+              state: state,
+              fetchNextPage: fetchNextPage,
               shrinkWrap: true,
-              padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
-              itemBuilder: (context, index) {
-                final orderHistoryItem = orderHistoryList[index];
-                return ItemOrderHistory(
-                  orderHistoryItem: orderHistoryItem,
-                  onReviewPress: () {
-                    openScreen(context, OrderDetailsScreen(orderId: orderHistoryList[index].orderId));
-                  },
-                );
-              },
+              padding: EdgeInsetsDirectional.only(top: 0.h, bottom: 20.h, start: 20.w, end: 20.w),
+              builderDelegate: PagedChildBuilderDelegate<OrderHistoryEntity>(
+                itemBuilder: (context, item, index) {
+                  return ItemOrderHistory(
+                    orderHistoryItem: item,
+                    onReviewPress: () {
+                      openScreen(context, OrderDetailsScreen(orderId: item.orderId));
+                    },
+                  );
+                },
+                firstPageErrorIndicatorBuilder: (context) {
+                  return EmptyRecordView(message: state.error.toString());
+                },
+                newPageProgressIndicatorBuilder: (context) => CommonCircleProgressBar(),
+              ),
               separatorBuilder: (BuildContext context, int index) {
-                return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(thickness: 1.sp, color: colorDivider, height: 0));
+                return Padding(padding: EdgeInsets.symmetric(vertical: 15.h), child: Divider(thickness: 1.sp, color: colorDivider, height: 0));
               },
             );
           },
-          error: (error, stackTrace) => EmptyRecordView(message: error.toString()),
-          loading: () => Container(),
         );
       },
     );

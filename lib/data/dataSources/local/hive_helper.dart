@@ -41,9 +41,9 @@ int getCartCountFromCartBox() {
   return cartBox.get(hiveCartData, defaultValue: 0) ?? 0;
 }
 
-List<OrderHistoryItem> getOrderHistoryDataFromOrderBox() {
+List<OrderHistoryModel> getOrderHistoryDataFromOrderBox() {
   List<dynamic> jsonList = orderBox.get(hiveOrderData, defaultValue: []);
-  List<OrderHistoryItem> orderData = jsonList.map((json) => OrderHistoryItem.fromJson(Map<String, dynamic>.from(json))).toList();
+  List<OrderHistoryModel> orderData = jsonList.map((json) => OrderHistoryModel.fromJson(Map<String, dynamic>.from(json))).toList();
 
   return orderData;
 }

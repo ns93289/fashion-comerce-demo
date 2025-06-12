@@ -1,37 +1,54 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/theme.dart';
+import '../../../core/utils/time_utils.dart';
+import '../../../data/dataSources/remote/api_constant.dart';
+import '../../../domain/entities/order_history_entity.dart';
 import '../../../main.dart';
 import '../../../core/constants/colors.dart';
-import '../../../core/utils/tools.dart';
-import '../../../data/models/order_history_model.dart';
 import '../../components/custom_button.dart';
 
 class ItemOrderHistory extends StatelessWidget {
-  final OrderHistoryItem orderHistoryItem;
+  final OrderHistoryEntity orderHistoryItem;
   final Function()? onReviewPress;
 
   const ItemOrderHistory({super.key, required this.orderHistoryItem, this.onReviewPress});
 
   @override
   Widget build(BuildContext context) {
-    final OrderHistoryItem(:productName, :orderNo, :orderedTime, :orderQuantity) = orderHistoryItem;
+    final OrderHistoryEntity(:productName, :orderId, :orderedTime, :productImage) = orderHistoryItem;
 
     return SizedBox(
       height: 100.h,
       child: Row(
         children: [
-          SizedBox(width: 100.w, child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/classic_slip_on.png", fit: BoxFit.cover))),
+          Container(
+            width: 100.w,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r)),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: CachedNetworkImage(
+                imageUrl: "${BaseUrl.url}$productImage",
+                width: double.maxFinite,
+                height: double.maxFinite,
+                fit: BoxFit.cover,
+                fadeInDuration: Duration.zero,
+                placeholderFadeInDuration: Duration.zero,
+              ),
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: EdgeInsetsDirectional.only(start: 10.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(productName.replaceAll(RegExp(r'[\[\]]'), ""), maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontSize: 12.sp)),
+                  Text(productName, maxLines: 2, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontSize: 12.sp)),
                   Spacer(),
-                  Text("${language.orderId}: $orderNo", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
+                  Text("${language.orderId}: #$orderId", style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
                   Spacer(),
                   Row(
                     children: [
@@ -40,7 +57,7 @@ class ItemOrderHistory extends StatelessWidget {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: colorMainBackground),
                           alignment: Alignment.center,
                           height: 30.h,
-                          child: Text(getFormatedDate(orderedTime, returnFormat: "dd MMM,yyyy"), style: bodyTextStyle(fontSize: 14.sp), maxLines: 1),
+                          child: Text(TimeUtils.getFormatedDate(orderedTime, returnFormat: "dd MMM,yyyy"), style: bodyTextStyle(fontSize: 14.sp), maxLines: 1),
                         ),
                       ),
                       SizedBox(width: 10.w),

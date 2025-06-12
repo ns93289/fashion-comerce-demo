@@ -8,9 +8,6 @@ import '../../../main.dart';
 
 class OrderStatusView extends StatelessWidget {
   final int orderStatus;
-  final String deliveryTime;
-  final String shippedTime;
-  final String packedTime;
   final String orderTime;
   final String cancelledBy;
   final Function()? onViewStatusClick;
@@ -21,15 +18,12 @@ class OrderStatusView extends StatelessWidget {
   const OrderStatusView({
     super.key,
     required this.orderStatus,
-    required this.deliveryTime,
-    required this.shippedTime,
-    required this.packedTime,
-    required this.orderTime,
     this.cancelledBy = "",
     this.onViewStatusClick,
     this.onCancelClick,
     this.onExchangeClick,
     this.onReturnClick,
+    required this.orderTime,
   });
 
   @override

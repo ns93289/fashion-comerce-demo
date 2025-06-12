@@ -1,43 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/utils/tools.dart';
-import '../../data/dataSources/local/hive_helper.dart';
-import '../../data/dataSources/remote/api_reponse.dart';
-import '../../data/models/model_order_details.dart';
-import '../../data/models/order_history_model.dart';
+import '../../application/order_details_service.dart';
+import '../../data/repositories/order_details_repo_impl.dart';
+import '../../domain/entities/order_details_entity.dart';
+import '../../domain/repositories/order_details_repo.dart';
 import '../bottomSheets/product_status_bottom_sheet.dart';
-import 'home_provider.dart';
 
-final orderDetailsFP = FutureProvider.autoDispose.family<ApiResponse<ModelOrderDetails>, int>((ref, orderId) {
-  List<OrderHistoryItem> orderItems = getOrderHistoryDataFromOrderBox();
-  OrderHistoryItem? firstItem = orderItems.where((element) => element.orderId == orderId).firstOrNull;
-  List<int> productIds = firstItem?.productIdList ?? [];
-  String orderedTime = getFormatedDate(firstItem?.orderedTime ?? "");
-  String deliveryTime = getFormatedDate(getDateTimeObjFromString(firstItem?.orderedTime ?? "").add(Duration(days: 2)).toString());
+final orderDetailsRepoProvider = Provider.autoDispose<OrderDetailsRepo>((ref) => OrderDetailsRepoImpl());
 
-  ModelOrderDetails modelOrderDetails = ModelOrderDetails(
-    orderId: orderId,
-    deliveryAddress: "101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India",
-    orderNo: "ASD123456",
-    orderStatus: 1,
-    orderTime: orderedTime,
-    packedTime: orderedTime,
-    deliveryTime: deliveryTime,
-    totalAmount: firstItem?.orderAmount ?? 0,
-    orderedProducts: globalProductList.where((element) => productIds.contains(element.productId)).toList(),
-  );
-
-  return ApiSuccess(modelOrderDetails);
+final orderDetailsServiceProvider = StateNotifierProvider.autoDispose.family<OrderDetailsService, AsyncValue<OrderDetailsEntity?>, int>((ref, orderId) {
+  final service = OrderDetailsService(ref.watch(orderDetailsRepoProvider));
+  service.callOrderDetailsApi(orderId: orderId);
+  return service;
 });
 
-final openProductStatusBSProvider = Provider.autoDispose.family<void, ({ModelOrderDetails orderDetails, BuildContext context})>((ref, args) {
+final openProductStatusBSProvider = Provider.autoDispose.family<void, ({OrderDetailsEntity orderDetails, BuildContext context})>((ref, args) {
   showModalBottomSheet(
     context: args.context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     builder: (context) {
-      return ProductStatusBottomSheet(orderNo: args.orderDetails.orderNo, orderTime: args.orderDetails.orderTime);
+      return ProductStatusBottomSheet(orderNo: args.orderDetails.orderId.toString(), orderTime: args.orderDetails.orderDate);
     },
   );
 });

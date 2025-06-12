@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/custom_icons.dart';
 import '../../core/constants/theme.dart';
+import '../../core/utils/time_utils.dart';
 import '../../main.dart';
 
 class ProductStatusBottomSheet extends StatefulWidget {
@@ -50,7 +51,7 @@ class _ProductStatusBottomSheetState extends State<ProductStatusBottomSheet> {
                 SizedBox(height: 10.h),
                 Text("${language.orderNumber}: ${widget.orderNo}", style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
                 SizedBox(height: 15.h),
-                Text(widget.orderTime, style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
+                Text(TimeUtils.getFormatedDate(widget.orderTime), style: bodyTextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp)),
                 SizedBox(height: 20.h),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -9,6 +9,7 @@ import '../../../core/constants/colors.dart';
 import '../../../core/utils/tools.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
+import '../orderHistory/order_history_screen.dart';
 
 class OrderPlacedScreen extends StatefulWidget {
   const OrderPlacedScreen({super.key});
@@ -49,7 +50,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
           fontSize: 14.sp,
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 25.h),
           onPress: () {
-            // openScreen(context, screen),
+            openScreen(context, OrderHistoryScreen());
           },
         ),
         CustomButton(

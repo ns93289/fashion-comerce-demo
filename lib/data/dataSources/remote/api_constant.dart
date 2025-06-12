@@ -50,8 +50,10 @@ class EndPoint {
   static const String getCart = "/cart/get";
   static const String removeCartProduct = "/cart/remove";
 
-  ///Order place Apis...
+  ///Order Apis...
   static const String placeOrder = "/order/place";
+  static const String orderHistory = "/order/history";
+  static const String orderDetails = "/order/details";
 }
 
 class ApiParams {

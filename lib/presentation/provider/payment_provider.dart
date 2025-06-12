@@ -26,16 +26,17 @@ final walletServiceProvider = StateNotifierProvider<WalletService, AsyncValue<dy
 final placeOrdeRepoProvider = Provider.autoDispose<PlaceOrderRepoImpl>((ref) {
   return PlaceOrderRepoImpl();
 });
-final placeOrderServiceProvider = StateNotifierProvider.autoDispose<PlaceOrderService, AsyncValue<dynamic>>((ref) {
+final placeOrderServiceProvider = StateNotifierProvider<PlaceOrderService, AsyncValue<dynamic>>((ref) {
   return PlaceOrderService(ref.watch(placeOrdeRepoProvider));
 });
-final placeOrderProvider = Provider.autoDispose.family<void, BuildContext>((ref, context) {
+final placeOrderProvider = Provider.family<void, BuildContext>((ref, context) {
   Future.microtask(() async {
     int paymentType = ref.watch(paymentTypePro);
     int addressId = getAddressFromAddressBox()?.addressId ?? 0;
     BaseModel? data = await ref.read(placeOrderServiceProvider.notifier).callPlaceOrderApi(paymentType: paymentType, addressId: addressId);
     if (data != null) {
       setDataIntoCartBox(0);
+      if (!context.mounted) return;
       openScreen(context, OrderPlacedScreen());
     }
   });

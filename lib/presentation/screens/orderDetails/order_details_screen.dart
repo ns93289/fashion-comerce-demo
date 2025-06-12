@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
+import '../../../core/utils/text_utils.dart';
+import '../../../core/utils/time_utils.dart';
 import '../../../core/utils/tools.dart';
-import '../../../data/dataSources/remote/api_reponse.dart';
-import '../../../data/models/model_order_details.dart';
-import '../../../domain/entities/product_entity.dart';
+import '../../../data/models/model_key_value.dart';
+import '../../../domain/entities/address_entity.dart';
+import '../../../domain/entities/cart_preview_entity.dart';
+import '../../../domain/entities/order_details_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
 import '../../components/item_key_value.dart';
-import '../../provider/cart_data_provider.dart';
 import '../../provider/order_details_provider.dart';
 import '../cart/item_cart_data.dart';
 import '../home/home_screen.dart';
@@ -50,35 +53,32 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   Widget _buildOrderDetails() {
     return Consumer(
       builder: (context, ref, child) {
-        final result = ref.watch(orderDetailsFP(widget.orderId));
+        final result = ref.watch(orderDetailsServiceProvider(widget.orderId));
 
         return result.when(
-          data: (apiResult) {
-            if (apiResult is ApiSuccess) {
-              ModelOrderDetails data = (apiResult as ApiSuccess).data;
-
+          data: (data) {
+            if (data != null) {
               return SingleChildScrollView(
                 padding: EdgeInsetsDirectional.only(bottom: 20.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _orderId(data.orderNo, data.orderTime),
+                    _orderId(data.orderId.toString(), data.orderDate),
                     _commonDiver(),
-                    _orderedProducts(data.orderedProducts),
+                    _orderedProducts(data.products),
                     _commonDiver(),
                     _statusView(data),
                     _commonDiver(),
-                    _deliveryAddress(),
+                    _deliveryAddress(data.address),
                     _commonDiver(),
                     _deliveryOptions(),
                     _commonDiver(),
-                    _invoiceDetails(),
+                    _invoiceDetails(data),
                   ],
                 ),
               );
             } else {
-              String message = (apiResult as ApiError).errorData.message;
-              return EmptyRecordView(message: message);
+              return Container();
             }
           },
           error: (error, stackTrace) => EmptyRecordView(message: error.toString()),
@@ -108,7 +108,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             children: [
               Text(language.orderPlaced, style: bodyTextStyle(fontWeight: FontWeight.w600, fontSize: 14.sp)),
               SizedBox(height: 5.h),
-              Text(getFormatedDate(orderTime, format: "EEEE dd MMM yyyy hh:mm aa", returnFormat: "dd MMM yyyy"), style: bodyTextStyle(fontSize: 12.sp)),
+              Text(TimeUtils.getFormatedDate(orderTime, returnFormat: "dd MMM yyyy"), style: bodyTextStyle(fontSize: 12.sp)),
             ],
           ),
         ],
@@ -116,14 +116,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 
-  Widget _orderedProducts(List<ProductEntity> productList) {
+  Widget _orderedProducts(List<CartProductEntity> productList) {
     return ListView.separated(
       itemCount: productList.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       itemBuilder: (context, index) {
-        // return ItemCartData(item: productList[index], allowEdit: false);
+        return ItemCartData(item: productList[index], allowEdit: false);
       },
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(vertical: 10.h), child: Divider(height: 0, thickness: 1.sp, color: colorMainBackground));
@@ -131,7 +131,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 
-  Widget _deliveryAddress() {
+  Widget _deliveryAddress(AddressEntity address) {
     return Padding(
       padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       child: Column(
@@ -141,7 +141,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           SizedBox(height: 10.h),
           Text(language.home, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 10.h),
-          Text("101, ABC Complex, XYZ Place, ASD, 100001, Delhi, India", style: bodyTextStyle(fontSize: 14.sp)),
+          Text(TextUtils.getFullAddress(address), style: bodyTextStyle(fontSize: 14.sp)),
         ],
       ),
     );
@@ -165,8 +165,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 
-  Widget _statusView(ModelOrderDetails data) {
-    final ModelOrderDetails(:orderStatus, :deliveryTime, :packedTime, :shippedTime, :cancelledBy, :orderTime) = data;
+  Widget _statusView(OrderDetailsEntity data) {
+    final OrderDetailsEntity(:orderStatus, :orderDate) = data;
 
     return Consumer(
       builder: (context, ref, _) {
@@ -174,11 +174,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
           child: OrderStatusView(
             orderStatus: orderStatus,
-            deliveryTime: deliveryTime,
-            orderTime: orderTime,
-            packedTime: packedTime,
-            shippedTime: shippedTime,
-            cancelledBy: cancelledBy,
+            orderTime: orderDate,
+            cancelledBy: "cancelledBy",
             onViewStatusClick: () {
               ref.read(openProductStatusBSProvider((orderDetails: data, context: context)));
             },
@@ -188,28 +185,28 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 
-  Widget _invoiceDetails() {
-    return Consumer(
-      builder: (context, ref, _) {
-        final data = ref.watch(checkoutInvoiceProvider);
-        return Padding(
-          padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(language.cartDetails, style: _titleStyle),
-              ListView.builder(
-                itemCount: data.length,
-                shrinkWrap: true,
-                padding: EdgeInsetsDirectional.only(top: 5.h),
-                itemBuilder: (context, index) {
-                  return ItemKeyValue(modelKeyValue: data[index]);
-                },
-              ),
-            ],
+  Widget _invoiceDetails(OrderDetailsEntity data) {
+    List<ModelKeyValue> invoiceList = [
+      ModelKeyValue("${language.subTotal}-", data.subTotal.withCurrency),
+      ModelKeyValue("${language.total}-", data.totalAmount.withCurrency, setBold: true, setDivider: true),
+    ];
+
+    return Padding(
+      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(language.cartDetails, style: _titleStyle),
+          ListView.builder(
+            itemCount: invoiceList.length,
+            shrinkWrap: true,
+            padding: EdgeInsetsDirectional.only(top: 5.h),
+            itemBuilder: (context, index) {
+              return ItemKeyValue(modelKeyValue: invoiceList[index]);
+            },
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 

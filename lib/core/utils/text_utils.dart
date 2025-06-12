@@ -1,4 +1,4 @@
-import '../../data/models/model_address.dart';
+import '../../domain/entities/address_entity.dart';
 import '../constants/extensions.dart';
 
 class TextUtils {
@@ -34,8 +34,8 @@ class TextUtils {
     return discountType == 1 ? "$discountValue%" : discountValue.withCurrency;
   }
 
-  static String getFullAddress(ModelAddress address) {
-    final ModelAddress(:houseName, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :pinCode) = address;
+  static String getFullAddress(AddressEntity address) {
+    final AddressEntity(:houseName, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :pinCode) = address;
     String fullAddress = houseName;
     if (houseNo.isNotEmpty) fullAddress += ",$houseNo";
     if (street.isNotEmpty) fullAddress += ",$street";
