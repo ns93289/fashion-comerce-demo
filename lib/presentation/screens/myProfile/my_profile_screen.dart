@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,13 +8,15 @@ import '../../../core/utils/text_field_validators.dart';
 import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_constants.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
-import '../../../data/dataSources/remote/api_constant.dart';
+import '../../bottomSheets/image_picker_bottom_sheet.dart';
+import '../../components/common_network_image.dart';
 import '../../components/custom_button.dart';
 import '../../components/custom_text_field.dart';
 import '../../../core/constants/colors.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../provider/my_profile_provider.dart';
+import '../../provider/navigation_provider.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
@@ -74,14 +75,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       file != null
                           ? Image.file(file, fit: BoxFit.cover)
                           : filePath.isNotEmpty
-                          ? CachedNetworkImage(imageUrl: "${BaseUrl.url}$filePath", fit: BoxFit.cover)
+                          ? CommonNetworkImage(image: filePath)
                           : Container(),
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.only(top: 60.sp, start: 60.sp),
                   child: GestureDetector(
                     onTap: () {
-                      openImagePickerDialog(context);
+                      ref.read(navigationServiceProvider).showBottomSheet(ImagePickerBottomSheet());
                     },
                     child: Container(
                       decoration: BoxDecoration(

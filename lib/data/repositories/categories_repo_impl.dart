@@ -21,10 +21,21 @@ class CategoriesRepoImpl extends CategoriesRepo {
   }
 
   @override
-  Future<ApiResponse<List<SubCategoryEntity>>> getSubCategories({required int categoryId}) async {
+  Future<ApiResponse<List<SubCategoryEntity>>> getSubCategories({
+    required int categoryId,
+    bool isForMale = false,
+    bool isForFemale = false,
+    bool isForKids = false,
+  }) async {
     final response = await _apiHelper.get(
       api: EndPoint.getSubCategories,
-      body: {ApiParams.categoryId: categoryId, ApiParams.userId: getIntDataFromUserBox(key: hiveUserId)},
+      body: {
+        ApiParams.categoryId: categoryId,
+        ApiParams.userId: getIntDataFromUserBox(key: hiveUserId),
+        ApiParams.isForMale: isForMale,
+        ApiParams.isForFemale: isForFemale,
+        ApiParams.isForKids: isForKids,
+      },
     );
     return ResponseWrapper.fromJsonList<ModelSubCategory>(response, ModelSubCategory.fromJson);
   }

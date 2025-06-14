@@ -30,7 +30,7 @@ class ItemTransaction extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsetsDirectional.only(end: 20.w, bottom: 10.h),
-                child: Text(title, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                child: Text("Credited by you", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
               ),
               Text(transactionDate, style: bodyTextStyle(color: colorTextLight, fontSize: 14.sp)),
               SizedBox(height: 10.h),

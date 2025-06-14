@@ -23,11 +23,11 @@ class ProductEntity {
   num? _productDiscountPrice;
   num? _deliveryCharge;
   num? _expressCharge;
-  List<num>? _productSizes;
-  List<String>? _reviewerList;
-  List<String>? _productColors;
-  List<int>? _productQuantities;
   bool? _favorite;
+  bool? _isBestSeller;
+  bool? _isForMale;
+  bool? _isForFemale;
+  bool? _isForKids;
 
   ProductEntity({
     int? productId,
@@ -54,12 +54,11 @@ class ProductEntity {
     num? deliveryCharge,
     num? expressCharge,
     num? productDiscountPrice,
-    List<num>? productSizes,
-    List<String>? reviewerList,
-    List<String>? productColors,
-    List<int>? productQuantities,
     bool? favorite,
     bool? isBestSeller,
+    bool? isForMale,
+    bool? isForFemale,
+    bool? isForKids,
   }) {
     _productId = productId;
     _sellerId = sellerId;
@@ -73,7 +72,6 @@ class ProductEntity {
     _productPrice = productPrice;
     _favorite = favorite;
     _productDescription = productDescription;
-    _productSizes = productSizes;
     _noOfReview = noOfReview;
     _averageRatings = averageRatings;
     _selectedSize = selectedSize;
@@ -81,19 +79,51 @@ class ProductEntity {
     _deliveryCharge = deliveryCharge;
     _expressCharge = expressCharge;
     _productDiscountPrice = productDiscountPrice;
-    _reviewerList = reviewerList;
     _isBestSeller = isBestSeller;
     _sellerName = sellerName;
     _productCare = productCare;
     _productDesign = productDesign;
     _productCountry = productCountry;
     _productMaterial = productMaterial;
-    _productColors = productColors;
-    _productQuantities = productQuantities;
     _selectedColor = selectedColor;
+    _isForMale = isForMale;
+    _isForFemale = isForFemale;
+    _isForKids = isForKids;
   }
 
-  bool? _isBestSeller;
+  ProductEntity copyWith({bool? favorite}) {
+    return ProductEntity(
+      productId: _productId,
+      favorite: favorite,
+      sellerId: _sellerId,
+      selectedQuantity: _selectedQuantity,
+      discountType: _discountType,
+      productStoke: _productStoke,
+      genderType: _genderType,
+      productName: _productName,
+      productImage: _productImage,
+      categoryName: _categoryName,
+      productDescription: _productDescription,
+      productCare: _productCare,
+      productDesign: _productDesign,
+      productCountry: _productCountry,
+      productMaterial: _productMaterial,
+      sellerName: _sellerName,
+      productPrice: _productPrice,
+      noOfReview: _noOfReview,
+      averageRatings: _averageRatings,
+      productDiscount: _productDiscount,
+      deliveryCharge: _deliveryCharge,
+      expressCharge: _expressCharge,
+      productDiscountPrice: _productDiscountPrice,
+      isBestSeller: _isBestSeller,
+      selectedColor: _selectedColor,
+      selectedSize: _selectedSize,
+      isForMale: _isForMale,
+      isForFemale: _isForFemale,
+      isForKids: _isForKids,
+    );
+  }
 
   int get productId => _productId ?? 0;
 
@@ -143,32 +173,18 @@ class ProductEntity {
 
   num get productDiscountPrice => _productDiscountPrice ?? 0;
 
-  List<num> get productSizes => _productSizes ?? [];
-
-  List<String> get reviewerList => _reviewerList ?? [];
-
-  List<String> get productColors => _productColors ?? [];
-
-  List<int> get productQuantities => _productQuantities ?? [];
-
   bool get favorite => _favorite ?? false;
 
   bool get isBestSeller => _isBestSeller ?? false;
 
-  set selectedSize(String value) {
-    _selectedSize = value;
-  }
+  bool get isForMale => _isForMale ?? false;
 
-  set selectedQuantity(int value) {
-    _selectedQuantity = value;
-  }
+  bool get isForFemale => _isForFemale ?? false;
+
+  bool get isForKids => _isForKids ?? false;
 
   set favorite(bool value) {
     _favorite = value;
-  }
-
-  set selectedColor(String value) {
-    _selectedColor = value;
   }
 }
 

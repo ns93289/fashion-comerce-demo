@@ -253,6 +253,7 @@
   "shippedWith": "Shipped With",
   "selectAddress": "Select Address",
   "selectAddressMsg": "Please select address to place order",
+  "backPressMsg": "Press back again to exit the app",
   "@byClickEmailVerify": {
     "placeholders": {
       "email": {

@@ -14,4 +14,6 @@ abstract class AuthRepo {
   Future<dynamic> changePassword({required String password, required String newPassword});
 
   Future<dynamic> logout();
+
+  Future<dynamic> deleteAccount();
 }

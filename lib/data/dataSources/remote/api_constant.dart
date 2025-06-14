@@ -1,5 +1,5 @@
 class BaseUrl {
-  static const String url = "http://192.168.1.4:8055/";
+  static const String url = "http://192.168.1.5:8055/";
   static const String apiUrl = "$url/api";
 }
 
@@ -8,6 +8,7 @@ class EndPoint {
   static const String register = "/register";
   static const String login = "/login";
   static const String logout = "/logout";
+  static const String deleteAccount = "/delete-account";
   static const String emailVerification = "/email-verification";
   static const String mobileVerification = "/mobile-verification";
   static const String forgotPassword = "/auth/forgot-password";
@@ -27,12 +28,14 @@ class EndPoint {
   static const String newProductList = "/home/new-arrivals";
   static const String brandsList = "/home/brands";
   static const String homeSlider = "/home/slider";
+  static const String homeCategories = "/home/home-categories";
 
   ///Product details...
   static const String productDetails = "/product-detail/product";
 
   ///Favourite Apis...
   static const String addFavourite = "/favourite/add-remove";
+  static const String getFavouriteProducts = "/favourite/get";
 
   ///Address Apis...
   static const String addAddress = "/address/add";
@@ -93,4 +96,7 @@ class ApiParams {
   static const String quantity = "quantity";
   static const String paymentMethod = "payment_method";
   static const String addressId = "address_id";
+  static const String isForMale = "is_for_male";
+  static const String isForFemale = "is_for_female";
+  static const String isForKids = "is_for_kids";
 }

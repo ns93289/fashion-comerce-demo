@@ -10,10 +10,10 @@ class ProductService extends StateNotifier<AsyncValue<List<ProductEntity>>?> {
 
   ProductService(this.productRepository) : super(null);
 
-  Future<void> callNewArrivalProductsApi({int page = 1}) async {
+  Future<void> callNewArrivalProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getNewProductList(page: page);
+      final result = await productRepository.getNewProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
       } else {
@@ -25,10 +25,10 @@ class ProductService extends StateNotifier<AsyncValue<List<ProductEntity>>?> {
     }
   }
 
-  Future<void> callPopularProductsApi({int page = 1}) async {
+  Future<void> callPopularProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getPopularProductList(page: page);
+      final result = await productRepository.getPopularProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
       } else {
@@ -40,10 +40,10 @@ class ProductService extends StateNotifier<AsyncValue<List<ProductEntity>>?> {
     }
   }
 
-  Future<void> callProductsApi({int page = 1}) async {
+  Future<void> callProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getProductList(page: page);
+      final result = await productRepository.getProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
       } else {
@@ -55,10 +55,10 @@ class ProductService extends StateNotifier<AsyncValue<List<ProductEntity>>?> {
     }
   }
 
-  Future<List<ProductEntity>> callAllProductsApi({int page = 1}) async {
+  Future<List<ProductEntity>> callAllProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getProductList(page: page);
+      final result = await productRepository.getProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
         return result.data;
@@ -70,6 +70,43 @@ class ProductService extends StateNotifier<AsyncValue<List<ProductEntity>>?> {
       logD("callProductsApi>>>", "error: ${e.toString()}");
       state = AsyncError(e, st);
       throw Exception("Failed to fetch products: $e");
+    }
+  }
+
+  Future<List<ProductEntity>> callFavoriteProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+    state = const AsyncLoading();
+    try {
+      final result = await productRepository.getFavoriteProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
+      if (result is ApiSuccess) {
+        state = AsyncData(result.data);
+        return result.data;
+      } else {
+        state = AsyncError((result as ApiError).errorData.message, StackTrace.empty);
+        throw Exception("Failed to fetch products:");
+      }
+    } catch (e, st) {
+      logD("callFavoriteProductsApi>>>", "error: ${e.toString()}");
+      state = AsyncError(e, st);
+      throw Exception("Failed to fetch products: $e");
+    }
+  }
+
+  Future<void> callToggleFavoriteApi(int productId) async {
+    final oldState = state;
+    try {
+      state = state?.whenData((products) {
+        return products.map((product) {
+          if (product.productId == productId) {
+            final newFavoriteStatus = !product.favorite;
+            // Optionally: call API here
+            productRepository.favoriteProduct(productId: productId, favorite: newFavoriteStatus ? 1 : 2);
+            return product.copyWith(favorite: newFavoriteStatus);
+          }
+          return product;
+        }).toList();
+      });
+    } catch (e) {
+      state = oldState; // rollback if needed
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/utils/time_utils.dart';
 import "../../components/custom_button.dart";
 import '../../../core/constants/custom_icons.dart';
 import '../../../core/constants/theme.dart';
@@ -43,7 +44,7 @@ class OrderStatusView extends StatelessWidget {
                   children: [
                     Text(language.orderShipped, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
                     SizedBox(height: 5.h),
-                    Text(orderTime, style: bodyTextStyle(fontSize: 12.sp)),
+                    Text(TimeUtils.getFormatedDate(orderTime), style: bodyTextStyle(fontSize: 12.sp)),
                   ],
                 ),
               ),

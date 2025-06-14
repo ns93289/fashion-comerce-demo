@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,8 +7,8 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/theme.dart';
 import '../../../../../data/dataSources/local/hive_constants.dart';
 import '../../../../../data/dataSources/local/hive_helper.dart';
-import '../../../../../data/dataSources/remote/api_constant.dart';
 import '../../../../../data/models/model_drawer.dart';
+import '../../../../components/common_network_image.dart';
 import '../../../../provider/account_provider.dart';
 
 class AccountPage extends StatefulWidget {
@@ -44,7 +43,7 @@ class _AccountPageState extends State<AccountPage> {
                     final ModelDrawer item = drawerList[index];
                     return GestureDetector(
                       onTap: () {
-                        ref.read(openDrawerItemProvider((context: context, drawerItem: item)));
+                        ref.read(openDrawerItemProvider(item));
                       },
                       child: Container(
                         color: colorWhite,
@@ -88,7 +87,7 @@ class _AccountPageState extends State<AccountPage> {
                 width: 80.sp,
                 margin: EdgeInsetsDirectional.only(top: 15.h),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: profilePicture.isNotEmpty ? CachedNetworkImage(imageUrl: "${BaseUrl.url}$profilePicture", fit: BoxFit.cover) : Container(),
+                child: profilePicture.isNotEmpty ? CommonNetworkImage(image: profilePicture) : Container(),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.only(top: 10.h, start: 10.w, end: 10.w, bottom: 15.h),

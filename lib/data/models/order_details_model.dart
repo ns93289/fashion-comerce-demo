@@ -1,7 +1,6 @@
 import '../../domain/entities/cart_preview_entity.dart';
 import '../../domain/entities/order_details_entity.dart';
 import 'cart_preview_model.dart';
-import 'model_address.dart';
 
 class OrderDetailsModel extends OrderDetailsEntity {
   OrderDetailsModel({
@@ -24,10 +23,10 @@ class OrderDetailsModel extends OrderDetailsEntity {
       paymentMethod: json['payment_method'],
       orderStatus: json['order_status'],
       orderDate: json['order_date'],
-      subTotal: json['subtotal'],
+      subTotal: json['sub_total'],
       totalAmount: json['total_amount'],
       deliveryCharge: json['delivery_charge'],
-      address: json['address'] != null ? ModelAddress.fromJson(json['address']) : null,
+      address: json['address'],
       products: json['product'] != null ? List<CartProductEntity>.from(json['product'].map((x) => CartProductModel.fromJson(x))) : [],
     );
   }
@@ -38,10 +37,10 @@ class OrderDetailsModel extends OrderDetailsEntity {
     'payment_method': paymentMethod,
     'order_status': orderStatus,
     'order_date': orderDate,
-    'subtotal': subTotal,
+    'sub_total': subTotal,
     'total_amount': totalAmount,
     'delivery_charge': deliveryCharge,
-    'address': (address as ModelAddress).toJson(),
+    'address': address,
     'product': List<dynamic>.from(products.map((x) => (x as CartProductModel).toJson())),
   };
 }

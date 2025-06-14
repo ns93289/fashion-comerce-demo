@@ -5,17 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
-import '../../../core/utils/text_utils.dart';
 import '../../../core/utils/time_utils.dart';
-import '../../../core/utils/tools.dart';
 import '../../../data/models/model_key_value.dart';
-import '../../../domain/entities/address_entity.dart';
 import '../../../domain/entities/cart_preview_entity.dart';
 import '../../../domain/entities/order_details_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
 import '../../components/item_key_value.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/order_details_provider.dart';
 import '../cart/item_cart_data.dart';
 import '../home/home_screen.dart';
@@ -36,17 +34,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) return;
-        if (Navigator.canPop(context)) {
-          Navigator.pop(context);
-        } else {
-          openScreenWithClearStack(context, HomeScreen());
-        }
+    return Consumer(
+      builder: (context, ref, _) {
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) return;
+            if (Navigator.canPop(context)) {
+              ref.read(navigationServiceProvider).goBack();
+            } else {
+              ref.read(navigationServiceProvider).navigateToWithClearStack(HomeScreen());
+            }
+          },
+          child: Scaffold(appBar: CommonAppBar(leading: BackButton(), title: Text(language.orderDetails)), body: SafeArea(child: _buildOrderDetails())),
+        );
       },
-      child: Scaffold(appBar: CommonAppBar(leading: BackButton(), title: Text(language.orderDetails)), body: SafeArea(child: _buildOrderDetails())),
     );
   }
 
@@ -131,7 +133,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 
-  Widget _deliveryAddress(AddressEntity address) {
+  Widget _deliveryAddress(String address) {
     return Padding(
       padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
       child: Column(
@@ -141,7 +143,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           SizedBox(height: 10.h),
           Text(language.home, style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 10.h),
-          Text(TextUtils.getFullAddress(address), style: bodyTextStyle(fontSize: 14.sp)),
+          Text(address, style: bodyTextStyle(fontSize: 14.sp)),
         ],
       ),
     );

@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/address_service.dart';
 import '../../core/constants/app_constants.dart';
+import '../../data/dataSources/local/hive_helper.dart';
 import '../../data/repositories/address_repo_impl.dart';
 import '../../domain/entities/address_entity.dart';
 import '../../domain/repositories/address_repo.dart';
 import '../../presentation/dialogs/common_dialog.dart';
+import 'navigation_provider.dart';
 
 final houseNameTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
@@ -152,9 +154,9 @@ final deleteAddressProvider = Provider.autoDispose.family<void, ({BuildContext c
         onPositiveClick: () {
           Future.microtask(() {
             ref.read(addressServiceProvider.notifier).callDeleteAddressApi(addressId: args.addressId).then((value) {
+              checkAndDeleteAddressBox(args.addressId);
+              ref.read(navigationServiceProvider).goBack();
               ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
-              if (!context.mounted) return;
-              Navigator.pop(context);
             });
           });
         },

@@ -1,23 +1,40 @@
 import '../../domain/entities/category_entity.dart';
 
 class ModelCategory extends CategoryEntity {
-  ModelCategory({super.categoryId, super.categoryName, super.genderId});
+  ModelCategory({super.categoryId, super.categoryName, super.isForMale, super.isForFemale, super.isForKids});
 
   factory ModelCategory.fromJson(Map<String, dynamic> json) {
-    return ModelCategory(categoryId: json['id'], categoryName: json['category_name'], genderId: json['gender_id']);
+    return ModelCategory(
+      categoryId: json['id'],
+      categoryName: json['category_name'],
+      isForMale: json['is_for_male'],
+      isForFemale: json['is_for_female'],
+      isForKids: json['is_for_kids'],
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     data['id'] = categoryId;
     data['category_name'] = categoryName;
-    data['gender_id'] = genderId;
+    data['is_for_male'] = isForMale;
+    data['is_for_female'] = isForFemale;
+    data['is_for_kids'] = isForKids;
     return data;
   }
 }
 
 class ModelSubCategory extends SubCategoryEntity {
-  ModelSubCategory({super.subCategoryId, super.categoryId, super.subCategoryName, super.subCategoryImage});
+  ModelSubCategory({
+    super.subCategoryId,
+    super.categoryId,
+    super.subCategoryName,
+    super.subCategoryImage,
+    super.tagLine,
+    super.isForMale,
+    super.isForFemale,
+    super.isForKids,
+  });
 
   factory ModelSubCategory.fromJson(Map<String, dynamic> json) {
     return ModelSubCategory(
@@ -25,6 +42,10 @@ class ModelSubCategory extends SubCategoryEntity {
       categoryId: json['category_id'],
       subCategoryName: json['sub_category_name'],
       subCategoryImage: json['image_url'],
+      tagLine: json['tag_line'],
+      isForMale: json['is_for_male'],
+      isForFemale: json['is_for_female'],
+      isForKids: json['is_for_kids'],
     );
   }
 
@@ -34,6 +55,10 @@ class ModelSubCategory extends SubCategoryEntity {
     data['category_id'] = categoryId;
     data['sub_category_name'] = subCategoryName;
     data['image_url'] = subCategoryImage;
+    data['tag_line'] = tagLine;
+    data['is_for_male'] = isForMale;
+    data['is_for_female'] = isForFemale;
+    data['is_for_kids'] = isForKids;
     return data;
   }
 }

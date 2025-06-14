@@ -86,4 +86,13 @@ class AuthRepoImpl implements AuthRepo {
 
     return ResponseWrapper.fromJson<UserModel>(response, UserModel.fromJson);
   }
+
+  @override
+  Future<ApiResponse<UserEntity>> deleteAccount() async {
+    final response = await _apiHelper.post(
+      api: EndPoint.deleteAccount,
+      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken)},
+    );
+    return ResponseWrapper.fromJson<UserEntity>(response, UserModel.fromJson);
+  }
 }

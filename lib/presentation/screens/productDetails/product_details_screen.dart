@@ -1,19 +1,19 @@
 import 'package:expandable_richtext/expandable_rich_text.dart';
-import 'package:fashion_comerce_demo/presentation/components/common_circle_progress_bar.dart';
-import 'package:fashion_comerce_demo/presentation/components/empty_record_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../components/common_circle_progress_bar.dart';
+import '../../components/empty_record_view.dart';
 import '../../../core/constants/extensions.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/text_utils.dart';
-import '../../../core/utils/tools.dart';
 import '../../../domain/entities/product_details_entity.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/product_details_provider.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
@@ -61,6 +61,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final response = ref.watch(productDetailsServiceProvider((id: widget.productId, size: widget.size, color: widget.color)));
+        final _ = ref.watch(offerTimerProvider);
 
         return response?.when(
               data: (data) {
@@ -128,34 +129,50 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
           if (data.discountType > 0)
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(Icons.timer_outlined, color: colorPrimary, size: 20.sp),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                    margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
-                    decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
-                    child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                    decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
-                    child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                    margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
-                    decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
-                    child: Text("00", style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5.sp),
-                    margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-                    decoration: BoxDecoration(color: colorDivider, shape: BoxShape.circle),
-                    child: Icon(Icons.share, size: 15.sp, color: colorTextLight),
-                  ),
-                ],
+              child: Consumer(
+                builder: (context, ref, _) {
+                  final remainingTime = ref.watch(offerRemainingTimeProvider);
+                  final duration = Duration(seconds: remainingTime);
+                  final hours = duration.inHours.toString().padLeft(2, '0');
+                  final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+                  final secs = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.timer_outlined, color: colorPrimary, size: 20.sp),
+                      Container(
+                        height: 27.sp,
+                        width: 30.sp,
+                        alignment: Alignment.center,
+                        margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
+                        decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
+                        child: Text(hours, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                      ),
+                      Container(
+                        height: 27.sp,
+                        width: 30.sp,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
+                        child: Text(minutes, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                      ),
+                      Container(
+                        height: 27.sp,
+                        width: 30.sp,
+                        alignment: Alignment.center,
+                        margin: EdgeInsetsDirectional.only(start: 5.w, end: 5.w),
+                        decoration: BoxDecoration(color: colorDivider, borderRadius: BorderRadius.circular(5.r)),
+                        child: Text(secs, style: bodyTextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(5.sp),
+                        margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+                        decoration: BoxDecoration(color: colorDivider, shape: BoxShape.circle),
+                        child: Icon(Icons.share, size: 15.sp, color: colorTextLight),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
         ],
@@ -435,7 +452,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     addDataIntoCartBox(1);
                     ref.read(
                       addToCartProvider((
-                        context: context,
                         productId: data.id,
                         productVariantId: data.productVariantId,
                         size: data.uniqueSizes[ref.watch(productSizeProvider)],
@@ -475,7 +491,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     addDataIntoCartBox(1);
                                     ref.read(
                                       addToCartProvider((
-                                        context: context,
                                         productId: data.id,
                                         productVariantId: data.productVariantId,
                                         size: data.uniqueSizes[ref.watch(productSizeProvider)],
@@ -501,7 +516,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       addDataIntoCartBox(1);
                       ref.read(
                         addToCartProvider((
-                          context: context,
                           productId: data.id,
                           productVariantId: data.productVariantId,
                           size: data.uniqueSizes[ref.watch(productSizeProvider)],
@@ -510,7 +524,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         )),
                       );
                     } else {
-                      openScreen(context, CartScreen());
+                      ref.read(navigationServiceProvider).navigateTo(CartScreen());
                     }
                   },
                 ),
@@ -523,24 +537,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget _cartView(int totalQuantity) {
-    return GestureDetector(
-      onTap: () {
-        openScreen(context, CartScreen());
-      },
-      child: Container(
-        margin: EdgeInsetsDirectional.only(end: 10.w),
-        child: Stack(
-          children: [
-            Icon(Icons.shopping_bag_outlined, color: colorBlack),
-            Container(
-              margin: EdgeInsetsDirectional.only(start: 11.w),
-              decoration: BoxDecoration(shape: BoxShape.circle, color: colorPrimary),
-              padding: EdgeInsets.all(4.sp),
-              child: Text(totalQuantity.toString(), style: bodyTextStyle(fontSize: 10.sp)),
+    return Consumer(
+      builder: (context, ref, _) {
+        return GestureDetector(
+          onTap: () {
+            ref.read(navigationServiceProvider).navigateTo(CartScreen());
+          },
+          child: Container(
+            margin: EdgeInsetsDirectional.only(end: 10.w),
+            child: Stack(
+              children: [
+                Icon(Icons.shopping_bag_outlined, color: colorBlack),
+                Container(
+                  margin: EdgeInsetsDirectional.only(start: 11.w),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: colorPrimary),
+                  padding: EdgeInsets.all(4.sp),
+                  child: Text(totalQuantity.toString(), style: bodyTextStyle(fontSize: 10.sp)),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

@@ -1,13 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/time_utils.dart';
-import '../../../data/dataSources/remote/api_constant.dart';
 import '../../../domain/entities/order_history_entity.dart';
 import '../../../main.dart';
 import '../../../core/constants/colors.dart';
+import '../../components/common_network_image.dart';
 import '../../components/custom_button.dart';
 
 class ItemOrderHistory extends StatelessWidget {
@@ -28,17 +27,7 @@ class ItemOrderHistory extends StatelessWidget {
             width: 100.w,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.r)),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: CachedNetworkImage(
-                imageUrl: "${BaseUrl.url}$productImage",
-                width: double.maxFinite,
-                height: double.maxFinite,
-                fit: BoxFit.cover,
-                fadeInDuration: Duration.zero,
-                placeholderFadeInDuration: Duration.zero,
-              ),
-            ),
+            child: AspectRatio(aspectRatio: 1, child: CommonNetworkImage(image: productImage)),
           ),
           Expanded(
             child: Padding(

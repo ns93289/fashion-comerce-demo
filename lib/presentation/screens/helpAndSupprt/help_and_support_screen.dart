@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
-import '../../../core/utils/tools.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/support_pages_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
@@ -37,7 +37,7 @@ class _HelpAndSupportScreenState extends State<HelpAndSupportScreen> {
 
             return GestureDetector(
               onTap: () {
-                openScreen(context, SupportPageDetails(pageTitle: supportPage.pageTitle, pageUrl: supportPage.pageUrl));
+                ref.read(navigationServiceProvider).navigateTo(SupportPageDetails(pageTitle: supportPage.pageTitle, pageUrl: supportPage.pageUrl));
               },
               child: Container(
                 color: colorWhite,

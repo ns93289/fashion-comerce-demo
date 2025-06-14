@@ -8,11 +8,11 @@ import '../../../data/models/model_address.dart';
 import '../../components/common_circle_progress_bar.dart';
 import '../../../domain/entities/address_entity.dart';
 import '../../components/empty_record_view.dart';
-import '../../../core/utils/tools.dart';
 import '../../provider/address_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
+import '../../provider/navigation_provider.dart';
 import 'add_address_screen.dart';
 import 'item_address_list.dart';
 
@@ -74,22 +74,25 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
                           onTap: () {
                             putDataInAddressBox(modelAddress as ModelAddress);
                             if (widget.selectable) {
-                              Navigator.pop(context);
+                              ref.read(navigationServiceProvider).goBack();
                             }
                           },
                           child: ItemAddressList(
                             modelAddress: modelAddress,
                             selected: selectedAddress?.addressId == modelAddress.addressId,
                             onEdit: () {
-                              openScreenWithResult(
-                                context,
-                                AddAddressScreen(modelAddress: modelAddress),
-                                overrides: [addressTypeSelectProvider.overrideWith((ref) => (modelAddress.addressType))],
-                              ).then((value) {
-                                if (value ?? false) {
-                                  ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
-                                }
-                              });
+                              ref
+                                  .read(navigationServiceProvider)
+                                  .navigateToWithResult(
+                                    AddAddressScreen(modelAddress: modelAddress),
+                                    overrides: [addressTypeSelectProvider.overrideWith((ref) => (modelAddress.addressType))],
+                                  )
+                                  ?.then((value) {
+                                    if (value ?? false) {
+                                      checkAndChangeAddressBox(modelAddress as ModelAddress);
+                                      ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
+                                    }
+                                  });
                             },
                             onDelete: () {
                               ref.read(deleteAddressProvider((context: context, addressId: modelAddress.addressId)));
@@ -117,7 +120,7 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
           margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, bottom: 30.h),
           width: 1.sw,
           onPress: () {
-            openScreenWithResult(context, AddAddressScreen()).then((value) {
+            ref.read(navigationServiceProvider).navigateToWithResult(AddAddressScreen())?.then((value) {
               if (value ?? false) {
                 ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
               }

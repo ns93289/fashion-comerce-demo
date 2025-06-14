@@ -17,6 +17,7 @@ import '../../components/common_app_bar.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
 import '../../components/item_key_value.dart';
+import '../../provider/navigation_provider.dart';
 import '../address/my_address_screen.dart';
 import '../payment/payment_screen.dart';
 import 'item_cart_data.dart';
@@ -126,7 +127,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
                           onPress: () {
-                            openScreen(context, MyAddressScreen(selectable: true));
+                            ref.read(navigationServiceProvider).navigateTo(MyAddressScreen(selectable: true));
                           },
                         ),
                       ],
@@ -242,7 +243,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           width: 1.sw,
           onPress: () {
             if (address != null) {
-              openScreen(context, PaymentScreen(orderAmount: data));
+              ref.read(navigationServiceProvider).navigateTo(PaymentScreen(orderAmount: data));
             } else {
               openSimpleSnackBar(language.selectAddressMsg);
             }

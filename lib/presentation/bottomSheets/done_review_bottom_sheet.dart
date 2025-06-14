@@ -30,7 +30,7 @@ class _DoneReviewBottomSheetState extends State<DoneReviewBottomSheet> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
             width: 1.sw,
-            decoration: BoxDecoration(color: colorWhite, borderRadius: BorderRadius.circular(20.r)),
+            decoration: BoxDecoration(color: colorWhite, borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r))),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

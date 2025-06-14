@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/authentication_service.dart';
-import '../../core/utils/tools.dart';
 import '../../data/models/model_drawer.dart';
 import '../../data/repositories/auth_repo_impl.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repo.dart';
 import '../../main.dart';
+import '../dialogs/delete_account_dialog.dart';
 import '../dialogs/logout_dialog.dart';
 import '../screens/address/my_address_screen.dart';
 import '../screens/changePassword/change_password_screen.dart';
@@ -16,6 +16,7 @@ import '../screens/myProfile/my_profile_screen.dart';
 import '../screens/orderHistory/order_history_screen.dart';
 import '../screens/preferences/preferences_screen.dart';
 import '../screens/wallet/wallet_screen.dart';
+import 'navigation_provider.dart';
 
 final drawerListProvider = StateProvider.autoDispose<List<ModelDrawer>>((ref) {
   return [
@@ -31,11 +32,13 @@ final drawerListProvider = StateProvider.autoDispose<List<ModelDrawer>>((ref) {
   ];
 });
 
-final openDrawerItemProvider = Provider.autoDispose.family<void, ({ModelDrawer drawerItem, BuildContext context})>((ref, args) {
-  if (args.drawerItem.screen is! Container) {
-    openScreen(args.context, args.drawerItem.screen);
-  } else if (args.drawerItem.drawerType == DrawerType.logout) {
-    ref.read(logoutProvider(args.context));
+final openDrawerItemProvider = Provider.autoDispose.family<void, ModelDrawer>((ref, drawerItem) {
+  if (drawerItem.screen is! Container) {
+    ref.read(navigationServiceProvider).navigateTo(drawerItem.screen);
+  } else if (drawerItem.drawerType == DrawerType.logout) {
+    ref.read(navigationServiceProvider).showCustomDialog(LogoutDialog());
+  } else if (drawerItem.drawerType == DrawerType.deleteAccount) {
+    ref.read(navigationServiceProvider).showCustomDialog(DeleteAccountDialog());
   }
 });
 
@@ -44,12 +47,4 @@ final authRepoProvider = Provider.autoDispose<AuthRepo>((ref) {
 });
 final authenticationServiceProvider = StateNotifierProvider<AuthenticationService, AsyncValue<UserEntity?>>((ref) {
   return AuthenticationService(ref.watch(authRepoProvider));
-});
-final logoutProvider = Provider.autoDispose.family<void, BuildContext>((ref, context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return LogoutDialog();
-    },
-  );
 });

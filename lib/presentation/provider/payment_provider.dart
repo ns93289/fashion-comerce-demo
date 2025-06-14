@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../screens/orderPlaced/order_placed_screen.dart';
@@ -12,6 +11,7 @@ import '../../data/repositories/place_order_repo_impl.dart';
 import '../../data/repositories/wallet_repo_impl.dart';
 import '../../domain/repositories/wallet_repo.dart';
 import '../../main.dart';
+import 'navigation_provider.dart';
 
 final walletRepoProvider = Provider.autoDispose<WalletRepo>((ref) {
   return WalletRepoImpl();
@@ -29,15 +29,14 @@ final placeOrdeRepoProvider = Provider.autoDispose<PlaceOrderRepoImpl>((ref) {
 final placeOrderServiceProvider = StateNotifierProvider<PlaceOrderService, AsyncValue<dynamic>>((ref) {
   return PlaceOrderService(ref.watch(placeOrdeRepoProvider));
 });
-final placeOrderProvider = Provider.family<void, BuildContext>((ref, context) {
+final placeOrderProvider = Provider<void>((ref) {
   Future.microtask(() async {
     int paymentType = ref.watch(paymentTypePro);
     int addressId = getAddressFromAddressBox()?.addressId ?? 0;
     BaseModel? data = await ref.read(placeOrderServiceProvider.notifier).callPlaceOrderApi(paymentType: paymentType, addressId: addressId);
     if (data != null) {
       setDataIntoCartBox(0);
-      if (!context.mounted) return;
-      openScreen(context, OrderPlacedScreen());
+      ref.read(navigationServiceProvider).navigateTo(OrderPlacedScreen());
     }
   });
 });

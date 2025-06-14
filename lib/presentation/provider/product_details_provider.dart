@@ -1,15 +1,16 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/cart_service.dart';
 import '../../application/product_details_service.dart';
-import '../../core/utils/tools.dart';
 import '../../data/models/cart_model.dart';
 import '../../data/repositories/cart_repo_impl.dart';
 import '../../data/repositories/product_details_repo_impl.dart';
 import '../../domain/entities/product_details_entity.dart';
 import '../../domain/repositories/product_details_repo.dart';
 import '../screens/cart/cart_screen.dart';
+import 'navigation_provider.dart';
 
 final productSizeProvider = StateProvider<int>((ref) => 0);
 
@@ -38,20 +39,19 @@ final cartRepoProvider = Provider.autoDispose((ref) {
 final cartServiceProvider = StateNotifierProvider<CartService, AsyncValue<dynamic>>((ref) {
   return CartService(ref.watch(cartRepoProvider));
 });
-final addToCartProvider = Provider.autoDispose
-    .family<void, ({BuildContext context, int productId, int productVariantId, String size, String color, bool isAddToCart})>((ref, args) {
-      Future.microtask(() async {
-        final CartModel? data = await ref
-            .read(cartServiceProvider.notifier)
-            .callAddToCartApi(productVariantId: args.productVariantId, productId: args.productId, quantity: 1);
-        if (data != null) {
-          ref.read(cartProductQuantityProvider.notifier).state = data.quantity;
-          if (!args.isAddToCart) {
-            openScreen(args.context, CartScreen());
-          }
-        }
-      });
-    });
+final addToCartProvider = Provider.autoDispose.family<void, ({int productId, int productVariantId, String size, String color, bool isAddToCart})>((ref, args) {
+  Future.microtask(() async {
+    final CartModel? data = await ref
+        .read(cartServiceProvider.notifier)
+        .callAddToCartApi(productVariantId: args.productVariantId, productId: args.productId, quantity: 1);
+    if (data != null) {
+      ref.read(cartProductQuantityProvider.notifier).state = data.quantity;
+      if (!args.isAddToCart) {
+        ref.read(navigationServiceProvider).navigateTo(CartScreen());
+      }
+    }
+  });
+});
 final removeProductCartProvider = Provider.autoDispose.family<void, ({int productId, int productVariantId, String size, String color})>((ref, args) {
   Future.microtask(() async {
     final CartModel? data = await ref
@@ -64,3 +64,25 @@ final removeProductCartProvider = Provider.autoDispose.family<void, ({int produc
 });
 
 final cartProductQuantityProvider = StateProvider.autoDispose<int>((ref) => 0);
+
+final offerRemainingTimeProvider = StateProvider.autoDispose<int>((ref) => 0);
+
+final offerTimerProvider = Provider.autoDispose((ref) {
+  int remainingSeconds = remainingTimeToMidnight().inSeconds;
+  Timer.periodic(const Duration(seconds: 1), (timer) {
+    if (remainingSeconds > 0) {
+      remainingSeconds--;
+      ref.read(offerRemainingTimeProvider.notifier).state = remainingSeconds;
+    } else {
+      timer.cancel();
+    }
+  });
+});
+
+Duration remainingTimeToMidnight() {
+  final now = DateTime.now();
+  final target = DateTime(now.year, now.month, now.day, 23, 59, 0);
+
+  // If already past 23:59:00 today, return zero duration
+  return now.isAfter(target) ? Duration.zero : target.difference(now);
+}

@@ -1,12 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/constants/colors.dart';
 import '../../../../../core/constants/theme.dart';
-import '../../../../../core/utils/tools.dart';
-import '../../../../../data/dataSources/remote/api_constant.dart';
 import '../../../../../domain/entities/category_entity.dart';
+import '../../../../components/common_network_image.dart';
 
 class ItemSubCategory extends StatelessWidget {
   final SubCategoryEntity modelSubCategory;
@@ -24,7 +22,7 @@ class ItemSubCategory extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(color: colorPrimary.withAlpha(50), borderRadius: BorderRadius.circular(10.r)),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: CachedNetworkImage(imageUrl: "${BaseUrl.url}$subCategoryImage"),
+            child: CommonNetworkImage(image: subCategoryImage, fit: BoxFit.contain),
           ),
         ),
         SizedBox(height: 5.h),

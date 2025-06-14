@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
-import '../../../core/utils/tools.dart';
 import '../../../domain/entities/category_entity.dart';
 import '../../../domain/entities/product_entity.dart';
 import '../../../main.dart';
@@ -13,9 +13,9 @@ import '../../components/custom_button.dart';
 import '../../components/empty_record_view.dart';
 import '../../provider/category_provider.dart';
 import '../../components/common_app_bar.dart';
-import '../../provider/favorite_provider.dart';
 import '../../provider/home_provider.dart';
-import '../home/pages/home/item_product.dart';
+import '../../provider/navigation_provider.dart';
+import '../productList/item_product.dart';
 import '../productDetails/product_details_screen.dart';
 import '../productList/product_list_screen.dart';
 
@@ -48,7 +48,14 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   Widget _buildSubCategories() {
     return Consumer(
       builder: (context, ref, _) {
-        final apiResponse = ref.watch(subCategoryServiceProvider(widget.categoryId));
+        final apiResponse = ref.watch(
+          subCategoryServiceProvider((
+            categoryId: widget.categoryId,
+            isForMale: widget.genderType == GenderTypes.male,
+            isForFemale: widget.genderType == GenderTypes.female,
+            isForKids: widget.genderType == GenderTypes.kids,
+          )),
+        );
 
         return apiResponse.when(
           data: (data) {
@@ -123,20 +130,21 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                       ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(
-                            context,
-                            ProductDetailsScreen(
-                              productId: product.productId,
-                              productName: product.productName,
-                              size: product.selectedSize,
-                              color: product.selectedColor,
-                            ),
-                          );
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateTo(
+                                ProductDetailsScreen(
+                                  productId: product.productId,
+                                  productName: product.productName,
+                                  size: product.selectedSize,
+                                  color: product.selectedColor,
+                                ),
+                              );
                         },
                         child: ItemProduct(
                           item: productList[index],
                           onFavorite: () {
-                            ref.read(favoriteUnFavorite(productList[index]));
+                            ref.read(newProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
                           },
                         ),
                       );
@@ -148,7 +156,9 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                   width: 1.sw,
                   margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 15.h),
                   onPress: () {
-                    openScreen(context, ProductListScreen(productType: language.newArrival, productTypeEnum: ProductTypeEnum.newArrival));
+                    ref
+                        .read(navigationServiceProvider)
+                        .navigateTo(ProductListScreen(productType: language.newArrival, productTypeEnum: ProductTypeEnum.newArrival));
                   },
                 ),
               ],
@@ -182,20 +192,21 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                       ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(
-                            context,
-                            ProductDetailsScreen(
-                              productId: product.productId,
-                              productName: product.productName,
-                              size: product.selectedSize,
-                              color: product.selectedColor,
-                            ),
-                          );
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateTo(
+                                ProductDetailsScreen(
+                                  productId: product.productId,
+                                  productName: product.productName,
+                                  size: product.selectedSize,
+                                  color: product.selectedColor,
+                                ),
+                              );
                         },
                         child: ItemProduct(
                           item: productList[index],
                           onFavorite: () {
-                            ref.read(favoriteUnFavorite(productList[index]));
+                            ref.read(popularProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
                           },
                         ),
                       );
@@ -207,7 +218,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                   width: 1.sw,
                   margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 15.h),
                   onPress: () {
-                    openScreen(context, ProductListScreen(productType: language.popular, productTypeEnum: ProductTypeEnum.popular));
+                    ref.read(navigationServiceProvider).navigateTo(ProductListScreen(productType: language.popular, productTypeEnum: ProductTypeEnum.popular));
                   },
                 ),
               ],
@@ -244,20 +255,21 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                       ProductEntity product = productList[index];
                       return GestureDetector(
                         onTap: () {
-                          openScreen(
-                            context,
-                            ProductDetailsScreen(
-                              productId: product.productId,
-                              productName: product.productName,
-                              size: product.selectedSize,
-                              color: product.selectedColor,
-                            ),
-                          );
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateTo(
+                                ProductDetailsScreen(
+                                  productId: product.productId,
+                                  productName: product.productName,
+                                  size: product.selectedSize,
+                                  color: product.selectedColor,
+                                ),
+                              );
                         },
                         child: ItemProduct(
                           item: productList[index],
                           onFavorite: () {
-                            ref.read(favoriteUnFavorite(productList[index]));
+                            ref.read(allProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
                           },
                         ),
                       );
@@ -269,7 +281,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                   width: 1.sw,
                   margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 15.h),
                   onPress: () {
-                    openScreen(context, ProductListScreen(productType: language.allProducts, productTypeEnum: ProductTypeEnum.all));
+                    ref.read(navigationServiceProvider).navigateTo(ProductListScreen(productType: language.allProducts, productTypeEnum: ProductTypeEnum.all));
                   },
                 ),
               ],

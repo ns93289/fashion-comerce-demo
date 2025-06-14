@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/utils/tools.dart';
 import '../../../domain/entities/product_entity.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
-import '../../provider/favorite_provider.dart';
 import '../../provider/home_provider.dart';
-import '../home/pages/home/item_product.dart';
+import '../../provider/navigation_provider.dart';
+import 'item_product.dart';
 import '../productDetails/product_details_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -50,20 +49,17 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ProductEntity product = productList[index];
                 return GestureDetector(
                   onTap: () {
-                    openScreen(
-                      context,
-                      ProductDetailsScreen(
-                        productId: product.productId,
-                        productName: product.productName,
-                        size: product.selectedSize,
-                        color: product.selectedColor,
-                      ),
-                    );
+                    ref.read(navigationServiceProvider).navigateTo(ProductDetailsScreen(
+                      productId: product.productId,
+                      productName: product.productName,
+                      size: product.selectedSize,
+                      color: product.selectedColor,
+                    ));
                   },
                   child: ItemProduct(
                     item: productList[index],
                     onFavorite: () {
-                      ref.read(favoriteUnFavorite(productList[index]));
+                      ref.read(allProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
                     },
                   ),
                 );

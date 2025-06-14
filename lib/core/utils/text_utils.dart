@@ -38,12 +38,12 @@ class TextUtils {
     final AddressEntity(:houseName, :houseNo, :street, :addressLine1, :addressLine2, :city, :state, :pinCode) = address;
     String fullAddress = houseName;
     if (houseNo.isNotEmpty) fullAddress += ",$houseNo";
-    if (street.isNotEmpty) fullAddress += ",$street";
-    if (addressLine1.isNotEmpty) fullAddress += ",$addressLine1";
-    if (addressLine2.isNotEmpty) fullAddress += ",$addressLine2";
-    if (city.isNotEmpty) fullAddress += ",$city";
-    if (state.isNotEmpty) fullAddress += ",$state";
-    if (pinCode.isNotEmpty) fullAddress += ",$pinCode";
+    if (street.isNotEmpty) fullAddress += " ,$street";
+    if (addressLine1.isNotEmpty) fullAddress += " ,$addressLine1";
+    if (addressLine2.isNotEmpty) fullAddress += " ,$addressLine2";
+    if (city.isNotEmpty) fullAddress += " ,$city";
+    if (state.isNotEmpty) fullAddress += " ,$state";
+    if (pinCode.isNotEmpty) fullAddress += " ,$pinCode";
 
     return fullAddress;
   }

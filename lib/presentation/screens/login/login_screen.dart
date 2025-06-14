@@ -10,10 +10,10 @@ import '../../provider/forgot_password_provider.dart';
 import '../../provider/login_provider.dart';
 import '../../components/custom_button.dart';
 import '../../../core/utils/text_field_validators.dart';
-import '../../../core/utils/tools.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_text_field.dart';
+import '../../provider/navigation_provider.dart';
 import '../home/home_screen.dart';
 import '../signUp/sign_up_screen.dart';
 import '../verifications/verifications_screen.dart';
@@ -118,21 +118,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _registerButton() {
-    return Padding(
-      padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
-      child: RichText(
-        text: TextSpan(
-          text: language.dontHaveAccount,
-          style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: colorTextLight),
-          children: [
-            TextSpan(
-              text: " ${language.signUp}",
-              recognizer: TapGestureRecognizer()..onTap = () => openScreen(context, SignUpScreen()),
-              style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold),
+    return Consumer(
+      builder: (context, ref, _) {
+        return Padding(
+          padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+          child: RichText(
+            text: TextSpan(
+              text: language.dontHaveAccount,
+              style: bodyTextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: colorTextLight),
+              children: [
+                TextSpan(
+                  text: " ${language.signUp}",
+                  recognizer: TapGestureRecognizer()..onTap = () => ref.read(navigationServiceProvider).navigateTo(SignUpScreen()),
+                  style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -145,9 +149,9 @@ class _LoginScreenState extends State<LoginScreen> {
             UserEntity? data = next.value;
             if (data != null) {
               if (data.mobileVerified && data.emailVerified) {
-                openScreenWithClearStack(context, HomeScreen());
+                ref.read(navigationServiceProvider).navigateTo(HomeScreen());
               } else {
-                openScreen(context, VerificationsScreen());
+                ref.read(navigationServiceProvider).navigateTo(VerificationsScreen());
               }
             }
           }

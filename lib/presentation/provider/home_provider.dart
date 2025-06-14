@@ -1,10 +1,12 @@
-import 'package:fashion_comerce_demo/core/constants/app_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/home_service.dart';
+import '../../core/constants/app_constants.dart';
 import '../../application/brands_service.dart';
 import '../../application/product_service.dart';
 import '../../application/slider_service.dart';
 import '../../data/repositories/brands_repo_impl.dart';
+import '../../data/repositories/home_repo_impl.dart';
 import '../../data/repositories/product_repository_impl.dart';
 import '../../data/repositories/slider_repo_impl.dart';
 import '../../domain/entities/product_entity.dart';
@@ -12,6 +14,7 @@ import '../../domain/entities/brands_entity.dart';
 import '../../data/models/model_product.dart';
 import '../../domain/entities/slider_entity.dart';
 import '../../domain/repositories/brands_repo.dart';
+import '../../domain/repositories/home_repo.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../../domain/repositories/slider_repo.dart';
 
@@ -26,8 +29,6 @@ class DataNotifier extends AsyncNotifier<List<ProductEntity>> {
     state = await AsyncValue.guard(() => fetchDataFromApi());
   }
 }
-
-final dataProvider = AsyncNotifierProvider<DataNotifier, List<ProductEntity>>(DataNotifier.new);
 
 Future<List<ModelProduct>> fetchDataFromApi() async {
   List<ModelProduct> productList = globalProductList;
@@ -47,7 +48,6 @@ final List<ModelProduct> globalProductList = [
     noOfReview: 6,
     genderType: GenderTypes.male,
     productDescription: temDesc,
-    productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
     productCare: "Only apply dry cleaning",
@@ -55,8 +55,6 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Soft Leather",
     productDesign: "Home",
     productImage: "assets/images/bru.png",
-    productColors: colorList,
-    productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
     productId: 2,
@@ -67,7 +65,6 @@ final List<ModelProduct> globalProductList = [
     noOfReview: 6,
     genderType: GenderTypes.female,
     productDescription: temDesc,
-    productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
     productCare: "Only apply dry cleaning",
@@ -75,8 +72,6 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Soft Leather",
     productDesign: "Home",
     productImage: "assets/images/classic_slip_on.png",
-    productColors: colorList,
-    productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
     productId: 3,
@@ -87,7 +82,6 @@ final List<ModelProduct> globalProductList = [
     noOfReview: 6,
     genderType: GenderTypes.female,
     productDescription: temDesc,
-    productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
     productCare: "Only apply dry cleaning",
@@ -95,8 +89,6 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/grandpro_tennis_sneaker.png",
-    productColors: colorList,
-    productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
     productId: 4,
@@ -107,7 +99,6 @@ final List<ModelProduct> globalProductList = [
     noOfReview: 6,
     genderType: GenderTypes.female,
     productDescription: temDesc,
-    productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
     productCare: "Only apply dry cleaning",
@@ -115,8 +106,6 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Rubber",
     productDesign: "Sandals",
     productImage: "assets/images/women_arizona_sandals.png",
-    productColors: colorList,
-    productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
     productId: 5,
@@ -126,7 +115,6 @@ final List<ModelProduct> globalProductList = [
     averageRatings: 4.2,
     noOfReview: 6,
     productDescription: temDesc,
-    productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     genderType: GenderTypes.male,
     sellerName: "Shop Maxx",
@@ -135,8 +123,6 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/air_max_90.png",
-    productColors: colorList,
-    productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
     productId: 6,
@@ -147,7 +133,6 @@ final List<ModelProduct> globalProductList = [
     noOfReview: 6,
     genderType: GenderTypes.male,
     productDescription: temDesc,
-    productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
     productCare: "Only apply dry cleaning",
@@ -155,8 +140,6 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/zoom_freak_4.png",
-    productColors: colorList,
-    productQuantities: [1, 2, 3, 4, 5],
   ),
   ModelProduct(
     productId: 7,
@@ -167,7 +150,6 @@ final List<ModelProduct> globalProductList = [
     noOfReview: 6,
     genderType: GenderTypes.male,
     productDescription: temDesc,
-    productSizes: [6, 7, 8, 9, 10],
     sellerId: 1,
     sellerName: "Shop Maxx",
     productCare: "Only apply dry cleaning",
@@ -175,20 +157,17 @@ final List<ModelProduct> globalProductList = [
     productMaterial: "Durable Leather",
     productDesign: "Sports",
     productImage: "assets/images/gel_kayano_29.png",
-    productColors: colorList,
-    productQuantities: [1, 2, 3, 4, 5],
   ),
 ];
 
-final categoryListProvider = Provider<List<ModelProductFilter>>((ref) {
-  List<ModelProductFilter> filters = [
-    ModelProductFilter(id: 1, categoryIcon: "assets/images/air_max_90.png", categoryName: "Sneakers"),
-    ModelProductFilter(id: 2, categoryIcon: "assets/images/zoom_freak_4.png", categoryName: "Basketball"),
-    ModelProductFilter(id: 3, categoryIcon: "assets/images/gel_kayano_29.png", categoryName: "Running"),
-    ModelProductFilter(id: 4, categoryIcon: "assets/images/classic_slip_on.png", categoryName: "Office"),
-    ModelProductFilter(id: 5, categoryIcon: "assets/images/grandpro_tennis_sneaker.png", categoryName: "Casual"),
-  ];
-  return filters;
+final homeRepoProvider = Provider.autoDispose<HomeRepo>((ref) {
+  return HomeRepoImpl();
+});
+
+final homeCategoryServiceProvider = StateNotifierProvider<HomeService, AsyncValue<dynamic>>((ref) {
+  final service = HomeService(ref.watch(homeRepoProvider));
+  service.callHomeCategories();
+  return service;
 });
 
 final sliderRepoProvider = Provider.autoDispose<SliderRepo>((ref) {

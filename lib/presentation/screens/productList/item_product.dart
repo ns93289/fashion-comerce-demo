@@ -1,15 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../core/constants/app_constants.dart';
-import '../../../../../core/constants/colors.dart';
-import '../../../../../core/constants/theme.dart';
-import '../../../../../core/utils/string_utils.dart';
-import '../../../../../core/utils/text_utils.dart';
-import '../../../../../data/dataSources/remote/api_constant.dart';
-import '../../../../../domain/entities/product_entity.dart';
+import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/colors.dart';
+import '../../../core/constants/theme.dart';
+import '../../../core/utils/string_utils.dart';
+import '../../../core/utils/text_utils.dart';
+import '../../../domain/entities/product_entity.dart';
+import '../../components/common_network_image.dart';
 
 class ItemProduct extends StatelessWidget {
   final ProductEntity item;
@@ -20,18 +19,18 @@ class ItemProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductEntity(
-        :productId,
-        :favorite,
-        :categoryName,
-        :productImage,
-        :productName,
-        :productPrice,
-        :productDiscount,
-        :productDiscountPrice,
-        :averageRatings,
-        :genderType,
-        :discountType,
-        :productStoke,
+      :productId,
+      :favorite,
+      :categoryName,
+      :productImage,
+      :productName,
+      :productPrice,
+      :productDiscount,
+      :productDiscountPrice,
+      :averageRatings,
+      :genderType,
+      :discountType,
+      :productStoke,
     ) = item;
     return Container(
       margin: EdgeInsetsDirectional.only(end: 15.w),
@@ -47,21 +46,16 @@ class ItemProduct extends StatelessWidget {
                   children: [
                     DefaultData.localMode
                         ? Image.asset(productImage, width: double.maxFinite, height: double.maxFinite, fit: BoxFit.cover)
-                        : CachedNetworkImage(
-                      imageUrl: "${BaseUrl.url}$productImage",
-                      width: double.maxFinite,
-                      height: double.maxFinite,
-                      fit: BoxFit.cover,
-                      fadeInDuration: Duration.zero,
-                      placeholderFadeInDuration: Duration.zero,
-                    ),
+                        : CommonNetworkImage(image: productImage),
                     if (discountType != 0)
                       Container(
                         color: colorDiscount,
                         margin: EdgeInsetsDirectional.only(start: 5.w, top: 5.h),
                         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                        child: Text("${language.save} ${TextUtils.getDiscountString(discountType, productDiscount)}",
-                            style: bodyTextStyle(fontSize: 10.sp, color: colorWhite)),
+                        child: Text(
+                          "${language.save} ${TextUtils.getDiscountString(discountType, productDiscount)}",
+                          style: bodyTextStyle(fontSize: 10.sp, color: colorWhite),
+                        ),
                       ),
                     Align(
                       alignment: AlignmentDirectional.bottomStart,

@@ -159,7 +159,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
         if (paymentType == 0) {
           openSimpleSnackBar(language.selectPayment);
         } else {
-          ref.read(placeOrderProvider(context));
+          ref.read(placeOrderProvider);
         }
       },
     );

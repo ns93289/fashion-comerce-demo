@@ -7,10 +7,10 @@ class OrderDetailsEntity {
   int? _paymentMethod;
   int? _orderStatus;
   String? _orderDate;
+  String? _address;
   num? _subTotal;
   num? _totalAmount;
   num? _deliveryCharge;
-  AddressEntity? _address;
   List<CartProductEntity>? _products;
 
   OrderDetailsEntity({
@@ -22,7 +22,7 @@ class OrderDetailsEntity {
     num? subTotal,
     num? totalAmount,
     num? deliveryCharge,
-    AddressEntity? address,
+    String? address,
     List<CartProductEntity>? products,
   }) {
     _orderId = orderId;
@@ -53,7 +53,7 @@ class OrderDetailsEntity {
 
   num get deliveryCharge => _deliveryCharge ?? 0;
 
-  AddressEntity get address => _address ?? AddressEntity();
+  String get address => _address ?? "";
 
   List<CartProductEntity> get products => _products ?? [];
 }

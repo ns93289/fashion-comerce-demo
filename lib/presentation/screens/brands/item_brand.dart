@@ -1,11 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
-import '../../../data/dataSources/remote/api_constant.dart';
 import '../../../domain/entities/brands_entity.dart';
+import '../../components/common_network_image.dart';
 
 class ItemBrand extends StatelessWidget {
   final BrandsEntity brand;
@@ -24,14 +23,7 @@ class ItemBrand extends StatelessWidget {
             height: 40.sp,
             width: 40.sp,
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: CachedNetworkImage(
-              imageUrl: "${BaseUrl.url}${brand.image}",
-              width: double.maxFinite,
-              height: double.maxFinite,
-              fit: BoxFit.cover,
-              fadeInDuration: Duration.zero,
-              placeholderFadeInDuration: Duration.zero,
-            ),
+            child: CommonNetworkImage(image: brand.image),
           ),
           Padding(padding: EdgeInsets.symmetric(horizontal: 5.w), child: Text(brand.name, style: bodyTextStyle(fontSize: 14.sp))),
         ],

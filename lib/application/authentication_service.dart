@@ -212,4 +212,23 @@ class AuthenticationService extends StateNotifier<AsyncValue<UserEntity?>> {
       state = AsyncValue.error(e, st);
     }
   }
+
+  Future<void> callDeleteAccountApi() async {
+    state = const AsyncValue.loading();
+
+    try {
+      final res = await authRepo.deleteAccount();
+      if (res is ApiSuccess) {
+        clearAllBoxes().then((value) {
+          state = AsyncValue.data(res.data);
+        });
+      } else {
+        openSimpleSnackBar((res as ApiError).errorData.message);
+        state = AsyncValue.error(res.errorData.message, StackTrace.empty);
+      }
+    } catch (e, st) {
+      logD("callLogoutApi>>>", "error: ${e.toString()}");
+      state = AsyncValue.error(e, st);
+    }
+  }
 }

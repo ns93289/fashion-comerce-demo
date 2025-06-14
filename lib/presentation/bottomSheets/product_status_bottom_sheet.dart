@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../components/close_button.dart';
 import '../../core/constants/colors.dart';
-import '../../core/constants/custom_icons.dart';
 import '../../core/constants/theme.dart';
 import '../../core/utils/time_utils.dart';
 import '../../main.dart';
@@ -29,20 +29,9 @@ class _ProductStatusBottomSheetState extends State<ProductStatusBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Align(
-            alignment: AlignmentDirectional.bottomEnd,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                padding: EdgeInsets.all(5.sp),
-                margin: EdgeInsetsDirectional.only(bottom: 5.h, end: 10.w),
-                decoration: BoxDecoration(color: colorWhite, borderRadius: BorderRadius.circular(5.r)),
-                child: Icon(CustomIcons.cancel),
-              ),
-            ),
-          ),
+          Align(alignment: AlignmentDirectional.bottomEnd, child: CommonCloseButton()),
           Container(
-            decoration: BoxDecoration(color: colorWhite, borderRadius: BorderRadius.circular(10.r)),
+            decoration: BoxDecoration(color: colorWhite, borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r))),
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

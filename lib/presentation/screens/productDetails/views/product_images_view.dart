@@ -1,11 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/extensions.dart';
-import '../../../../data/dataSources/remote/api_constant.dart';
+import '../../../components/common_network_image.dart';
 
 class ProductImagesView extends StatefulWidget {
   final List<String> imageList;
@@ -24,22 +23,7 @@ class _ProductImagesViewState extends State<ProductImagesView> {
     return Column(
       children: [
         CarouselSlider(
-          items:
-              widget.imageList
-                  .map(
-                    (e) => AspectRatio(
-                      aspectRatio: 1,
-                      child: CachedNetworkImage(
-                        imageUrl: "${BaseUrl.url}$e",
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        fit: BoxFit.cover,
-                        fadeInDuration: Duration.zero,
-                        placeholderFadeInDuration: Duration.zero,
-                      ),
-                    ),
-                  )
-                  .toList(),
+          items: widget.imageList.map((e) => AspectRatio(aspectRatio: 1, child: CommonNetworkImage(image: e))).toList(),
           options: CarouselOptions(
             aspectRatio: 1,
             viewportFraction: 1,

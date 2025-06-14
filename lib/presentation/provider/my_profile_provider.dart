@@ -9,7 +9,6 @@ import '../../core/utils/image_picker_utils.dart';
 import '../../data/repositories/user_profile_repo_impl.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/user_profile_repo.dart';
-import '../../presentation/dialogs/image_picker_dialog.dart';
 
 final fullNameTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
@@ -58,12 +57,3 @@ final updateProfileProvider = Provider.autoDispose<void>((ref) {
 });
 
 final profileFormKey = GlobalKey<FormState>();
-
-openImagePickerDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return ImagePickerDialog();
-    },
-  );
-}

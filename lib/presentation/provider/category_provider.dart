@@ -16,8 +16,9 @@ final categoryServiceProvider = StateNotifierProvider<CategoryService, AsyncValu
   return CategoryService(ref.watch(categoryRepoProvider));
 });
 
-final subCategoryServiceProvider = StateNotifierProvider.family<CategoryService, AsyncValue<dynamic>, int>((ref, categoryId) {
-  final service = CategoryService(ref.watch(categoryRepoProvider));
-  service.callSubCategoryApi(categoryId: categoryId);
-  return service;
-});
+final subCategoryServiceProvider =
+    StateNotifierProvider.family<CategoryService, AsyncValue<dynamic>, ({int categoryId, bool isForMale, bool isForFemale, bool isForKids})>((ref, args) {
+      final service = CategoryService(ref.watch(categoryRepoProvider));
+      service.callSubCategoryApi(categoryId: args.categoryId, isForMale: args.isForMale, isForFemale: args.isForFemale, isForKids: args.isForKids);
+      return service;
+    });

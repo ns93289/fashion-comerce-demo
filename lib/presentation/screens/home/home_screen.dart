@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -8,6 +9,7 @@ import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
+import '../../provider/navigation_provider.dart';
 import '../cart/cart_screen.dart';
 import '../serachProduct/search_product_screen.dart';
 import 'pages/account/account_page.dart';
@@ -15,39 +17,47 @@ import 'pages/category/category_page.dart';
 import 'pages/favorite/favorite_page.dart';
 import 'pages/home/home_page.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  DateTime? currentBackPressTime;
+  bool canPopNow = false;
+  int requiredSeconds = 2;
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: CommonAppBar(
-          title: Text(language.appName),
-          centerTitle: true,
-          actions: [
-            GestureDetector(
-              onTap: () {
-                openScreen(context, SearchProductScreen());
-              },
-              child: Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Icon(Icons.search_outlined)),
-            ),
-            ValueListenableBuilder(
-              valueListenable: cartBox.listenable(),
-              builder: (context, value, child) {
-                final cartData = getCartCountFromCartBox();
-                return cartData == 0 ? Container() : _cartView(cartData);
-              },
-            ),
-          ],
+    return PopScope(
+      canPop: canPopNow,
+      onPopInvokedWithResult: (didPop, result) => _onPopInvoked(didPop),
+      child: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+          appBar: CommonAppBar(
+            title: Text(language.appName),
+            centerTitle: true,
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  ref.read(navigationServiceProvider).navigateTo(SearchProductScreen());
+                },
+                child: Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Icon(Icons.search_outlined)),
+              ),
+              ValueListenableBuilder(
+                valueListenable: cartBox.listenable(),
+                builder: (context, value, child) {
+                  final cartData = getCartCountFromCartBox();
+                  return cartData == 0 ? Container() : _cartView(cartData);
+                },
+              ),
+            ],
+          ),
+          body: SafeArea(child: _buildHomeScreen()),
         ),
-        body: SafeArea(child: _buildHomeScreen()),
       ),
     );
   }
@@ -88,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _cartView(int cartData) {
     return GestureDetector(
       onTap: () {
-        openScreen(context, CartScreen());
+        ref.read(navigationServiceProvider).navigateTo(CartScreen());
       },
       child: Container(
         margin: EdgeInsetsDirectional.only(end: 10.w),
@@ -105,5 +115,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _onPopInvoked(bool didPop) {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null || now.difference(currentBackPressTime!) > Duration(seconds: requiredSeconds)) {
+      currentBackPressTime = now;
+      openSimpleSnackBar(language.backPressMsg);
+      Future.delayed(Duration(seconds: requiredSeconds), () {
+        // Disable pop invoke after 2s timeout
+        setState(() {
+          canPopNow = false;
+        });
+      });
+      // Ok, let user exit app on the next back press
+      setState(() {
+        canPopNow = true;
+      });
+    }
   }
 }

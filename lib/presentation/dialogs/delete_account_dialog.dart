@@ -8,14 +8,14 @@ import '../provider/navigation_provider.dart';
 import '../screens/splash/splash_screen.dart';
 import 'common_dialog.dart';
 
-class LogoutDialog extends ConsumerStatefulWidget {
-  const LogoutDialog({super.key});
+class DeleteAccountDialog extends ConsumerStatefulWidget {
+  const DeleteAccountDialog({super.key});
 
   @override
-  ConsumerState<LogoutDialog> createState() => _LogoutDialogState();
+  ConsumerState<DeleteAccountDialog> createState() => _DeleteAccountDialogState();
 }
 
-class _LogoutDialogState extends ConsumerState<LogoutDialog> {
+class _DeleteAccountDialogState extends ConsumerState<DeleteAccountDialog> {
   late final ProviderSubscription<AsyncValue<UserEntity?>> _listener;
 
   @override
@@ -43,15 +43,15 @@ class _LogoutDialogState extends ConsumerState<LogoutDialog> {
     final apiResponse = ref.watch(authenticationServiceProvider);
 
     return CommonDialog(
-      title: language.sureToLogout,
+      title: language.sureToDelete,
       negativeText: language.cancel,
-      positiveText: language.logout,
+      positiveText: language.delete,
       isLoading: apiResponse.isLoading,
       onNegativeClick: () {
         ref.read(navigationServiceProvider).goBack();
       },
       onPositiveClick: () {
-        ref.read(authenticationServiceProvider.notifier).callLogoutApi();
+        // ref.read(authenticationServiceProvider.notifier).callDeleteAccountApi();
       },
     );
   }

@@ -36,7 +36,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.wallet)), body: _buildWalletScreen());
+    return Scaffold(appBar: CommonAppBar(title: Text(language.wallet)), body: SafeArea(child: _buildWalletScreen()));
   }
 
   Widget _buildWalletScreen() {
@@ -48,7 +48,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
 
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), border: Border.all(width: 1.sp, color: colorBorder)),
-      margin: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w),
+      margin: EdgeInsetsDirectional.only(top: 10.h, start: 20.w, end: 20.w),
       padding: EdgeInsetsDirectional.only(bottom: 15.h),
       width: 1.sw,
       child: Column(
@@ -133,14 +133,17 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
               return CommonCircleProgressBar();
             }
             final List<WalletTransactionEntity> transactionList = data as List<WalletTransactionEntity>;
-            return ListView.builder(
+            return ListView.separated(
               itemCount: transactionList.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h),
+              padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 20.h, bottom: 20.h),
               itemBuilder: (context, index) {
                 final transaction = transactionList[index];
                 return ItemTransaction(transaction: transaction);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Padding(padding: EdgeInsets.symmetric(vertical: 15.h), child: Divider(height: 0, thickness: 1.h, color: colorDivider));
               },
             );
           },

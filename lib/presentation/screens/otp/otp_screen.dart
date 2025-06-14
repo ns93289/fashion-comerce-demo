@@ -8,6 +8,7 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/text_utils.dart';
 import '../../../core/utils/tools.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/otp_verify_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
@@ -81,9 +82,9 @@ class _OtpScreenState extends State<OtpScreen> {
             bool isEmailVerified = getBoolDataFromUserBox(key: hiveEmailVerified);
             bool isPhoneVerified = getBoolDataFromUserBox(key: hivePhoneNumberVerified);
             if (isPhoneVerified && isEmailVerified) {
-              openScreenWithClearStack(context, HomeScreen());
+              ref.read(navigationServiceProvider).navigateToWithClearStack(HomeScreen());
             } else {
-              Navigator.pop(context, true);
+              ref.read(navigationServiceProvider).goBack(true);
             }
           } else if (next.hasError) {
             openSimpleSnackBar(next.error.toString());

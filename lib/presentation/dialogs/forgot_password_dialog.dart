@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/utils/text_field_validators.dart';
-import '../../core/utils/tools.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../main.dart';
 import '../components/custom_text_field.dart';
 import '../provider/forgot_password_provider.dart';
+import '../provider/navigation_provider.dart';
 import '../screens/forgotChangePass/forgot_change_password_screen.dart';
 import 'common_dialog.dart';
 
@@ -29,8 +29,8 @@ class _ForgotPasswordDialogState extends ConsumerState<ForgotPasswordDialog> {
       next.whenOrNull(
         data: (data) {
           if (!mounted) return;
-          Navigator.of(context, rootNavigator: true).pop();
-          openScreen(context, ForgotChangePasswordScreen());
+          ref.read(navigationServiceProvider).goBack();
+          ref.read(navigationServiceProvider).navigateTo(ForgotChangePasswordScreen());
         },
       );
     });

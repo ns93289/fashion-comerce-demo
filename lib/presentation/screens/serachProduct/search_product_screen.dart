@@ -6,13 +6,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/custom_icons.dart';
 import '../../../core/constants/theme.dart';
-import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../data/models/search_model.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_text_field.dart';
 import '../../../data/models/model_product.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/search_product_provider.dart';
 import '../productDetails/product_details_screen.dart';
 
@@ -72,7 +72,9 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
             return GestureDetector(
               onTap: () {
                 putDataIntoRecentSearchBox(SearchModel(id: productId, searchString: productName));
-                openScreen(context, ProductDetailsScreen(productId: productId, productName: productName, size: selectedSize, color: selectedColor));
+                ref
+                    .read(navigationServiceProvider)
+                    .navigateTo(ProductDetailsScreen(productId: productId, productName: productName, size: selectedSize, color: selectedColor));
               },
               child: Container(
                 color: colorWhite,
@@ -112,7 +114,9 @@ class _SearchProductScreenState extends ConsumerState<SearchProductScreen> {
                     SearchModel modelProduct = recentList[index];
                     return GestureDetector(
                       onTap: () {
-                        openScreen(context, ProductDetailsScreen(productId: modelProduct.id, productName: modelProduct.searchString, size: "", color: ""));
+                        ref
+                            .read(navigationServiceProvider)
+                            .navigateTo(ProductDetailsScreen(productId: modelProduct.id, productName: modelProduct.searchString, size: "", color: ""));
                       },
                       child: Container(
                         color: colorWhite,

@@ -22,10 +22,10 @@ class CategoryService extends StateNotifier<AsyncValue<dynamic>> {
     }
   }
 
-  Future<void> callSubCategoryApi({required int categoryId}) async {
+  Future<void> callSubCategoryApi({required int categoryId, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
     state = const AsyncValue.loading();
     try {
-      final res = await categoriesRepo.getSubCategories(categoryId: categoryId);
+      final res = await categoriesRepo.getSubCategories(categoryId: categoryId, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
       if (res is ApiSuccess) {
         state = AsyncValue.data(res.data);
       } else {

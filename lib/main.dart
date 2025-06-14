@@ -9,14 +9,15 @@ import 'core/constants/app_constants.dart';
 import 'core/constants/colors.dart';
 import 'core/provider/locale_provider.dart';
 import 'data/dataSources/local/hive_helper.dart';
+import 'presentation/navigation/navigation_service.dart';
 import 'presentation/screens/splash/splash_screen.dart';
 import 'src/generated/l10n/app_localizations.dart';
 
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
-final navigatorKey = GlobalKey<NavigatorState>();
 late AppLocalizations language;
 Locale selectedLocale = Locale(LanguageCodes.english);
 late PackageInfo packageInfo;
+final navigationService = NavigationService();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +49,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       splitScreenMode: true,
       child: MaterialApp(
         scaffoldMessengerKey: scaffoldKey,
-        navigatorKey: navigatorKey,
+        navigatorKey: navigationService.navigatorKey,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: colorWhite),
           scaffoldBackgroundColor: colorWhite,

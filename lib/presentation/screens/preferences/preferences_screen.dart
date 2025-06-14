@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/colors.dart';
-import '../../../core/utils/tools.dart';
 import '../../components/custom_button.dart';
 import '../../../core/provider/locale_provider.dart';
 import '../../../data/models/modle_preference.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/preference_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
@@ -62,7 +62,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
       width: 1.sw,
       onPress: () {
         ref.read(localeProvider.notifier).state = selectedLanguage;
-        openScreenWithClearStack(context, HomeScreen());
+        ref.read(navigationServiceProvider).navigateToWithClearStack(HomeScreen());
       },
     );
   }

@@ -4,13 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/colors.dart';
-import '../../../core/utils/tools.dart';
 import '../../../domain/entities/order_history_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/order_history_provider.dart';
 import '../orderDetails/order_details_screen.dart';
 import 'item_order_history.dart';
@@ -46,7 +45,7 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
                   return ItemOrderHistory(
                     orderHistoryItem: item,
                     onReviewPress: () {
-                      openScreen(context, OrderDetailsScreen(orderId: item.orderId));
+                      ref.read(navigationServiceProvider).navigateTo(OrderDetailsScreen(orderId: item.orderId));
                     },
                   );
                 },

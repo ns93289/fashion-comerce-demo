@@ -23,6 +23,20 @@ Future<void> putDataInAddressBox(ModelAddress address) async {
   await addressBox.put(hiveAddressData, address.toJson());
 }
 
+Future<void> checkAndChangeAddressBox(ModelAddress newAddress) async {
+  ModelAddress? address = getAddressFromAddressBox();
+  if (address?.addressId == newAddress.addressId) {
+    await addressBox.put(hiveAddressData, newAddress.toJson());
+  }
+}
+
+Future<void> checkAndDeleteAddressBox(int addressId) async {
+  ModelAddress? address = getAddressFromAddressBox();
+  if (address?.addressId == addressId) {
+    await addressBox.put(hiveAddressData, null);
+  }
+}
+
 ModelAddress? getAddressFromAddressBox() {
   Map<dynamic, dynamic>? json = addressBox.get(hiveAddressData, defaultValue: null);
   return json == null ? null : ModelAddress.fromJson(json);

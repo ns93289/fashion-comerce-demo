@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/theme.dart';
 import '../../../../components/common_circle_progress_bar.dart';
 import '../../../../components/empty_record_view.dart';
 import '../../../../../core/constants/colors.dart';
-import '../../../../../core/utils/tools.dart';
 import '../../../../../domain/entities/category_entity.dart';
 import '../../../../provider/category_provider.dart';
+import '../../../../provider/navigation_provider.dart';
 import '../../../subCategories/sub_categories_screen.dart';
 import 'item_sub_category.dart';
 
@@ -39,7 +40,16 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
             }
             int selectedCategoryId = ref.watch(selectedCategoryProvider(widget.genderType));
             List<CategoryEntity> categories = data as List<CategoryEntity>;
-            categories = categories.where((element) => element.genderId == widget.genderType).toList();
+            categories =
+                categories.where((element) {
+                  if (widget.genderType == GenderTypes.male) {
+                    return element.isForMale;
+                  } else if (widget.genderType == GenderTypes.female) {
+                    return element.isForFemale;
+                  } else {
+                    return element.isForKids;
+                  }
+                }).toList();
 
             return Container(
               color: colorMainBackground,
@@ -80,7 +90,14 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
         if (selectedCategoryId == 0) {
           return Container();
         }
-        final apiResponse = ref.watch(subCategoryServiceProvider(selectedCategoryId));
+        final apiResponse = ref.watch(
+          subCategoryServiceProvider((
+            categoryId: selectedCategoryId,
+            isForMale: widget.genderType == GenderTypes.male,
+            isForFemale: widget.genderType == GenderTypes.female,
+            isForKids: widget.genderType == GenderTypes.kids,
+          )),
+        );
 
         return apiResponse.when(
           data: (data) {
@@ -98,15 +115,16 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
 
                 return GestureDetector(
                   onTap: () {
-                    openScreen(
-                      context,
-                      SubCategoriesScreen(
-                        genderType: widget.genderType,
-                        categoryId: selectedCategoryId,
-                        selectedSubCategoryId: modelSubCategory.subCategoryId,
-                        selectedSubCategoryName: modelSubCategory.subCategoryName,
-                      ),
-                    );
+                    ref
+                        .read(navigationServiceProvider)
+                        .navigateTo(
+                          SubCategoriesScreen(
+                            genderType: widget.genderType,
+                            categoryId: selectedCategoryId,
+                            selectedSubCategoryId: modelSubCategory.subCategoryId,
+                            selectedSubCategoryName: modelSubCategory.subCategoryName,
+                          ),
+                        );
                   },
                   child: ItemSubCategory(modelSubCategory: modelSubCategory),
                 );

@@ -7,8 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/text_field_validators.dart';
-import '../../../core/utils/tools.dart';
 import '../../../domain/entities/user_entity.dart';
+import '../../provider/navigation_provider.dart';
 import '../../provider/signup_provider.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
@@ -207,9 +207,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             UserEntity? data = next.value;
             if (data != null) {
               if (data.mobileVerified && data.emailVerified) {
-                openScreenWithClearStack(context, HomeScreen());
+                ref.read(navigationServiceProvider).navigateTo(HomeScreen());
               } else {
-                openScreen(context, VerificationsScreen());
+                ref.read(navigationServiceProvider).navigateTo(VerificationsScreen());
               }
             }
           }

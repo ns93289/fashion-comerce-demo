@@ -1,57 +1,5 @@
 import '../../domain/entities/product_entity.dart';
 
-class ModelProductFilter {
-  int? _id;
-  String? _categoryName;
-  String? _categoryIcon;
-
-  ModelProductFilter({int? id, String? categoryName, String? categoryIcon}) {
-    _id = id;
-    _categoryName = categoryName;
-    _categoryIcon = categoryIcon;
-  }
-
-  int get id => _id ?? 0;
-
-  String get categoryName => _categoryName ?? "";
-
-  String get categoryIcon => _categoryIcon ?? "";
-}
-
-class ModelProductItem {
-  int? _id;
-  String? _name;
-  String? _image;
-  String? _category;
-  num? _price;
-  bool? _favorite;
-
-  ModelProductItem({int? id, String? name, String? image, String? category, num? price, bool? favorite}) {
-    _id = id;
-    _name = name;
-    _image = image;
-    _category = category;
-    _price = price;
-    _favorite = favorite;
-  }
-
-  bool get favorite => _favorite ?? false;
-
-  num get price => _price ?? 0;
-
-  String get category => _category ?? "";
-
-  String get image => _image ?? "";
-
-  String get name => _name ?? "";
-
-  int get id => _id ?? 0;
-
-  set favorite(bool value) {
-    _favorite = value;
-  }
-}
-
 class ModelProduct extends ProductEntity {
   ModelProduct({
     super.productId,
@@ -69,10 +17,6 @@ class ModelProduct extends ProductEntity {
     super.productPrice,
     super.averageRatings,
     super.noOfReview,
-    super.productSizes,
-    super.reviewerList,
-    super.productColors,
-    super.productQuantities,
     super.favorite,
     super.isBestSeller,
     super.sellerId,
@@ -84,6 +28,9 @@ class ModelProduct extends ProductEntity {
     super.deliveryCharge,
     super.expressCharge,
     super.productDiscountPrice,
+    super.isForMale,
+    super.isForFemale,
+    super.isForKids,
   });
 
   factory ModelProduct.fromJson(Map<String, dynamic> json) {
@@ -98,11 +45,11 @@ class ModelProduct extends ProductEntity {
       productDiscount: json['discount_value'],
       productDiscountPrice: json['price'],
       productStoke: json['stoke'],
-      favorite: json['favorite'] == 1 ? true : false,
+      favorite: json['favorite'],
       productDescription: json['description'],
       noOfReview: json['no_of_review'],
       averageRatings: json['average_ratings'],
-      isBestSeller: json['is_best_seller'] == 1 ? true : false,
+      isBestSeller: json['is_best_seller'],
       sellerId: json['seller_id'],
       sellerName: json['seller_name'],
       productCare: json['care'],
@@ -111,10 +58,9 @@ class ModelProduct extends ProductEntity {
       productMaterial: json['material'],
       selectedColor: json['color'],
       selectedSize: json['size'],
-      productSizes: (json['sizes'] as List?)?.map((e) => e as num).toList(),
-      reviewerList: (json['reviewer_list'] as List?)?.map((e) => e as String).toList(),
-      productColors: (json['colors'] as List?)?.map((e) => e as String).toList(),
-      productQuantities: (json['quantities'] as List?)?.map((e) => e as int).toList(),
+      isForMale: json['is_for_male'],
+      isForFemale: json['is_for_female'],
+      isForKids: json['is_for_kids'],
     );
   }
 
@@ -144,10 +90,9 @@ class ModelProduct extends ProductEntity {
     map['color'] = selectedColor;
     map['selected_quantity'] = selectedQuantity;
     map['size'] = selectedSize;
-    map['sizes'] = productSizes;
-    map['reviewer_list'] = reviewerList;
-    map['colors'] = productColors;
-    map['quantities'] = productQuantities;
+    map['is_for_male'] = isForMale;
+    map['is_for_female'] = isForFemale;
+    map['is_for_kids'] = isForKids;
     return map;
   }
 }

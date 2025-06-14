@@ -5,6 +5,7 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/custom_icons.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/string_utils.dart';
+import '../../../core/utils/text_utils.dart';
 import '../../../domain/entities/address_entity.dart';
 import '../../../main.dart';
 import '../../components/custom_button.dart';
@@ -41,12 +42,7 @@ class ItemAddressList extends StatelessWidget {
             children: [
               Padding(padding: EdgeInsets.symmetric(horizontal: 15.w), child: Icon(Icons.location_on)),
               Expanded(
-                child: Text(
-                  "$houseNo, $houseName, $street, $addressLine1, $addressLine2, $city, $state",
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: bodyTextStyle(fontSize: 12.sp),
-                ),
+                child: Text(TextUtils.getFullAddress(modelAddress), maxLines: 3, overflow: TextOverflow.ellipsis, style: bodyTextStyle(fontSize: 12.sp)),
               ),
               SizedBox(height: 15.w),
             ],
