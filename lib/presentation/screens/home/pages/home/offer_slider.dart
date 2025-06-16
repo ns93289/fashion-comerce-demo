@@ -6,6 +6,8 @@ import '../../../../../core/constants/colors.dart';
 import '../../../../../domain/entities/slider_entity.dart';
 import '../../../../../main.dart';
 import '../../../../components/common_network_image.dart';
+import '../../../brandedProducts/branded_products_screen.dart';
+import '../../../categoryWiseProduct/category_wise_products_screen.dart';
 import '../../../productDetails/product_details_screen.dart';
 
 class OfferSlider extends StatefulWidget {
@@ -31,13 +33,29 @@ class _OfferSliderState extends State<OfferSlider> {
                   onTap: () {
                     if (e.type == 1) {
                       //Products...
-                      // navigationService.navigateTo(ProductDetailsScreen(productId: e.entityId,));
+                      navigationService.navigateTo(ProductDetailsScreen(productId: e.entityId, productName: e.name));
                     } else if (e.type == 2) {
                       //Categories...
-                      // navigationService.navigateTo(screen);
+                      navigationService.navigateTo(
+                        CategoryWiseProductsScreen(
+                          categoryId: e.entityId,
+                          categoryName: e.name,
+                          isForMale: e.isForMale,
+                          isForFemale: e.isForFemale,
+                          isForKids: e.isForKids,
+                        ),
+                      );
                     } else if (e.type == 3) {
                       //Brands...
-                      // navigationService.navigateTo(screen);
+                      navigationService.navigateTo(
+                        BrandedProductsScreen(
+                          brandId: e.entityId,
+                          brandName: e.name,
+                          isForMale: e.isForMale,
+                          isForFemale: e.isForFemale,
+                          isForKids: e.isForKids,
+                        ),
+                      );
                     }
                   },
                   child: AspectRatio(

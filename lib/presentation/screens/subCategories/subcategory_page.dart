@@ -5,78 +5,67 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/theme.dart';
 import '../../../domain/entities/product_entity.dart';
 import '../../../main.dart';
-import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
-import '../../provider/category_wise_provider.dart';
+import '../../components/empty_record_view.dart';
 import '../../provider/navigation_provider.dart';
-import '../productList/item_product.dart';
-import '../home/pages/home/offer_slider.dart';
+import '../../provider/subcategory_products_provider.dart';
 import '../productDetails/product_details_screen.dart';
+import '../productList/item_product.dart';
 import '../productList/product_list_screen.dart';
 
-class CategoryWiseProductsScreen extends StatefulWidget {
-  final int categoryId;
-  final String categoryName;
+class SubcategoryPage extends ConsumerStatefulWidget {
+  final int selectedSubCategoryId;
   final bool isForMale;
   final bool isForFemale;
   final bool isForKids;
 
-  const CategoryWiseProductsScreen({
-    super.key,
-    required this.categoryId,
-    required this.categoryName,
-    required this.isForMale,
-    required this.isForFemale,
-    required this.isForKids,
-  });
+  const SubcategoryPage({super.key, required this.selectedSubCategoryId, required this.isForMale, required this.isForFemale, required this.isForKids});
 
   @override
-  State<CategoryWiseProductsScreen> createState() => _CategoryWiseProductsScreenState();
+  ConsumerState<SubcategoryPage> createState() => _SubcategoryPageState();
 }
 
-class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen> {
+class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with AutomaticKeepAliveClientMixin {
   final _titleStyle = bodyTextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(widget.categoryName)), body: SafeArea(child: _buildCategoryWiseProducts()));
+  void initState() {
+    Future.microtask(() {
+      ref.read(newProductServiceProvider.notifier).callNewArrivalProductsApi(
+        productParams: ProductParams(
+          isForMale: widget.isForMale,
+          isForFemale: widget.isForFemale,
+          isForKids: widget.isForKids,
+          categoryId: widget.selectedSubCategoryId,
+        ),
+      );
+      ref.read(popularProductServiceProvider.notifier).callPopularProductsApi(
+        productParams: ProductParams(
+          isForMale: widget.isForMale,
+          isForFemale: widget.isForFemale,
+          isForKids: widget.isForKids,
+          categoryId: widget.selectedSubCategoryId,
+        ),
+      );
+      ref.read(allProductServiceProvider.notifier).callProductsApi(
+        productParams: ProductParams(
+          isForMale: widget.isForMale,
+          isForFemale: widget.isForFemale,
+          isForKids: widget.isForKids,
+          categoryId: widget.selectedSubCategoryId,
+        ),
+      );
+    });
+
+    super.initState();
   }
 
-  Widget _buildCategoryWiseProducts() {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       padding: EdgeInsetsDirectional.only(bottom: 20.h),
-      child: Column(children: [_offerSlider(), _newProducts(), _popularProducts(), _allProducts()]),
-    );
-  }
-
-  Widget _offerSlider() {
-    return Consumer(
-      builder: (context, ref, _) {
-        Future.microtask(() {
-          ref
-              .read(newProductServiceProvider.notifier)
-              .callNewArrivalProductsApi(
-                productParams: ProductParams(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids),
-              );
-          ref
-              .read(popularProductServiceProvider.notifier)
-              .callPopularProductsApi(productParams: ProductParams(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids));
-          ref
-              .read(allProductServiceProvider.notifier)
-              .callProductsApi(productParams: ProductParams(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids));
-          ref.read(sliderServiceProvider.notifier).callSliderApi(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids);
-        });
-
-        final result = ref.watch(sliderServiceProvider);
-        return result?.when(
-              data: (sliderList) {
-                return OfferSlider(sliderData: sliderList);
-              },
-              error: (error, stackTrace) => OfferSlider(sliderData: []),
-              loading: () => OfferSlider(sliderData: []),
-            ) ??
-            Container();
-      },
+      child: Column(children: [_newProducts(), _popularProducts(), _allProducts()]),
     );
   }
 
@@ -86,7 +75,7 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
         final result = ref.watch(newProductServiceProvider);
         return result?.when(
               data: (productList) {
-                return Column(
+                return productList.isNotEmpty? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(padding: EdgeInsetsDirectional.only(start: 20.w, bottom: 15.h, top: 15.h), child: Text(language.newArrival, style: _titleStyle)),
@@ -132,7 +121,8 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                             .navigateTo(
                               ProductListScreen(
                                 productTypeName: language.newArrival,
-                                productTypeEnum: ProductTypeEnum.newArrival,
+                                productTypeEnum: ProductTypeEnum.newArrivalSubCategoryWise,
+                                productTypeId: widget.selectedSubCategoryId,
                                 isForMale: widget.isForMale,
                                 isForFemale: widget.isForFemale,
                                 isForKids: widget.isForKids,
@@ -141,9 +131,9 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                       },
                     ),
                   ],
-                );
+                ):SizedBox();
               },
-              error: (error, stackTrace) => Container(),
+              error: (error, stackTrace) => SizedBox(),
               loading: () => Container(),
             ) ??
             Container();
@@ -157,7 +147,7 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
         final result = ref.watch(popularProductServiceProvider);
         return result?.when(
               data: (productList) {
-                return Column(
+                return productList.isNotEmpty? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w), child: Text(language.popular, style: _titleStyle)),
@@ -203,7 +193,8 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                             .navigateTo(
                               ProductListScreen(
                                 productTypeName: language.popular,
-                                productTypeEnum: ProductTypeEnum.popular,
+                                productTypeEnum: ProductTypeEnum.popularSubCategoryWise,
+                                productTypeId: widget.selectedSubCategoryId,
                                 isForMale: widget.isForMale,
                                 isForFemale: widget.isForFemale,
                                 isForKids: widget.isForKids,
@@ -212,9 +203,9 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                       },
                     ),
                   ],
-                );
+                ):SizedBox();
               },
-              error: (error, stackTrace) => Container(),
+              error: (error, stackTrace) => SizedBox(),
               loading: () => Container(),
             ) ??
             Container();
@@ -277,7 +268,8 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                             .navigateTo(
                               ProductListScreen(
                                 productTypeName: language.allProducts,
-                                productTypeEnum: ProductTypeEnum.all,
+                                productTypeEnum: ProductTypeEnum.allSubCategoryWise,
+                                productTypeId: widget.selectedSubCategoryId,
                                 isForMale: widget.isForMale,
                                 isForFemale: widget.isForFemale,
                                 isForKids: widget.isForKids,
@@ -288,11 +280,14 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                   ],
                 );
               },
-              error: (error, stackTrace) => Container(),
+              error: (error, stackTrace) => EmptyRecordView(message: error.toString()),
               loading: () => Container(),
             ) ??
             Container();
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -10,73 +10,95 @@ class ProductService extends StateNotifier<AsyncValue<List<ProductEntity>>?> {
 
   ProductService(this.productRepository) : super(null);
 
-  Future<void> callNewArrivalProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+  Future<List<ProductEntity>?> callNewArrivalProductsApi({int page = 1, required ProductParams productParams}) async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getNewProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
+      final result = await productRepository.getNewProductList(
+        page: page,
+        isForMale: productParams.isForMale,
+        isForFemale: productParams.isForFemale,
+        isForKids: productParams.isForKids,
+        brandId: productParams.brandId,
+        categoryId: productParams.categoryId,
+      );
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
+        return result.data;
+      } else if (result is ApiError) {
+        state = AsyncValue.error(result.errorData.message, StackTrace.empty);
+        // throw Exception(result.errorData.message);
       } else {
-        state = AsyncError((result as ApiError).errorData.message, StackTrace.empty);
+        state = const AsyncValue.error("Api response is neither success or error", StackTrace.empty);
+        // throw Exception("Api response is neither success or error");
       }
     } catch (e, st) {
       logD("callNewArrivalProductsApi>>>", "error: ${e.toString()}");
       state = AsyncError(e, st);
+      // throw Exception(e.toString());
     }
+    return null;
   }
 
-  Future<void> callPopularProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+  Future<List<ProductEntity>?> callPopularProductsApi({int page = 1, required ProductParams productParams}) async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getPopularProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
+      final result = await productRepository.getPopularProductList(
+        page: page,
+        isForMale: productParams.isForMale,
+        isForFemale: productParams.isForFemale,
+        isForKids: productParams.isForKids,
+        brandId: productParams.brandId,
+        categoryId: productParams.categoryId,
+      );
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
+        return result.data;
+      } else if (result is ApiError) {
+        state = AsyncValue.error(result.errorData.message, StackTrace.empty);
+        throw Exception(result.errorData.message);
       } else {
-        state = AsyncError((result as ApiError).errorData.message, StackTrace.empty);
+        state = const AsyncValue.error("Api response is neither success or error", StackTrace.empty);
+        throw Exception("Api response is neither success or error");
       }
     } catch (e, st) {
       logD("callPopularProductsApi>>>", "error: ${e.toString()}");
       state = AsyncError(e, st);
+      throw Exception(e.toString());
     }
   }
 
-  Future<void> callProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+  Future<List<ProductEntity>?> callProductsApi({int page = 1, required ProductParams productParams}) async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
-      if (result is ApiSuccess) {
-        state = AsyncData(result.data);
-      } else {
-        state = AsyncError((result as ApiError).errorData.message, StackTrace.empty);
-      }
-    } catch (e, st) {
-      logD("callProductsApi>>>", "error: ${e.toString()}");
-      state = AsyncError(e, st);
-    }
-  }
-
-  Future<List<ProductEntity>> callAllProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
-    state = const AsyncLoading();
-    try {
-      final result = await productRepository.getProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
+      final result = await productRepository.getProductList(
+        page: page,
+        isForMale: productParams.isForMale,
+        isForFemale: productParams.isForFemale,
+        isForKids: productParams.isForKids,
+        brandId: productParams.brandId,
+        categoryId: productParams.categoryId,
+      );
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
         return result.data;
+      } else if (result is ApiError) {
+        state = AsyncValue.error(result.errorData.message, StackTrace.empty);
+        throw Exception(result.errorData.message);
       } else {
-        state = AsyncError((result as ApiError).errorData.message, StackTrace.empty);
-        throw Exception("Failed to fetch products:");
+        state = const AsyncValue.error("Api response is neither success or error", StackTrace.empty);
+        throw Exception("Api response is neither success or error");
       }
     } catch (e, st) {
       logD("callProductsApi>>>", "error: ${e.toString()}");
       state = AsyncError(e, st);
-      throw Exception("Failed to fetch products: $e");
+      throw Exception(e.toString());
     }
   }
 
-  Future<List<ProductEntity>> callFavoriteProductsApi({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+  Future<List<ProductEntity>> callFavoriteProductsApi() async {
     state = const AsyncLoading();
     try {
-      final result = await productRepository.getFavoriteProductList(page: page, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
+      final result = await productRepository.getFavoriteProductList();
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
         return result.data;

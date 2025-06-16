@@ -18,23 +18,6 @@ import '../../domain/repositories/home_repo.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../../domain/repositories/slider_repo.dart';
 
-class DataNotifier extends AsyncNotifier<List<ProductEntity>> {
-  @override
-  Future<List<ProductEntity>> build() async {
-    return await fetchDataFromApi();
-  }
-
-  Future<void> refreshData() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() => fetchDataFromApi());
-  }
-}
-
-Future<List<ModelProduct>> fetchDataFromApi() async {
-  List<ModelProduct> productList = globalProductList;
-  return productList;
-}
-
 const String temDesc =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 final List<String> colorList = ["#EBEBEB", "#2A2A2A", "#0C29B9", "#FF3333", "#0CA8B9", "#E4A719", "#9D3CB9"];
@@ -194,37 +177,16 @@ final productRepoProvider = Provider.autoDispose<ProductRepository>((ref) {
 
 final newProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
   final service = ProductService(ref.watch(productRepoProvider));
-  service.callNewArrivalProductsApi();
+  service.callNewArrivalProductsApi(productParams: ProductParams());
   return service;
 });
 final popularProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
   final service = ProductService(ref.watch(productRepoProvider));
-  service.callPopularProductsApi();
+  service.callPopularProductsApi(productParams: ProductParams());
   return service;
 });
 final allProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
   final service = ProductService(ref.watch(productRepoProvider));
-  service.callProductsApi();
+  service.callProductsApi(productParams: ProductParams());
   return service;
-});
-
-final newProductProvider = FutureProvider.autoDispose<List<ProductEntity>>((ref) {
-  return [globalProductList[1], globalProductList[2], globalProductList[3], globalProductList[4]];
-});
-
-final allProductProvider = AsyncNotifierProvider<DataNotifier, List<ProductEntity>>(DataNotifier.new);
-
-final popularProductProvider = FutureProvider.autoDispose<List<ProductEntity>>((ref) {
-  return [globalProductList[5], globalProductList[3], globalProductList[2], globalProductList[1]];
-});
-
-final productBrandsProvider = FutureProvider.autoDispose<List<BrandsEntity>>((ref) {
-  return [
-    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
-    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
-    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
-    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
-    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
-    BrandsEntity(id: 0, name: "Nike", image: "assets/images/nike.png"),
-  ];
 });

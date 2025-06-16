@@ -1,3 +1,3 @@
 abstract class ProductDetailsRepo {
-  Future<dynamic> getProductDetails({required int id, required String size, required String color});
+  Future<dynamic> getProductDetails({required int id, String? size, String? color});
 }

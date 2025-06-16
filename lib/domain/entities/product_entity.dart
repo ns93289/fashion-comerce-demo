@@ -188,4 +188,32 @@ class ProductEntity {
   }
 }
 
-enum ProductTypeEnum { newArrival, popular, all, categoryWise, genderWise }
+enum ProductTypeEnum {
+  newArrival,
+  popular,
+  all,
+  newArrivalSubCategoryWise,
+  popularSubCategoryWise,
+  allSubCategoryWise,
+  newArrivalBrandWise,
+  popularBrandWise,
+  allBrandWise,
+}
+
+class ProductParams {
+  int categoryId = 0;
+  int brandId = 0;
+  final bool isForMale;
+  final bool isForFemale;
+  final bool isForKids;
+  final ProductTypeEnum productTypeEnum;
+
+  ProductParams({
+    this.categoryId = 0,
+    this.brandId = 0,
+    this.isForMale = false,
+    this.isForFemale = false,
+    this.isForKids = false,
+    this.productTypeEnum = ProductTypeEnum.all,
+  });
+}

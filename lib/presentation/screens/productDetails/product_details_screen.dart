@@ -22,11 +22,11 @@ import 'views/product_images_view.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final int productId;
-  final String size;
+  final String? size;
+  final String? color;
   final String productName;
-  final String color;
 
-  const ProductDetailsScreen({super.key, required this.productId, required this.productName, required this.size, required this.color});
+  const ProductDetailsScreen({super.key, required this.productId, required this.productName, this.size, this.color});
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();

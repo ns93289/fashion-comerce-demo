@@ -123,6 +123,9 @@ class _CategoryListPageState extends State<CategoryListPage> with AutomaticKeepA
                             categoryId: selectedCategoryId,
                             selectedSubCategoryId: modelSubCategory.subCategoryId,
                             selectedSubCategoryName: modelSubCategory.subCategoryName,
+                            isForMale: widget.genderType == GenderTypes.male,
+                            isForFemale: widget.genderType == GenderTypes.female,
+                            isForKids: widget.genderType == GenderTypes.kids,
                           ),
                         );
                   },

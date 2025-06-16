@@ -10,10 +10,10 @@ class BrandsService extends StateNotifier<AsyncValue<List<BrandsEntity>>?> {
 
   BrandsService(this.brandsRepo) : super(null);
 
-  Future<void> callBrandsApi({int page = 1}) async {
+  Future<void> callBrandsApi({bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
     state = const AsyncLoading();
     try {
-      final result = await brandsRepo.getBrands(page: page);
+      final result = await brandsRepo.getBrands();
       if (result is ApiSuccess) {
         state = AsyncData(result.data);
       } else {

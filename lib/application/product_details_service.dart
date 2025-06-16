@@ -10,7 +10,7 @@ class ProductDetailsService extends StateNotifier<AsyncValue<ProductDetailsEntit
 
   ProductDetailsService(this.productDetailsRepo) : super(null);
 
-  Future<void> callProductDetailsApi({required int id, required String size, required String color}) async {
+  Future<void> callProductDetailsApi({required int id, String? size, String? color}) async {
     state = const AsyncLoading();
     try {
       final result = await productDetailsRepo.getProductDetails(id: id, size: size, color: color);

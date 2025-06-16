@@ -22,16 +22,11 @@ final productDetailsRepoProvider = Provider.autoDispose<ProductDetailsRepo>((ref
   return ProductDetailsRepoImpl();
 });
 final productDetailsServiceProvider = StateNotifierProvider.autoDispose
-    .family<ProductDetailsService, AsyncValue<ProductDetailsEntity>?, ({int id, String size, String color})>((ref, args) {
+    .family<ProductDetailsService, AsyncValue<ProductDetailsEntity>?, ({int id, String? size, String? color})>((ref, args) {
       final service = ProductDetailsService(ref.watch(productDetailsRepoProvider));
       service.callProductDetailsApi(id: args.id, size: args.size, color: args.color);
       return service;
     });
-final productDetailsProvider = Provider.autoDispose.family<void, ({int id, String size, String color})>((ref, args) {
-  Future.microtask(() {
-    ref.read(productDetailsServiceProvider((id: args.id, size: args.size, color: args.color)));
-  });
-});
 
 final cartRepoProvider = Provider.autoDispose((ref) {
   return CartRepoImpl();

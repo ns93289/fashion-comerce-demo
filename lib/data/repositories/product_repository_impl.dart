@@ -13,7 +13,14 @@ class ProductRepositoryImpl extends ProductRepository {
   final ApiBaseHelper _apiHelper = ApiBaseHelper();
 
   @override
-  Future<ApiResponse<List<ProductEntity>>> getNewProductList({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+  Future<ApiResponse<List<ProductEntity>>> getNewProductList({
+    int page = 1,
+    bool isForMale = false,
+    bool isForFemale = false,
+    bool isForKids = false,
+    int categoryId = 0,
+    int brandId = 0,
+  }) async {
     final response = await _apiHelper.get(
       api: EndPoint.newProductList,
       queryParameters: {ApiParams.page: page, ApiParams.size: DefaultData.pageSize},
@@ -22,6 +29,8 @@ class ProductRepositoryImpl extends ProductRepository {
         ApiParams.isForMale: isForMale,
         ApiParams.isForFemale: isForFemale,
         ApiParams.isForKids: isForKids,
+        ApiParams.subCategoryId: categoryId,
+        ApiParams.brandId: brandId,
       },
     );
 
@@ -34,6 +43,8 @@ class ProductRepositoryImpl extends ProductRepository {
     bool isForMale = false,
     bool isForFemale = false,
     bool isForKids = false,
+    int categoryId = 0,
+    int brandId = 0,
   }) async {
     final response = await _apiHelper.get(
       api: EndPoint.popularProductList,
@@ -43,6 +54,8 @@ class ProductRepositoryImpl extends ProductRepository {
         ApiParams.isForMale: isForMale,
         ApiParams.isForFemale: isForFemale,
         ApiParams.isForKids: isForKids,
+        ApiParams.subCategoryId: categoryId,
+        ApiParams.brandId: brandId,
       },
     );
 
@@ -50,7 +63,14 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<ApiResponse<List<ProductEntity>>> getProductList({int page = 1, bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+  Future<ApiResponse<List<ProductEntity>>> getProductList({
+    int page = 1,
+    bool isForMale = false,
+    bool isForFemale = false,
+    bool isForKids = false,
+    int categoryId = 0,
+    int brandId = 0,
+  }) async {
     final response = await _apiHelper.get(
       api: EndPoint.productList,
       queryParameters: {ApiParams.page: page, ApiParams.size: DefaultData.pageSize},
@@ -59,6 +79,8 @@ class ProductRepositoryImpl extends ProductRepository {
         ApiParams.isForMale: isForMale,
         ApiParams.isForFemale: isForFemale,
         ApiParams.isForKids: isForKids,
+        ApiParams.subCategoryId: categoryId,
+        ApiParams.brandId: brandId,
       },
     );
 
@@ -75,22 +97,8 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<ApiResponse<List<ProductEntity>>> getFavoriteProductList({
-    int page = 1,
-    bool isForMale = false,
-    bool isForFemale = false,
-    bool isForKids = false,
-  }) async {
-    final response = await _apiHelper.get(
-      api: EndPoint.getFavouriteProducts,
-      queryParameters: {ApiParams.page: page, ApiParams.size: DefaultData.pageSize},
-      body: {
-        ApiParams.userId: getIntDataFromUserBox(key: hiveUserId),
-        ApiParams.isForMale: isForMale,
-        ApiParams.isForFemale: isForFemale,
-        ApiParams.isForKids: isForKids,
-      },
-    );
+  Future<ApiResponse<List<ProductEntity>>> getFavoriteProductList() async {
+    final response = await _apiHelper.get(api: "${EndPoint.getFavouriteProducts}/${getIntDataFromUserBox(key: hiveUserId)}");
 
     return ResponseWrapper.fromJsonList<ProductEntity>(response, ModelProduct.fromJson);
   }

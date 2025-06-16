@@ -4,8 +4,11 @@ class HomeCategoryEntity {
   int? _type;
   String? _name;
   String? _image;
+  bool? _isForMale;
+  bool? _isForFemale;
+  bool? _isForKids;
 
-  HomeCategoryEntity({int? id, int? action, int? type, String? name, String? image}) {
+  HomeCategoryEntity({int? id, int? action, int? type, String? name, String? image, bool? isForMale, bool? isForFemale, bool? isForKids}) {
     _id = id;
     _action = action;
     _type = type;
@@ -22,4 +25,10 @@ class HomeCategoryEntity {
   String get name => _name ?? '';
 
   String get image => _image ?? '';
+
+  bool get isForMale => _isForMale ?? false;
+
+  bool get isForFemale => _isForFemale ?? false;
+
+  bool get isForKids => _isForKids ?? false;
 }

@@ -99,4 +99,6 @@ class ApiParams {
   static const String isForMale = "is_for_male";
   static const String isForFemale = "is_for_female";
   static const String isForKids = "is_for_kids";
+  static const String brandId = "brand_id";
+  static const String subCategoryId = "sub_category_id";
 }

@@ -10,10 +10,10 @@ class SliderService extends StateNotifier<AsyncValue<List<SliderEntity>>?> {
 
   SliderService(this.sliderRepo) : super(null);
 
-  Future<void> callSliderApi() async {
+  Future<void> callSliderApi({bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
     state = const AsyncLoading();
     try {
-      final result = await sliderRepo.getSliderData();
+      final result = await sliderRepo.getSliderData(isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
       if (result is ApiSuccess) {
         state = AsyncData((result as ApiSuccess).data);
       } else {

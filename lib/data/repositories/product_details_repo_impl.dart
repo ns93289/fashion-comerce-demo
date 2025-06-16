@@ -11,7 +11,7 @@ class ProductDetailsRepoImpl extends ProductDetailsRepo {
   final ApiBaseHelper _apiHelper = ApiBaseHelper();
 
   @override
-  Future<ApiResponse<ProductDetailsEntity>> getProductDetails({required int id, required String size, required String color}) async {
+  Future<ApiResponse<ProductDetailsEntity>> getProductDetails({required int id, String? size, String? color}) async {
     final response = await _apiHelper.get(
       api: "${EndPoint.productDetails}/$id",
       body: {ApiParams.size: size, ApiParams.color: color},

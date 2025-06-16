@@ -9,8 +9,11 @@ class SliderRepoImpl extends SliderRepo {
   final ApiBaseHelper _apiHelper = ApiBaseHelper();
 
   @override
-  Future<ApiResponse<List<SliderEntity>>> getSliderData() async {
-    final response = await _apiHelper.get(api: EndPoint.homeSlider);
+  Future<ApiResponse<List<SliderEntity>>> getSliderData({bool isForMale = false, bool isForFemale = false, bool isForKids = false}) async {
+    final response = await _apiHelper.get(
+      api: EndPoint.homeSlider,
+      body: {ApiParams.isForMale: isForMale, ApiParams.isForFemale: isForFemale, ApiParams.isForKids: isForKids},
+    );
 
     return ResponseWrapper.fromJsonList<SliderEntity>(response, SliderModel.fromJson);
   }

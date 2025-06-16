@@ -86,7 +86,17 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                       HomeCategoryEntity category = categories[index];
                       return GestureDetector(
                         onTap: () {
-                          ref.read(navigationServiceProvider).navigateTo(CategoryWiseProductsScreen(categoryId: category.id, categoryName: category.name));
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateTo(
+                                CategoryWiseProductsScreen(
+                                  categoryId: category.id,
+                                  categoryName: category.name,
+                                  isForMale: category.isForMale,
+                                  isForFemale: category.isForFemale,
+                                  isForKids: category.isForKids,
+                                ),
+                              );
                         },
                         child: ItemHomeCategory(item: category),
                       );
@@ -156,7 +166,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                           onPress: () {
                             ref
                                 .read(navigationServiceProvider)
-                                .navigateTo(ProductListScreen(productType: language.newArrival, productTypeEnum: ProductTypeEnum.newArrival));
+                                .navigateTo(ProductListScreen(productTypeName: language.newArrival, productTypeEnum: ProductTypeEnum.newArrival));
                           },
                         ),
                       ],
@@ -221,7 +231,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                           onPress: () {
                             ref
                                 .read(navigationServiceProvider)
-                                .navigateTo(ProductListScreen(productType: language.popular, productTypeEnum: ProductTypeEnum.popular));
+                                .navigateTo(ProductListScreen(productTypeName: language.popular, productTypeEnum: ProductTypeEnum.popular));
                           },
                         ),
                       ],
@@ -252,7 +262,17 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                       BrandsEntity brand = brandsList[index];
                       return GestureDetector(
                         onTap: () {
-                          ref.read(navigationServiceProvider).navigateTo(BrandedProductsScreen(brandsEntity: brand));
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateTo(
+                                BrandedProductsScreen(
+                                  brandId: brand.id,
+                                  brandName: brand.name,
+                                  isForMale: brand.isForMale,
+                                  isForFemale: brand.isForFemale,
+                                  isForKids: brand.isForKids,
+                                ),
+                              );
                         },
                         child: ItemBrand(brand: brand),
                       );
@@ -324,7 +344,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                           onPress: () {
                             ref
                                 .read(navigationServiceProvider)
-                                .navigateTo(ProductListScreen(productType: language.allProducts, productTypeEnum: ProductTypeEnum.all));
+                                .navigateTo(ProductListScreen(productTypeName: language.allProducts, productTypeEnum: ProductTypeEnum.all));
                           },
                         ),
                       ],
