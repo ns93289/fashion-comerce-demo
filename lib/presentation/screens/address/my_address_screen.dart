@@ -58,54 +58,52 @@ class _MyAddressScreenState extends ConsumerState<MyAddressScreen> {
               putDataInAddressBox(addressList.first as ModelAddress);
             }
 
-            return addressList.isNotEmpty
-                ? ValueListenableBuilder(
-                  valueListenable: addressBox.listenable(),
-                  builder: (context, _, _) {
-                    final AddressEntity? selectedAddress = getAddressFromAddressBox();
+            return ValueListenableBuilder(
+              valueListenable: addressBox.listenable(),
+              builder: (context, _, _) {
+                final AddressEntity? selectedAddress = getAddressFromAddressBox();
 
-                    return ListView.builder(
-                      itemCount: addressList.length,
-                      shrinkWrap: true,
-                      padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
-                      itemBuilder: (context, index) {
-                        final modelAddress = addressList[index];
-                        return GestureDetector(
-                          onTap: () {
-                            putDataInAddressBox(modelAddress as ModelAddress);
-                            if (widget.selectable) {
-                              ref.read(navigationServiceProvider).goBack();
-                            }
-                          },
-                          child: ItemAddressList(
-                            modelAddress: modelAddress,
-                            selected: selectedAddress?.addressId == modelAddress.addressId,
-                            onEdit: () {
-                              ref
-                                  .read(navigationServiceProvider)
-                                  .navigateToWithResult(
-                                    AddAddressScreen(modelAddress: modelAddress),
-                                    overrides: [addressTypeSelectProvider.overrideWith((ref) => (modelAddress.addressType))],
-                                  )
-                                  ?.then((value) {
-                                    if (value ?? false) {
-                                      checkAndChangeAddressBox(modelAddress as ModelAddress);
-                                      ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
-                                    }
-                                  });
-                            },
-                            onDelete: () {
-                              ref.read(deleteAddressProvider((context: context, addressId: modelAddress.addressId)));
-                            },
-                          ),
-                        );
+                return ListView.builder(
+                  itemCount: addressList.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsetsDirectional.only(start: 20.w, end: 20.w),
+                  itemBuilder: (context, index) {
+                    final modelAddress = addressList[index];
+                    return GestureDetector(
+                      onTap: () {
+                        putDataInAddressBox(modelAddress as ModelAddress);
+                        if (widget.selectable) {
+                          ref.read(navigationServiceProvider).goBack();
+                        }
                       },
+                      child: ItemAddressList(
+                        modelAddress: modelAddress,
+                        selected: selectedAddress?.addressId == modelAddress.addressId,
+                        onEdit: () {
+                          ref
+                              .read(navigationServiceProvider)
+                              .navigateToWithResult(
+                                AddAddressScreen(modelAddress: modelAddress),
+                                overrides: [addressTypeSelectProvider.overrideWith((ref) => (modelAddress.addressType))],
+                              )
+                              ?.then((value) {
+                                if (value ?? false) {
+                                  checkAndChangeAddressBox(modelAddress as ModelAddress);
+                                  ref.read(getAddressServiceProvider.notifier).callGetAddressApi();
+                                }
+                              });
+                        },
+                        onDelete: () {
+                          ref.read(deleteAddressProvider((context: context, addressId: modelAddress.addressId)));
+                        },
+                      ),
                     );
                   },
-                )
-                : EmptyRecordView(message: language.emptyAddressMsg);
+                );
+              },
+            );
           },
-          error: (error, stackTrace) => EmptyRecordView(message: language.emptyAddressMsg),
+          error: (error, stackTrace) => EmptyRecordView(message: error.toString()),
           loading: () => CommonCircleProgressBar(),
         );
       },

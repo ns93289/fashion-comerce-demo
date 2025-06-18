@@ -254,6 +254,12 @@
   "selectAddress": "Select Address",
   "selectAddressMsg": "Please select address to place order",
   "backPressMsg": "Press back again to exit the app",
+  "emptyProductsMsg": "Ops! The list is empty. Lets explore something great.",
+  "inProducts": "In Products",
+  "inBrands": "In Brands",
+  "inSubCategories": "In Sub Categories",
+  "goToCart": "Go To Cart",
+  "loginRequiredMsg": "Login required to access this feature",
   "@byClickEmailVerify": {
     "placeholders": {
       "email": {

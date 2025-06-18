@@ -23,6 +23,7 @@ class OrderHistoryService extends StateNotifier<AsyncValue<List<OrderHistoryEnti
     } catch (e, st) {
       logD("callOrderHistoryApi>>>", e.toString());
       state = AsyncValue.error(e, st);
+      throw Exception(e.toString());
     }
     return null;
   }

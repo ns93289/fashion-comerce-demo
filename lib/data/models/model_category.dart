@@ -40,7 +40,7 @@ class ModelSubCategory extends SubCategoryEntity {
     return ModelSubCategory(
       subCategoryId: json['id'],
       categoryId: json['category_id'],
-      subCategoryName: json['sub_category_name'],
+      subCategoryName: json['name'],
       subCategoryImage: json['image_url'],
       tagLine: json['tag_line'],
       isForMale: json['is_for_male'],
@@ -53,7 +53,7 @@ class ModelSubCategory extends SubCategoryEntity {
     final Map<String, dynamic> data = {};
     data['id'] = subCategoryId;
     data['category_id'] = categoryId;
-    data['sub_category_name'] = subCategoryName;
+    data['name'] = subCategoryName;
     data['image_url'] = subCategoryImage;
     data['tag_line'] = tagLine;
     data['is_for_male'] = isForMale;

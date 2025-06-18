@@ -48,6 +48,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 if (cartData == null) {
                   ref.read(cartDetailsProvider);
                   return Container();
+                } else if (cartData.products.isEmpty) {
+                  return Center(child: EmptyRecordView(message: language.emptyCartMsg));
                 } else {
                   return Stack(
                     children: [

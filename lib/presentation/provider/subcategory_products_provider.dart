@@ -9,12 +9,12 @@ final productRepoProvider = Provider.autoDispose<ProductRepository>((ref) {
   return ProductRepositoryImpl();
 });
 
-final newProductServiceProvider = StateNotifierProvider.autoDispose<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
+final newProductServiceProvider = StateNotifierProvider.autoDispose.family<ProductService, AsyncValue<List<ProductEntity>>?, int>((ref, subCateId) {
   return ProductService(ref.watch(productRepoProvider));
 });
-final popularProductServiceProvider = StateNotifierProvider.autoDispose<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
+final popularProductServiceProvider = StateNotifierProvider.autoDispose.family<ProductService, AsyncValue<List<ProductEntity>>?, int>((ref, subCateId) {
   return ProductService(ref.watch(productRepoProvider));
 });
-final allProductServiceProvider = StateNotifierProvider.autoDispose<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
+final allProductServiceProvider = StateNotifierProvider.autoDispose.family<ProductService, AsyncValue<List<ProductEntity>>?, int>((ref, subCateId) {
   return ProductService(ref.watch(productRepoProvider));
 });

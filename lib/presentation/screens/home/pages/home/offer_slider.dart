@@ -43,6 +43,8 @@ class _OfferSliderState extends State<OfferSlider> {
                           isForMale: e.isForMale,
                           isForFemale: e.isForFemale,
                           isForKids: e.isForKids,
+                          action: e.entityId,
+                          type: e.type,
                         ),
                       );
                     } else if (e.type == 3) {

@@ -1,3 +1,4 @@
+import 'package:fashion_comerce_demo/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,13 +84,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     child: ItemProduct(
                       item: product,
                       onFavorite: () {
-                        ref.read(allProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
+                        ref.read(allProductServiceProvider.notifier).callToggleFavoriteApiInPaging(productId: product.productId, controller: pagingController);
                       },
                     ),
                   );
                 },
                 firstPageErrorIndicatorBuilder: (context) {
-                  return EmptyRecordView(message: state.error.toString());
+                  return Center(child: EmptyRecordView(message: language.emptyProductsMsg));
                 },
                 newPageProgressIndicatorBuilder: (context) => CommonCircleProgressBar(),
               ),

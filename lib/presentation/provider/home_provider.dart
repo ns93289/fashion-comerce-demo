@@ -1,3 +1,7 @@
+import 'package:fashion_comerce_demo/main.dart';
+import 'package:fashion_comerce_demo/presentation/dialogs/common_dialog.dart';
+import 'package:fashion_comerce_demo/presentation/provider/navigation_provider.dart';
+import 'package:fashion_comerce_demo/presentation/screens/login/login_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/home_service.dart';
@@ -148,27 +152,21 @@ final homeRepoProvider = Provider.autoDispose<HomeRepo>((ref) {
 });
 
 final homeCategoryServiceProvider = StateNotifierProvider<HomeService, AsyncValue<dynamic>>((ref) {
-  final service = HomeService(ref.watch(homeRepoProvider));
-  service.callHomeCategories();
-  return service;
+  return HomeService(ref.watch(homeRepoProvider));
 });
 
 final sliderRepoProvider = Provider.autoDispose<SliderRepo>((ref) {
   return SliderRepoImpl();
 });
 final sliderServiceProvider = StateNotifierProvider<SliderService, AsyncValue<List<SliderEntity>>?>((ref) {
-  final service = SliderService(ref.watch(sliderRepoProvider));
-  service.callSliderApi();
-  return service;
+  return SliderService(ref.watch(sliderRepoProvider));
 });
 
 final brandsRepoProvider = Provider.autoDispose<BrandsRepo>((ref) {
   return BrandsRepoImpl();
 });
 final brandsServiceProvider = StateNotifierProvider<BrandsService, AsyncValue<List<BrandsEntity>>?>((ref) {
-  final service = BrandsService(ref.watch(brandsRepoProvider));
-  service.callBrandsApi();
-  return service;
+  return BrandsService(ref.watch(brandsRepoProvider));
 });
 
 final productRepoProvider = Provider.autoDispose<ProductRepository>((ref) {
@@ -178,7 +176,7 @@ final productRepoProvider = Provider.autoDispose<ProductRepository>((ref) {
 final newProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
   final service = ProductService(ref.watch(productRepoProvider));
   service.callNewArrivalProductsApi(productParams: ProductParams());
-  return service;
+  return ProductService(ref.watch(productRepoProvider));
 });
 final popularProductServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
   final service = ProductService(ref.watch(productRepoProvider));
@@ -189,4 +187,22 @@ final allProductServiceProvider = StateNotifierProvider<ProductService, AsyncVal
   final service = ProductService(ref.watch(productRepoProvider));
   service.callProductsApi(productParams: ProductParams());
   return service;
+});
+
+final loginRequiredDialogProvider = Provider.autoDispose((ref) {
+  Future.microtask(() {
+    ref
+        .read(navigationServiceProvider)
+        .showCustomDialog(
+          CommonDialog(
+            title: language.loginRequiredMsg,
+            negativeText: language.cancel,
+            positiveText: language.login,
+            onNegativeClick: () => ref.read(navigationServiceProvider).goBack(),
+            onPositiveClick: () {
+              ref.read(navigationServiceProvider).navigateToWithClearStack(LoginScreen());
+            },
+          ),
+        );
+  });
 });

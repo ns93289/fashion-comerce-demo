@@ -31,7 +31,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<ApiResponse<UserEntity>> logout() async {
     final response = await _apiHelper.post(
       api: EndPoint.logout,
-      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken)},
+      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId)},
     );
     return ResponseWrapper.fromJson<UserEntity>(response, UserModel.fromJson);
   }
@@ -91,7 +91,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<ApiResponse<UserEntity>> deleteAccount() async {
     final response = await _apiHelper.post(
       api: EndPoint.deleteAccount,
-      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId), ApiParams.accessToken: getStringDataFromUserBox(key: hiveAccessToken)},
+      body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId)},
     );
     return ResponseWrapper.fromJson<UserEntity>(response, UserModel.fromJson);
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/models/model_product.dart';
-import 'home_provider.dart';
+import '../../application/home_service.dart';
+import '../../data/repositories/home_repo_impl.dart';
+import '../../domain/repositories/home_repo.dart';
 
 final searchTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   final controller = TextEditingController();
@@ -10,17 +11,12 @@ final searchTECProvider = Provider.autoDispose<TextEditingController>((ref) {
   return controller;
 });
 
-final itemsProvider = Provider<List<ModelProduct>>((ref) {
-  return globalProductList;
+final searchQueryProvider = StateProvider.autoDispose<String>((ref) => '');
+
+final homeRepoProvider = Provider.autoDispose<HomeRepo>((ref) {
+  return HomeRepoImpl();
 });
 
-final searchQueryProvider = StateProvider<String>((ref) => '');
-
-final filteredItemsProvider = Provider<List<ModelProduct>>((ref) {
-  final query = ref.watch(searchQueryProvider).toLowerCase();
-  final items = ref.watch(itemsProvider);
-
-  if (query.isEmpty) return [];
-
-  return items.where((item) => item.productName.toLowerCase().contains(query)).toList();
+final homeSearchServiceProvider = StateNotifierProvider.autoDispose<HomeService, AsyncValue<dynamic>>((ref) {
+  return HomeService(ref.watch(homeRepoProvider));
 });

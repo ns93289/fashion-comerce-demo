@@ -4,6 +4,7 @@ import '../core/utils/tools.dart';
 import '../data/dataSources/remote/api_reponse.dart';
 import '../domain/entities/address_entity.dart';
 import '../domain/repositories/address_repo.dart';
+import '../main.dart';
 
 class AddressService extends StateNotifier<AsyncValue<dynamic>> {
   final AddressRepo addressRepo;
@@ -15,7 +16,11 @@ class AddressService extends StateNotifier<AsyncValue<dynamic>> {
     try {
       final res = await addressRepo.getAddresses();
       if (res is ApiSuccess) {
-        state = AsyncValue.data(res.data);
+        if (res.data is List<AddressEntity> && res.data.isNotEmpty) {
+          state = AsyncValue.data(res.data);
+        } else {
+          state = AsyncValue.error(language.emptyAddressMsg, StackTrace.empty);
+        }
       } else {
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }

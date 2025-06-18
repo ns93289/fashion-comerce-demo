@@ -1,9 +1,9 @@
-import 'package:fashion_comerce_demo/presentation/components/common_circle_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../components/common_circle_progress_bar.dart';
 import '../../../core/constants/colors.dart';
 import '../../../domain/entities/order_history_entity.dart';
 import '../../../main.dart';
@@ -11,6 +11,7 @@ import '../../components/common_app_bar.dart';
 import '../../components/empty_record_view.dart';
 import '../../provider/navigation_provider.dart';
 import '../../provider/order_history_provider.dart';
+import '../home/home_screen.dart';
 import '../orderDetails/order_details_screen.dart';
 import 'item_order_history.dart';
 
@@ -24,7 +25,18 @@ class OrderHistoryScreen extends ConsumerStatefulWidget {
 class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: CommonAppBar(title: Text(language.myOrders)), body: SafeArea(child: _buildOrderHistory()));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (Navigator.canPop(context)) {
+          ref.read(navigationServiceProvider).goBack();
+        } else {
+          ref.read(navigationServiceProvider).navigateToWithClearStack(HomeScreen());
+        }
+      },
+      child: Scaffold(appBar: CommonAppBar(title: Text(language.myOrders)), body: SafeArea(child: _buildOrderHistory())),
+    );
   }
 
   Widget _buildOrderHistory() {
@@ -50,7 +62,7 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
                   );
                 },
                 firstPageErrorIndicatorBuilder: (context) {
-                  return EmptyRecordView(message: state.error.toString());
+                  return Padding(padding: EdgeInsets.only(top: 200.h), child: EmptyRecordView(message: language.emptyOrdersMsg));
                 },
                 newPageProgressIndicatorBuilder: (context) => CommonCircleProgressBar(),
               ),

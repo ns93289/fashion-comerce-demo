@@ -9,6 +9,7 @@ import '../../../core/utils/tools.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
+import '../../provider/home_provider.dart';
 import '../../provider/navigation_provider.dart';
 import '../cart/cart_screen.dart';
 import '../serachProduct/search_product_screen.dart';
@@ -24,10 +25,35 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProviderStateMixin {
   DateTime? currentBackPressTime;
   bool canPopNow = false;
   int requiredSeconds = 2;
+  late TabController _tabController;
+
+  /*_onTap() {
+    if (_tabController.index == 2) {
+      int index = _tabController.previousIndex;
+      setState(() {
+        _tabController.index = index;
+      });
+      ref.read(loginRequiredDialogProvider);
+    }
+  }*/
+
+  @override
+  void initState() {
+    _tabController = TabController(vsync: this, length: 4);
+    ///Logic needed for skip login
+    // _tabController.addListener(_onTap);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +91,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildHomeScreen() {
     return Column(
       children: [
-        Expanded(child: TabBarView(physics: NeverScrollableScrollPhysics(), children: [HomePage(), CategoryPage(), FavoritePage(), AccountPage()])),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            physics: NeverScrollableScrollPhysics(),
+            children: [HomePage(), CategoryPage(), FavoritePage(), AccountPage()],
+          ),
+        ),
         _homeTabBar(),
       ],
     );
@@ -79,6 +111,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       height: 40.h,
       child: TabBar(
+        controller: _tabController,
         tabs: [
           Tab(icon: Icon(Icons.home_outlined)),
           Tab(icon: Icon(Icons.border_all_outlined)),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/cart_service.dart';
 import '../../application/product_details_service.dart';
+import '../../data/models/base_model.dart';
 import '../../data/models/cart_model.dart';
 import '../../data/repositories/cart_repo_impl.dart';
 import '../../data/repositories/product_details_repo_impl.dart';
@@ -49,11 +50,12 @@ final addToCartProvider = Provider.autoDispose.family<void, ({int productId, int
 });
 final removeProductCartProvider = Provider.autoDispose.family<void, ({int productId, int productVariantId, String size, String color})>((ref, args) {
   Future.microtask(() async {
-    final CartModel? data = await ref
+    final BaseModel? data = await ref
         .read(cartServiceProvider.notifier)
         .callRemoveProductFromCartApi(productVariantId: args.productVariantId, productId: args.productId, type: 1);
     if (data != null) {
-      ref.read(cartProductQuantityProvider.notifier).state = data.quantity;
+      var addedQuantity = ref.watch(cartProductQuantityProvider);
+      ref.read(cartProductQuantityProvider.notifier).state = addedQuantity - 1;
     }
   });
 });

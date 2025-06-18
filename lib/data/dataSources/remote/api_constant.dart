@@ -1,5 +1,5 @@
 class BaseUrl {
-  static const String url = "http://192.168.1.5:8055/";
+  static const String url = "http://192.168.1.6:8055/";
   static const String apiUrl = "$url/api";
 }
 
@@ -29,6 +29,7 @@ class EndPoint {
   static const String brandsList = "/home/brands";
   static const String homeSlider = "/home/slider";
   static const String homeCategories = "/home/home-categories";
+  static const String search = "/home/search";
 
   ///Product details...
   static const String productDetails = "/product-detail/product";
@@ -101,4 +102,6 @@ class ApiParams {
   static const String isForKids = "is_for_kids";
   static const String brandId = "brand_id";
   static const String subCategoryId = "sub_category_id";
+  static const String query = "query";
+  static const String action = "action";
 }

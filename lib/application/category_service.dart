@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/dataSources/remote/api_reponse.dart';
 import '../domain/repositories/categories_rep.dart';
+import '../main.dart';
 
 class CategoryService extends StateNotifier<AsyncValue<dynamic>> {
   final CategoriesRepo categoriesRepo;
@@ -13,7 +14,11 @@ class CategoryService extends StateNotifier<AsyncValue<dynamic>> {
     try {
       final res = await categoriesRepo.getCategories(genderId: genderId);
       if (res is ApiSuccess) {
-        state = AsyncValue.data(res.data);
+        if (res.data is List && res.data.isNotEmpty) {
+          state = AsyncValue.data(res.data);
+        } else {
+          state = AsyncValue.error(language.emptyProductsMsg, StackTrace.empty);
+        }
       } else {
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }
@@ -27,7 +32,11 @@ class CategoryService extends StateNotifier<AsyncValue<dynamic>> {
     try {
       final res = await categoriesRepo.getSubCategories(categoryId: categoryId, isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids);
       if (res is ApiSuccess) {
-        state = AsyncValue.data(res.data);
+        if (res.data is List && res.data.isNotEmpty) {
+          state = AsyncValue.data(res.data);
+        } else {
+          state = AsyncValue.error(language.emptyProductsMsg, StackTrace.empty);
+        }
       } else {
         state = AsyncValue.error((res as ApiError).errorData.message, StackTrace.empty);
       }

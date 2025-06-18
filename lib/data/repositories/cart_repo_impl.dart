@@ -5,6 +5,7 @@ import '../dataSources/local/hive_helper.dart';
 import '../dataSources/remote/api_base_helper.dart';
 import '../dataSources/remote/api_constant.dart';
 import '../dataSources/remote/api_reponse.dart';
+import '../models/base_model.dart';
 import '../models/cart_model.dart';
 import '../models/cart_preview_model.dart';
 
@@ -34,7 +35,7 @@ class CartRepoImpl extends CartRepo {
   }
 
   @override
-  Future<ApiResponse<CartModel?>> removeProductFromCart({required int productVariantId, required int productId, required int type}) async {
+  Future<ApiResponse<BaseModel?>> removeProductFromCart({required int productVariantId, required int productId, required int type}) async {
     final response = await _apiHelper.delete(
       api: EndPoint.removeCartProduct,
       body: {
@@ -45,6 +46,6 @@ class CartRepoImpl extends CartRepo {
       },
     );
 
-    return ResponseWrapper.fromJson<CartModel>(response, CartModel.fromJson);
+    return ResponseWrapper.fromJson<BaseModel>(response, BaseModel.fromJson);
   }
 }

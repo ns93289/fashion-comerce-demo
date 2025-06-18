@@ -45,7 +45,7 @@ class ModelProduct extends ProductEntity {
       productDiscount: json['discount_value'],
       productDiscountPrice: json['price'],
       productStoke: json['stoke'],
-      favorite: json['favorite'],
+      favorite: json['is_favourite'],
       productDescription: json['description'],
       noOfReview: json['no_of_review'],
       averageRatings: json['average_ratings'],
@@ -76,7 +76,7 @@ class ModelProduct extends ProductEntity {
     map['discount_type'] = discountType;
     map['discount_value'] = productDiscount;
     map['stoke'] = productStoke;
-    map['favorite'] = favorite;
+    map['is_favourite'] = favorite;
     map['description'] = productDescription;
     map['no_of_review'] = noOfReview;
     map['average_ratings'] = averageRatings;

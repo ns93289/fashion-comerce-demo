@@ -4,6 +4,7 @@ import '../core/utils/tools.dart';
 import '../data/dataSources/remote/api_reponse.dart';
 import '../domain/entities/brands_entity.dart';
 import '../domain/repositories/brands_repo.dart';
+import '../main.dart';
 
 class BrandsService extends StateNotifier<AsyncValue<List<BrandsEntity>>?> {
   final BrandsRepo brandsRepo;
@@ -15,7 +16,11 @@ class BrandsService extends StateNotifier<AsyncValue<List<BrandsEntity>>?> {
     try {
       final result = await brandsRepo.getBrands();
       if (result is ApiSuccess) {
-        state = AsyncData(result.data);
+        if (result.data is List<BrandsEntity> && result.data.isNotEmpty) {
+          state = AsyncData(result.data);
+        } else {
+          state = AsyncValue.error(language.emptyProductsMsg, StackTrace.empty);
+        }
       } else {
         state = AsyncError((result as ApiError).errorData.message, StackTrace.empty);
       }

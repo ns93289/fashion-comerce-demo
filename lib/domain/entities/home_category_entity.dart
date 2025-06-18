@@ -14,6 +14,9 @@ class HomeCategoryEntity {
     _type = type;
     _name = name;
     _image = image;
+    _isForMale = isForMale;
+    _isForFemale = isForFemale;
+    _isForKids = isForKids;
   }
 
   int get id => _id ?? 0;

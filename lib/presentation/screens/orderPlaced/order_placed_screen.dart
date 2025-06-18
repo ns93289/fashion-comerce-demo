@@ -26,10 +26,6 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
       builder: (context, ref, _) {
         return PopScope(
           canPop: false,
-          onPopInvokedWithResult: (didPop, result) {
-            if (didPop) return;
-            ref.read(navigationServiceProvider).navigateToWithClearStack(HomeScreen());
-          },
           child: Scaffold(appBar: CommonAppBar(toolbarHeight: 0), body: _buildOrderPlaced()),
         );
       },
@@ -57,7 +53,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
               fontSize: 14.sp,
               margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 25.h),
               onPress: () {
-                ref.read(navigationServiceProvider).navigateTo(OrderHistoryScreen());
+                ref.read(navigationServiceProvider).navigateToWithClearStack(OrderHistoryScreen());
               },
             ),
             CustomButton(
@@ -69,7 +65,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
               fontSize: 14.sp,
               margin: EdgeInsetsDirectional.only(start: 20.w, end: 20.w, top: 15.h),
               onPress: () {
-                ref.read(navigationServiceProvider).navigateTo(HomeScreen());
+                ref.read(navigationServiceProvider).navigateToWithClearStack(HomeScreen());
               },
             ),
           ],

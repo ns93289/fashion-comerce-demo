@@ -11,12 +11,15 @@ class StringUtils {
     };
   }
 
-  static String getGenderTitle(int genderType) {
-    return switch (genderType) {
-      GenderTypes.male => language.men,
-      GenderTypes.female => language.women,
-      GenderTypes.kids => language.kids,
-      _ => language.all,
-    };
+  static String getGenderTitle({bool isForMale = false, bool isForFemale = false, bool isForKids = false}) {
+    if (isForMale && isForFemale && isForKids) {
+      return language.all;
+    } else if (isForMale) {
+      return language.men;
+    } else if (isForFemale) {
+      return language.women;
+    } else {
+      return language.kids;
+    }
   }
 }

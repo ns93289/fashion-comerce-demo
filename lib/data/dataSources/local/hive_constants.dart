@@ -1,15 +1,11 @@
 ///Different boxes
 const String hiveCartBox = "cartBox";
-const String hiveOrderBox = "orderBox";
 const String hiveUserBox = "userBox";
 const String hiveAddressBox = "addressBox";
 const String hiveRecentSearchBox = "recentSearchBox";
 
 ///Cart data box
 const String hiveCartData = "cartData";
-
-///Orders box
-const String hiveOrderData = "orderData";
 
 ///Address box
 const String hiveAddressData = "addressData";

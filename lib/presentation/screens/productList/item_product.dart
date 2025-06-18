@@ -31,6 +31,9 @@ class ItemProduct extends StatelessWidget {
       :genderType,
       :discountType,
       :productStoke,
+      :isForMale,
+      :isForFemale,
+      :isForKids,
     ) = item;
     return Container(
       margin: EdgeInsetsDirectional.only(end: 15.w),
@@ -97,7 +100,10 @@ class ItemProduct extends StatelessWidget {
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 10.w, vertical: 1.h),
                     margin: EdgeInsetsDirectional.only(start: 2.w, end: 10.w),
                     decoration: BoxDecoration(color: colorCategoryBackground, borderRadius: BorderRadius.circular(5.r)),
-                    child: Text(StringUtils.getGenderTitle(genderType), style: bodyTextStyle(fontSize: 12.sp)),
+                    child: Text(
+                      StringUtils.getGenderTitle(isForMale: isForMale, isForFemale: isForFemale, isForKids: isForKids),
+                      style: bodyTextStyle(fontSize: 12.sp),
+                    ),
                   ),
                   Flexible(
                     child: Container(

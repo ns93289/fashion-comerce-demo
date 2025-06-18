@@ -449,62 +449,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               Expanded(
                 child: CustomButton(
                   onPress: () {
-                    addDataIntoCartBox(1);
-                    ref.read(
-                      addToCartProvider((
-                        productId: data.id,
-                        productVariantId: data.productVariantId,
-                        size: data.uniqueSizes[ref.watch(productSizeProvider)],
-                        color: data.uniqueColors[ref.watch(productColorProvider)],
-                        isAddToCart: true,
-                      )),
-                    );
+                    if (addedQuantity == 0) {
+                      addDataIntoCartBox(1);
+                      ref.read(
+                        addToCartProvider((
+                          productId: data.id,
+                          productVariantId: data.productVariantId,
+                          size: data.uniqueSizes[ref.watch(productSizeProvider)],
+                          color: data.uniqueColors[ref.watch(productColorProvider)],
+                          isAddToCart: true,
+                        )),
+                      );
+                    } else {
+                      ref.read(navigationServiceProvider).navigateTo(CartScreen());
+                    }
                   },
-                  title: language.addToCart,
+                  title: addedQuantity == 0 ? language.addToCart : language.goToCart,
                   backgroundColor: addedQuantity > 0 ? colorWhite : colorBlack,
                   textColor: colorPrimary,
                   borderedButton: addedQuantity > 0,
-                  customWidget:
-                      addedQuantity > 0
-                          ? Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    addDataIntoCartBox(-1);
-                                    ref.read(
-                                      removeProductCartProvider((
-                                        productId: data.id,
-                                        productVariantId: data.productVariantId,
-                                        size: data.uniqueSizes[ref.watch(productSizeProvider)],
-                                        color: data.uniqueColors[ref.watch(productColorProvider)],
-                                      )),
-                                    );
-                                  },
-                                  child: Icon(Icons.remove, size: 25.sp),
-                                ),
-                              ),
-                              Padding(padding: EdgeInsets.symmetric(horizontal: 10.w), child: Text(addedQuantity.toString(), style: bodyTextStyle())),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    addDataIntoCartBox(1);
-                                    ref.read(
-                                      addToCartProvider((
-                                        productId: data.id,
-                                        productVariantId: data.productVariantId,
-                                        size: data.uniqueSizes[ref.watch(productSizeProvider)],
-                                        color: data.uniqueColors[ref.watch(productColorProvider)],
-                                        isAddToCart: true,
-                                      )),
-                                    );
-                                  },
-                                  child: Icon(Icons.add, size: 25.sp),
-                                ),
-                              ),
-                            ],
-                          )
-                          : null,
                 ),
               ),
               SizedBox(width: 20.w),

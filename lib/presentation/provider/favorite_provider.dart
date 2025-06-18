@@ -9,7 +9,7 @@ final productRepoProvider = Provider.autoDispose<ProductRepository>((ref) {
   return ProductRepositoryImpl();
 });
 
-final favoriteListServiceProvider = StateNotifierProvider<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
+final favoriteListServiceProvider = StateNotifierProvider.autoDispose<ProductService, AsyncValue<List<ProductEntity>>?>((ref) {
   final service = ProductService(ref.watch(productRepoProvider));
   service.callFavoriteProductsApi();
   return service;

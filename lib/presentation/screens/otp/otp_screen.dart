@@ -16,16 +16,22 @@ import '../../components/custom_button.dart';
 import '../../components/custom_pin_code_field.dart';
 import '../home/home_screen.dart';
 
-class OtpScreen extends StatefulWidget {
+class OtpScreen extends ConsumerStatefulWidget {
   final bool isPhone;
 
   const OtpScreen({super.key, this.isPhone = false});
 
   @override
-  State<OtpScreen> createState() => _OtpScreenState();
+  ConsumerState<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _OtpScreenState extends ConsumerState<OtpScreen> {
+  @override
+  void initState() {
+    Future.microtask(() => ref.read(resendOTPProvider));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: CommonAppBar(), body: SafeArea(child: _buildOTPScreen()));

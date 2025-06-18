@@ -1,3 +1,4 @@
+import 'package:fashion_comerce_demo/presentation/components/common_circle_progress_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import '../../../domain/entities/product_entity.dart';
 import '../../../main.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
+import '../../components/empty_record_view.dart';
 import '../../provider/branded_products_provider.dart';
 import '../../provider/navigation_provider.dart';
 import '../productList/item_product.dart';
@@ -281,8 +283,8 @@ class _BrandedProductsScreenState extends ConsumerState<BrandedProductsScreen> {
                   ],
                 );
               },
-              error: (error, stackTrace) => Container(),
-              loading: () => Container(),
+              error: (error, stackTrace) => Padding(padding: EdgeInsets.symmetric(vertical: 30.h), child: EmptyRecordView(message: error.toString())),
+              loading: () => CommonCircleProgressBar(),
             ) ??
             Container();
       },

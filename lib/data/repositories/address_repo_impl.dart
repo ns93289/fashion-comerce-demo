@@ -63,9 +63,9 @@ class AddressRepoImpl extends AddressRepo {
   }
 
   @override
-  Future<ApiResponse<List<ModelAddress>>> getAddresses() async {
+  Future<ApiResponse<List<AddressEntity>>> getAddresses() async {
     final response = await _apiHelper.get(api: EndPoint.getAddress, body: {ApiParams.userId: getIntDataFromUserBox(key: hiveUserId)});
 
-    return ResponseWrapper.fromJsonList<ModelAddress>(response, ModelAddress.fromJson);
+    return ResponseWrapper.fromJsonList<AddressEntity>(response, ModelAddress.fromJson);
   }
 }

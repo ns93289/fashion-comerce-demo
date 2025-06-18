@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/utils/tools.dart';
 import '../data/dataSources/remote/api_reponse.dart';
+import '../data/models/base_model.dart';
 import '../data/models/cart_model.dart';
 import '../domain/entities/cart_preview_entity.dart';
 import '../domain/repositories/cart_repo.dart';
@@ -49,7 +50,7 @@ class CartService extends StateNotifier<AsyncValue<dynamic>> {
     return null;
   }
 
-  Future<CartModel?> callRemoveProductFromCartApi({required int productVariantId, required int productId, required int type}) async {
+  Future<BaseModel?> callRemoveProductFromCartApi({required int productVariantId, required int productId, required int type}) async {
     state = AsyncValue.loading();
     try {
       final response = await cartRepo.removeProductFromCart(productVariantId: productVariantId, productId: productId, type: type);

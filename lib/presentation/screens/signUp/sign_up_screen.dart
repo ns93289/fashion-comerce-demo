@@ -207,9 +207,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             UserEntity? data = next.value;
             if (data != null) {
               if (data.mobileVerified && data.emailVerified) {
-                ref.read(navigationServiceProvider).navigateTo(HomeScreen());
+                ref.read(navigationServiceProvider).navigateToWithClearStack(HomeScreen());
               } else {
-                ref.read(navigationServiceProvider).navigateTo(VerificationsScreen());
+                ref.read(navigationServiceProvider).navigateToWithReplace(VerificationsScreen());
               }
             }
           }

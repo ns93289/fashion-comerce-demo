@@ -1,3 +1,4 @@
+import 'package:fashion_comerce_demo/presentation/components/empty_record_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,8 +15,10 @@ import '../home/pages/home/offer_slider.dart';
 import '../productDetails/product_details_screen.dart';
 import '../productList/product_list_screen.dart';
 
-class CategoryWiseProductsScreen extends StatefulWidget {
+class CategoryWiseProductsScreen extends ConsumerStatefulWidget {
   final int categoryId;
+  final int action;
+  final int type;
   final String categoryName;
   final bool isForMale;
   final bool isForFemale;
@@ -28,14 +31,54 @@ class CategoryWiseProductsScreen extends StatefulWidget {
     required this.isForMale,
     required this.isForFemale,
     required this.isForKids,
+    this.action = 0,
+    this.type = 0,
   });
 
   @override
-  State<CategoryWiseProductsScreen> createState() => _CategoryWiseProductsScreenState();
+  ConsumerState<CategoryWiseProductsScreen> createState() => _CategoryWiseProductsScreenState();
 }
 
-class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen> {
+class _CategoryWiseProductsScreenState extends ConsumerState<CategoryWiseProductsScreen> {
   final _titleStyle = bodyTextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold);
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      ref
+          .read(newProductServiceProvider.notifier)
+          .callNewArrivalProductsApi(
+            productParams: ProductParams(
+              isForMale: widget.isForMale,
+              isForFemale: widget.isForFemale,
+              isForKids: widget.isForKids,
+              categoryId: widget.categoryId,
+            ),
+          );
+      ref
+          .read(popularProductServiceProvider.notifier)
+          .callPopularProductsApi(
+            productParams: ProductParams(
+              isForMale: widget.isForMale,
+              isForFemale: widget.isForFemale,
+              isForKids: widget.isForKids,
+              categoryId: widget.categoryId,
+            ),
+          );
+      ref
+          .read(allProductServiceProvider.notifier)
+          .callProductsApi(
+            productParams: ProductParams(
+              isForMale: widget.isForMale,
+              isForFemale: widget.isForFemale,
+              isForKids: widget.isForKids,
+              categoryId: widget.categoryId,
+            ),
+          );
+      ref.read(sliderServiceProvider.notifier).callSliderApi(action: widget.action, type: widget.type);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,28 +95,13 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
   Widget _offerSlider() {
     return Consumer(
       builder: (context, ref, _) {
-        Future.microtask(() {
-          ref
-              .read(newProductServiceProvider.notifier)
-              .callNewArrivalProductsApi(
-                productParams: ProductParams(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids),
-              );
-          ref
-              .read(popularProductServiceProvider.notifier)
-              .callPopularProductsApi(productParams: ProductParams(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids));
-          ref
-              .read(allProductServiceProvider.notifier)
-              .callProductsApi(productParams: ProductParams(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids));
-          ref.read(sliderServiceProvider.notifier).callSliderApi(isForMale: widget.isForMale, isForFemale: widget.isForFemale, isForKids: widget.isForKids);
-        });
-
         final result = ref.watch(sliderServiceProvider);
         return result?.when(
               data: (sliderList) {
                 return OfferSlider(sliderData: sliderList);
               },
-              error: (error, stackTrace) => OfferSlider(sliderData: []),
-              loading: () => OfferSlider(sliderData: []),
+              error: (error, stackTrace) => Container(),
+              loading: () => Container(),
             ) ??
             Container();
       },
@@ -288,7 +316,7 @@ class _CategoryWiseProductsScreenState extends State<CategoryWiseProductsScreen>
                   ],
                 );
               },
-              error: (error, stackTrace) => Container(),
+              error: (error, stackTrace) => Padding(padding: EdgeInsets.symmetric(vertical: 30.h), child: EmptyRecordView(message: error.toString())),
               loading: () => Container(),
             ) ??
             Container();

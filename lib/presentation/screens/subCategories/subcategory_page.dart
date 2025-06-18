@@ -31,30 +31,36 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
   @override
   void initState() {
     Future.microtask(() {
-      ref.read(newProductServiceProvider.notifier).callNewArrivalProductsApi(
-        productParams: ProductParams(
-          isForMale: widget.isForMale,
-          isForFemale: widget.isForFemale,
-          isForKids: widget.isForKids,
-          categoryId: widget.selectedSubCategoryId,
-        ),
-      );
-      ref.read(popularProductServiceProvider.notifier).callPopularProductsApi(
-        productParams: ProductParams(
-          isForMale: widget.isForMale,
-          isForFemale: widget.isForFemale,
-          isForKids: widget.isForKids,
-          categoryId: widget.selectedSubCategoryId,
-        ),
-      );
-      ref.read(allProductServiceProvider.notifier).callProductsApi(
-        productParams: ProductParams(
-          isForMale: widget.isForMale,
-          isForFemale: widget.isForFemale,
-          isForKids: widget.isForKids,
-          categoryId: widget.selectedSubCategoryId,
-        ),
-      );
+      ref
+          .read(newProductServiceProvider(widget.selectedSubCategoryId).notifier)
+          .callNewArrivalProductsApi(
+            productParams: ProductParams(
+              isForMale: widget.isForMale,
+              isForFemale: widget.isForFemale,
+              isForKids: widget.isForKids,
+              categoryId: widget.selectedSubCategoryId,
+            ),
+          );
+      ref
+          .read(popularProductServiceProvider(widget.selectedSubCategoryId).notifier)
+          .callPopularProductsApi(
+            productParams: ProductParams(
+              isForMale: widget.isForMale,
+              isForFemale: widget.isForFemale,
+              isForKids: widget.isForKids,
+              categoryId: widget.selectedSubCategoryId,
+            ),
+          );
+      ref
+          .read(allProductServiceProvider(widget.selectedSubCategoryId).notifier)
+          .callProductsApi(
+            productParams: ProductParams(
+              isForMale: widget.isForMale,
+              isForFemale: widget.isForFemale,
+              isForKids: widget.isForKids,
+              categoryId: widget.selectedSubCategoryId,
+            ),
+          );
     });
 
     super.initState();
@@ -72,10 +78,10 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
   Widget _newProducts() {
     return Consumer(
       builder: (context, ref, child) {
-        final result = ref.watch(newProductServiceProvider);
+        final result = ref.watch(newProductServiceProvider(widget.selectedSubCategoryId));
         return result?.when(
               data: (productList) {
-                return productList.isNotEmpty? Column(
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(padding: EdgeInsetsDirectional.only(start: 20.w, bottom: 15.h, top: 15.h), child: Text(language.newArrival, style: _titleStyle)),
@@ -104,7 +110,7 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
                             child: ItemProduct(
                               item: productList[index],
                               onFavorite: () {
-                                ref.read(newProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
+                                ref.read(newProductServiceProvider(widget.selectedSubCategoryId).notifier).callToggleFavoriteApi(product.productId);
                               },
                             ),
                           );
@@ -131,7 +137,7 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
                       },
                     ),
                   ],
-                ):SizedBox();
+                );
               },
               error: (error, stackTrace) => SizedBox(),
               loading: () => Container(),
@@ -144,10 +150,10 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
   Widget _popularProducts() {
     return Consumer(
       builder: (context, ref, child) {
-        final result = ref.watch(popularProductServiceProvider);
+        final result = ref.watch(popularProductServiceProvider(widget.selectedSubCategoryId));
         return result?.when(
               data: (productList) {
-                return productList.isNotEmpty? Column(
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(padding: EdgeInsetsDirectional.only(top: 20.h, start: 20.w, end: 20.w), child: Text(language.popular, style: _titleStyle)),
@@ -176,7 +182,7 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
                             child: ItemProduct(
                               item: productList[index],
                               onFavorite: () {
-                                ref.read(popularProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
+                                ref.read(popularProductServiceProvider(widget.selectedSubCategoryId).notifier).callToggleFavoriteApi(product.productId);
                               },
                             ),
                           );
@@ -203,7 +209,7 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
                       },
                     ),
                   ],
-                ):SizedBox();
+                );
               },
               error: (error, stackTrace) => SizedBox(),
               loading: () => Container(),
@@ -216,7 +222,7 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
   Widget _allProducts() {
     return Consumer(
       builder: (context, ref, child) {
-        final result = ref.watch(allProductServiceProvider);
+        final result = ref.watch(allProductServiceProvider(widget.selectedSubCategoryId));
         return result?.when(
               data: (productList) {
                 return Column(
@@ -251,7 +257,7 @@ class _SubcategoryPageState extends ConsumerState<SubcategoryPage> with Automati
                             child: ItemProduct(
                               item: productList[index],
                               onFavorite: () {
-                                ref.read(allProductServiceProvider.notifier).callToggleFavoriteApi(product.productId);
+                                ref.read(allProductServiceProvider(widget.selectedSubCategoryId).notifier).callToggleFavoriteApi(product.productId);
                               },
                             ),
                           );
