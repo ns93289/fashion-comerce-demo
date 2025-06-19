@@ -99,3 +99,7 @@ Future<void> clearAllBoxes() async {
   await addressBox.clear();
   await recentSearchBox.clear();
 }
+
+Future<void> clearUserBox() async {
+  await userBox.clear();
+}

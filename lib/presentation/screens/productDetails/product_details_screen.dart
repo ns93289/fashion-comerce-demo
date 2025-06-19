@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../data/dataSources/local/hive_constants.dart';
 import '../../components/common_circle_progress_bar.dart';
 import '../../components/empty_record_view.dart';
 import '../../../core/constants/extensions.dart';
@@ -13,6 +14,7 @@ import '../../../core/utils/text_utils.dart';
 import '../../../domain/entities/product_details_entity.dart';
 import '../../components/common_app_bar.dart';
 import '../../components/custom_button.dart';
+import '../../provider/home_provider.dart';
 import '../../provider/navigation_provider.dart';
 import '../../provider/product_details_provider.dart';
 import '../../../data/dataSources/local/hive_helper.dart';
@@ -449,6 +451,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               Expanded(
                 child: CustomButton(
                   onPress: () {
+                    if (getIntDataFromUserBox(key: hiveUserId) == 0) {
+                      ref.read(loginRequiredDialogProvider);
+                      return;
+                    }
                     if (addedQuantity == 0) {
                       addDataIntoCartBox(1);
                       ref.read(
@@ -475,6 +481,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: CustomButton(
                   title: language.buyNow,
                   onPress: () {
+                    if (getIntDataFromUserBox(key: hiveUserId) == 0) {
+                      ref.read(loginRequiredDialogProvider);
+                      return;
+                    }
                     if (addedQuantity == 0) {
                       addDataIntoCartBox(1);
                       ref.read(

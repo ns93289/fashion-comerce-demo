@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../data/dataSources/local/hive_constants.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/tools.dart';
@@ -31,21 +32,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   int requiredSeconds = 2;
   late TabController _tabController;
 
-  /*_onTap() {
-    if (_tabController.index == 2) {
+  _onTap() {
+    if (getIntDataFromUserBox(key: hiveUserId) == 0 && _tabController.index == 2) {
       int index = _tabController.previousIndex;
       setState(() {
         _tabController.index = index;
       });
       ref.read(loginRequiredDialogProvider);
     }
-  }*/
+  }
 
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 4);
+
     ///Logic needed for skip login
-    // _tabController.addListener(_onTap);
+    _tabController.addListener(_onTap);
     super.initState();
   }
 

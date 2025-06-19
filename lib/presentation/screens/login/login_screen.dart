@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/constants/theme.dart';
+import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../core/constants/colors.dart';
 import '../../provider/forgot_password_provider.dart';
@@ -45,9 +46,16 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Align(
           alignment: AlignmentDirectional.topEnd,
-          child: Padding(
-            padding: EdgeInsetsDirectional.only(end: 20.w, top: 10.h, bottom: 10.h),
-            child: Text(language.skip, style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold)),
+          child: GestureDetector(
+            onTap: () {
+              clearUserBox().then((value) {
+                navigationService.navigateToWithClearStack(HomeScreen());
+              });
+            },
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(end: 20.w, top: 10.h, bottom: 10.h),
+              child: Text(language.skip, style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold)),
+            ),
           ),
         ),
         Image.asset("assets/images/app_logo.png", height: 100.h, width: 1.sw),

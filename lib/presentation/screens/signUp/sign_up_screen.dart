@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/theme.dart';
 import '../../../core/utils/text_field_validators.dart';
+import '../../../data/dataSources/local/hive_helper.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../provider/navigation_provider.dart';
 import '../../provider/signup_provider.dart';
@@ -30,9 +31,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       appBar: CommonAppBar(
         actions: [
-          Padding(
-            padding: EdgeInsetsDirectional.only(end: 20.w),
-            child: Text(language.skip, style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold)),
+          GestureDetector(
+            onTap: () {
+              clearUserBox().then((value) {
+                navigationService.navigateToWithClearStack(HomeScreen());
+              });
+            },
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(end: 20.w),
+              child: Text(language.skip, style: bodyTextStyle(color: colorPrimary, fontWeight: FontWeight.bold)),
+            ),
           ),
         ],
       ),
